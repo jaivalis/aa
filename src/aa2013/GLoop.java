@@ -9,6 +9,8 @@ public class GLoop {
 		int runs = 100, time = 0;
 		Board b = new Board(DIM);
 		
+		b.policyEvaluation();
+		
 		while (runs > 0) {
 			b.nextRound();
 //			b.printCoordinates();

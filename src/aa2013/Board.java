@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Board {
 	
-	private Actor[][] board; // XXX : delete
+	private State[][] board; // XXX : delete
 	private final int dim;
 	
 	private ArrayList<Predator> predators;
@@ -14,16 +14,16 @@ public class Board {
 	
 	public Board(int dim) {
 		this.dim = dim;
-		this.board = new Actor[dim][dim];
+		this.board = new State[dim][dim];
 		
 		Predator pred = new Predator(0,0);
 		this.prey = new Prey(5,5);
 		
-		predators = new ArrayList<>();
-		predators.add(pred);
+		this.predators = new ArrayList();
+		this.predators.add(pred);
 		
-		board[prey.getX()][prey.getY()] = prey;
-		board[pred.getX()][pred.getY()] = pred;
+		board[prey.getX()][prey.getY()].setActor(prey);
+		board[pred.getX()][pred.getY()].setActor(pred);
 	}
 	
 	public void nextRound(){
@@ -36,7 +36,7 @@ public class Board {
 		}
 		collisionDetection();
 		// move prey
-		ArrayList<Integer> newCoordinates = new ArrayList<>();
+		ArrayList<Integer> newCoordinates = new ArrayList();
 		do {
 			direction nextMoveDirection = prey.getNextMoveDirection();		
 			newCoordinates = getCoordinates(prey.getX(), prey.getY(), nextMoveDirection);
@@ -64,7 +64,7 @@ public class Board {
 	}
 	
 	public ArrayList<Integer> getCoordinates(int x, int y, direction dir) {
-		ArrayList<Integer> coordinates = new ArrayList<>();		
+		ArrayList<Integer> coordinates = new ArrayList();		
 		switch (dir) {
 			case WAIT:
 				coordinates.add(x);
@@ -119,6 +119,15 @@ public class Board {
 				System.out.print(" ");
 			}
 			System.out.println();
+		}
+	}
+
+	public void policyEvaluation() {
+		// at the beginning set all the V's at 0
+		for(int i = 0; i < this.board.length; i++){
+			for(int j = 0; j < this.board[i].length; j++){
+				this.board[i][j].setStateValue(0.0f);
+			}
 		}
 	}
 }
