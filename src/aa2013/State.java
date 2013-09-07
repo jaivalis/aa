@@ -12,15 +12,15 @@ public class State {
 	 * set the actor connected to this state
 	 * @param Actor actor ; set as null for removal
 	 */
-	public void setActor(Actor actor) {
-		this.actor = actor;
-	}
+	public void setActor(Actor actor) { this.actor = actor; }
 	
 	/**
 	 * value of V for the state (for the policy evaluation algorithm)
 	 * @param double stateValue
 	 */
-	public void setStateValue(double stateValue) {
-		this.stateValue = stateValue;
-	}
+	public void setStateValue(double stateValue) { this.stateValue = stateValue; }
+	
+	public double getStateValue() {	return this.stateValue; }
+	
+	public String toString() { return ""; }
 }
