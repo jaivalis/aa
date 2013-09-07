@@ -2,10 +2,13 @@ package aa2013;
 
 import java.util.ArrayList;
 
+import aa2013.Board.action;
+
 public abstract class Actor {
 	protected int x,y;
+	protected Policy policy;
 	
-	public abstract Board.direction getNextMoveDirection();
+	public Policy getPolicy() { return this.policy; }
 	
 	public int getX() { return this.x; }	
 	public int getY() {	return this.y; }
@@ -17,4 +20,6 @@ public abstract class Actor {
 		this.x = newCoordinates.get(0); 
 		this.y = newCoordinates.get(1);
 	}
+
+	public action getNextMoveDirection(State s) { return this.policy.getAction(s); }
 }

@@ -5,8 +5,10 @@ package aa2013;
  */
 public class State {
 
-	private Actor actor = null;
-	private double stateValue = 0.0f;
+	private Actor actor;
+	private double stateValue;
+	
+	public State() { this.actor = null; this.stateValue = 0.0f; }
 	
 	/**
 	 * set the actor connected to this state
@@ -19,6 +21,7 @@ public class State {
 	 * @param double stateValue
 	 */
 	public void setStateValue(double stateValue) { this.stateValue = stateValue; }
+	public void increaseStateValue(double stateValue) { this.stateValue += stateValue; }
 	
 	public double getStateValue() {	return this.stateValue; }
 	

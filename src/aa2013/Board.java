@@ -16,16 +16,23 @@ public class Board {
 	private final double EPSILON = 0.0f; // defines the margin required to
 	private final double GAMMA = 0.8; // defines the margin required to
 		
-	public enum direction { NORTH, SOUTH, EAST, WEST, WAIT };
+	public enum action { NORTH, SOUTH, EAST, WEST, WAIT };
 	
 	public Board(int dim) {
 		this.dim = dim;
 		this.board = new State[dim][dim];
+		for(int i = 0; i < this.board.length; i++){
+			for(int j = 0; j < this.board[i].length; j++){
+				this.board[i][j] = new State();
+			}
+		}
+		
+		this.previousBoard = board;
 		
 		Predator pred = new Predator(0,0);
 		this.prey = new Prey(5,5);
 		
-		this.predators = new ArrayList();
+		this.predators = new ArrayList<Predator>();
 		this.predators.add(pred);
 		
 		board[prey.getX()][prey.getY()].setActor(prey);
@@ -35,16 +42,16 @@ public class Board {
 	public void nextRound(){
 		// move predator(s)
 		for(Predator p : predators) {
-			direction nextMoveDirection = p.getNextMoveDirection();			
+			action nextMoveDirection = p.getNextMoveDirection(this.board[p.getX()][p.getY()]);			
 			ArrayList<Integer> newCoordinates = getCoordinates(p.getX(), p.getY(), nextMoveDirection);
 			
 			p.move(newCoordinates);
 		}
 		collisionDetection();
 		// move prey
-		ArrayList<Integer> newCoordinates = new ArrayList();
+		ArrayList<Integer> newCoordinates = new ArrayList<Integer>();
 		do {
-			direction nextMoveDirection = prey.getNextMoveDirection();		
+			action nextMoveDirection = prey.getNextMoveDirection(this.board[prey.getX()][prey.getY()]);		
 			newCoordinates = getCoordinates(prey.getX(), prey.getY(), nextMoveDirection);
 		} while ( !isPositionAvailable(newCoordinates) );
 		prey.move(newCoordinates);
@@ -69,7 +76,7 @@ public class Board {
 		}
 	}
 	
-	public ArrayList<Integer> getCoordinates(int x, int y, direction dir) {
+	public ArrayList<Integer> getCoordinates(int x, int y, action dir) {
 		ArrayList<Integer> coordinates = new ArrayList<Integer>();		
 		switch (dir) {
 			case WAIT:
@@ -100,9 +107,7 @@ public class Board {
 				if (y-1 < 0) { coordinates.add(dim - 1); }
 				else { coordinates.add(y-1); }
 				break;
-		}	
-
-		return coordinates;
+		} return coordinates;
 	}
 	
 	public boolean isEpisodeOver() { return !this.prey.getAlive(); }
@@ -117,41 +122,41 @@ public class Board {
 	public void printBoard() {
 		for (int i = 0; i < dim; i++) {
 			for (int j = 0; j < dim; j++) {
-				if (board[i][j] == null) {
-					System.out.print("-");
-				} else {
-					System.out.print(board[i][j]);
-				}
+				if (board[i][j] == null) { System.out.print("-"); } 
+				else { System.out.print(board[i][j]); } 
 				System.out.print(" ");
-			}
-			System.out.println();
+			} System.out.println();
 		}
 	}
 
 	public void policyEvaluation() {
 		int timeSlot = 1;
+		
 		// at the beginning set all the V's at 0
 		initializeStateValues(0.0f);
 		
+		// initialize V value for prey cell
 		this.board[prey.getX()][prey.getY()].setStateValue(PREYVALUE);
 		
-		while (!policyEvaluationTerminationCondition()) {
-			ArrayList<State> neighbours;
+		do {
+			ArrayList<State> neighbors;
+			
 			for(int i = 0; i < this.board.length; i++){
 				for(int j = 0; j < this.board[i].length; j++){
-					neighbours = getNeighbours(i, j);
+					neighbors = getNeighbors(i, j);
 					
-					for (State st : neighbours) {
+					for (State st : neighbors) {
+						// for each neighbor
+						this.board[i][j].increaseStateValue(0);
 						
 					}
 				}
 			}
 			
-			
 			// loop end
 			timeSlot++;
 			this.previousBoard = this.board;
-		}
+		} while (!policyEvaluationTerminationCondition());
 		
 	}
 	
@@ -169,7 +174,7 @@ public class Board {
 		return false;
 	}
 	
-	private ArrayList<State> getNeighbours(int x, int y) {
+	private ArrayList<State> getNeighbors(int x, int y) {
 		ArrayList<State> neighbours = new ArrayList<State>();
 		int neighx, neighy;
 		
