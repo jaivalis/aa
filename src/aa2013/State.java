@@ -21,7 +21,7 @@ public class State {
 	 * @param double stateValue
 	 */
 	public void setStateValue(double stateValue) { this.stateValue = stateValue; }
-	public void increaseStateValue(double stateValue) { this.stateValue += stateValue; }
+	public void incrementStateValue(double stateValue) { this.stateValue += stateValue; }
 	
 	public double getStateValue() {	return this.stateValue; }
 	

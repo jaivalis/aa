@@ -5,16 +5,14 @@ import java.util.ArrayList;
 public class Board {
 	
 	private State[][] board;
-
-	private State[][] previousBoard; // used to determine if there are changes
 	private final int dim;
 	
 	private ArrayList<Predator> predators;
 	private Prey prey;
 
 	private final double PREYVALUE = 0.0f;
-	private final double EPSILON = 0.0f; // defines the margin required to
-	private final double GAMMA = 0.8; // defines the margin required to
+	private final double EPSILON = 0.0f; // threshold for the loop end condition
+	private final double GAMMA = 0.8;
 		
 	public enum action { NORTH, SOUTH, EAST, WEST, WAIT };
 	
@@ -26,8 +24,6 @@ public class Board {
 				this.board[i][j] = new State();
 			}
 		}
-		
-		this.previousBoard = board;
 		
 		Predator pred = new Predator(0,0);
 		this.prey = new Prey(5,5);
@@ -128,11 +124,12 @@ public class Board {
 			} System.out.println();
 		}
 	}
-
+	
 	public void policyEvaluation() {
 		int timeSlot = 1;
+		double maxMargin = 0.0; // defines the maximum difference observed in the stateValue of all states
 		
-		// at the beginning set all the V's at 0
+		// at the beginning set all the Vs to 0
 		initializeStateValues(0.0f);
 		
 		// initialize V value for prey cell
@@ -146,32 +143,26 @@ public class Board {
 					neighbors = getNeighbors(i, j);
 					
 					for (State st : neighbors) {
+						double oldStateValue = this.board[i][j].getStateValue();
 						// for each neighbor
-						this.board[i][j].increaseStateValue(0);
+						this.board[i][j].incrementStateValue(0);
 						
+						
+						//after new state value is set update the value of maxMargin.
+						maxMargin = Math.max(oldStateValue-this.board[i][j].getStateValue(), maxMargin);
 					}
 				}
 			}
 			
 			// loop end
 			timeSlot++;
-			this.previousBoard = this.board;
-		} while (!policyEvaluationTerminationCondition());
+		} while (maxMargin > EPSILON);
 		
-	}
-	
-	/**
-	 * termination condition for the policy evaluation loop.
-	 */
-	private boolean policyEvaluationTerminationCondition() {
 		for(int i = 0; i < this.board.length; i++){
 			for(int j = 0; j < this.board[i].length; j++){
-				if (this.board[i][j].getStateValue() - this.previousBoard[i][j].getStateValue() > EPSILON) {
-					return false;
-				}
+				System.out.println(this.board[i][j].getStateValue());
 			}
 		}
-		return false;
 	}
 	
 	private ArrayList<State> getNeighbors(int x, int y) {
