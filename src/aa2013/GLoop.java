@@ -11,19 +11,20 @@ public class GLoop {
 		
 		b.policyEvaluation();
 		
-		while (runs > 0) {
-			b.nextRound();
-//			b.printCoordinates();
-			
-			time++;
-			if (b.isEpisodeOver()) {
-				b = new Board(DIM);
-				runs--;
-//				time = 0;
-			}
-		}
-		System.out.println("total time = " + time);
-		System.out.println("average time = " + time / 100);
+//		while (runs > 0) {
+//			b.nextRound();
+////			b.printCoordinates();
+//			
+//			time++;
+//			if (b.isEpisodeOver()) {
+//				b = new Board(DIM);
+//				runs--;
+////				time = 0;
+//			}
+//		}
+		
+//		System.out.println("total time = " + time);
+//		System.out.println("average time = " + time / 100);
 	}
 
 }

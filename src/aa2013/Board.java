@@ -3,15 +3,16 @@ package aa2013;
 import java.util.ArrayList;
 
 public class Board {
-	
+
 	private State[][] board;
+	private State[][] oldBoard;
 	private final int dim;
 	
 	private ArrayList<Predator> predators;
 	private Prey prey;
 
-	private final double PREYVALUE = 0.0f;
-	private final double EPSILON = 0.0f; // threshold for the loop end condition
+	private final double PREYVALUE = 10.0;
+	private final double THETA = 1.2; // threshold for the loop end condition
 	private final double GAMMA = 0.8;
 		
 	public enum action { NORTH, SOUTH, EAST, WEST, WAIT };
@@ -21,9 +22,10 @@ public class Board {
 		this.board = new State[dim][dim];
 		for(int i = 0; i < this.board.length; i++){
 			for(int j = 0; j < this.board[i].length; j++){
-				this.board[i][j] = new State();
+				this.board[i][j] = new State(i, j);
 			}
 		}
+		this.oldBoard = board;
 		
 		Predator pred = new Predator(0,0);
 		this.prey = new Prey(5,5);
@@ -126,13 +128,12 @@ public class Board {
 	}
 	
 	public void policyEvaluation() {
-		int timeSlot = 1;
 		double maxMargin = 0.0; // defines the maximum difference observed in the stateValue of all states
-		
-		// at the beginning set all the Vs to 0
+		int debugRuns=0;
+		// initialize V(s) = 0, for all states.
 		initializeStateValues(0.0f);
 		
-		// initialize V value for prey cell
+		// initialize V value for prey cell.
 		this.board[prey.getX()][prey.getY()].setStateValue(PREYVALUE);
 		
 		do {
@@ -140,29 +141,43 @@ public class Board {
 			
 			for(int i = 0; i < this.board.length; i++){
 				for(int j = 0; j < this.board[i].length; j++){
+					double Vkplus1 = 0.0;
+					double oldStateValue = this.board[i][j].getStateValue();
+					
 					neighbors = getNeighbors(i, j);
 					
 					for (State st : neighbors) {
-						double oldStateValue = this.board[i][j].getStateValue();
-						// for each neighbor
-						this.board[i][j].incrementStateValue(0);
-						
-						
-						//after new state value is set update the value of maxMargin.
-						maxMargin = Math.max(oldStateValue-this.board[i][j].getStateValue(), maxMargin);
+						// the action that would be required to move to state st
+						action ac = this.board[i][j].getTransitionAction(st); 
+						double pi = predators.get(0).getPolicy().getActionProbability(ac);
+						Vkplus1 += pi * (this.oldBoard[i][j].getStateValue() + GAMMA * st.getStateValue());
 					}
+					this.board[i][j].incrementStateValue(Vkplus1);
+//					System.out.println("incr: "+Vkplus1);
+					
+					//after new state value is set update the value of maxMargin.
+					maxMargin = Math.max(Vkplus1-oldStateValue, maxMargin);
 				}
 			}
 			
+			for(int ii = 0; ii < this.board.length; ii++){
+				for(int jj = 0; jj < this.board[ii].length; jj++){
+					System.out.println(this.board[ii][jj]);
+				}
+			}
+//			System.out.println();
+			debugRuns++;
 			// loop end
-			timeSlot++;
-		} while (maxMargin > EPSILON);
+			this.oldBoard = board;
+		} while (maxMargin > THETA);
 		
+		// output stateValues.
 		for(int i = 0; i < this.board.length; i++){
 			for(int j = 0; j < this.board[i].length; j++){
-				System.out.println(this.board[i][j].getStateValue());
+				System.out.println(this.board[i][j]);
 			}
 		}
+		System.out.println("Runs: " + debugRuns);
 	}
 	
 	private ArrayList<State> getNeighbors(int x, int y) {

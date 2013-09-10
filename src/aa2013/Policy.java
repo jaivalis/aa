@@ -4,4 +4,5 @@ import aa2013.Board.action;
 
 public interface Policy {
 	public action getAction(State s);
+	public double getActionProbability(action a);
 }

@@ -18,4 +18,16 @@ public class RandomPreyPolicy implements Policy {
 		return action.WEST;
 	}
 
+	@Override
+	public double getActionProbability(action a) {
+		switch (a) {
+			case NORTH:	return 0.05;
+			case SOUTH:	return 0.05;
+			case EAST:	return 0.05;
+			case WEST:	return 0.05;
+			case WAIT:	return 0.8;
+			default:	return 0.0;
+		}
+	}
+
 }
