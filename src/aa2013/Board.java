@@ -133,8 +133,9 @@ public class Board {
 			
 			for(int i = 0; i < this.board.length; i++){
 				for(int j = 0; j < this.board[i].length; j++){
+					State currState = this.board[i][j];
 					double Vkplus1 = 0.0;
-					double oldStateValue = this.board[i][j].getStateValue();
+					double oldStateValue = currState.getStateValue();
 					
 					for (State st : getNeighbors(i, j)) {
 						// the action that would be required to move to state st
@@ -151,12 +152,6 @@ public class Board {
 				}
 			}
 			
-//			for(int ii = 0; ii < this.board.length; ii++){
-//				for(int jj = 0; jj < this.board[ii].length; jj++){
-//					System.out.println(this.board[ii][jj]);
-//				}
-//			}
-			printBoardDebug();
 			debugRuns++;
 			// loop end
 			this.oldBoard = board;
