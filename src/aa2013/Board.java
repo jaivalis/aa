@@ -1,5 +1,6 @@
 package aa2013;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class Board {
@@ -11,8 +12,8 @@ public class Board {
 	private ArrayList<Predator> predators;
 	private Prey prey;
 
-	private final double PREYVALUE = 10.0;
-	private final double THETA = 1.2; // threshold for the loop end condition
+	private final double PREYREWARD = 10.0;
+	private final double THETA = 1.0; // threshold for the loop end condition
 	private final double GAMMA = 0.8;
 		
 	public enum action { NORTH, SOUTH, EAST, WEST, WAIT };
@@ -116,56 +117,46 @@ public class Board {
 		System.out.println("end of round");
 	}
 	
-	// XXX : delete
-	public void printBoard() {
-		for (int i = 0; i < dim; i++) {
-			for (int j = 0; j < dim; j++) {
-				if (board[i][j] == null) { System.out.print("-"); } 
-				else { System.out.print(board[i][j]); } 
-				System.out.print(" ");
-			} System.out.println();
-		}
-	}
-	
 	public void policyEvaluation() {
 		double maxMargin = 0.0; // defines the maximum difference observed in the stateValue of all states
 		int debugRuns=0;
 		// initialize V(s) = 0, for all states.
-		initializeStateValues(0.0f);
+		initializeStateValues(0.0);
 		
-		// initialize V value for prey cell.
-		this.board[prey.getX()][prey.getY()].setStateValue(PREYVALUE);
+		this.oldBoard = board;
+		
+		// initialize Reward for prey cell.
+		this.board[prey.getX()][prey.getY()].setStateReward(PREYREWARD);
 		
 		do {
-			ArrayList<State> neighbors;
+			maxMargin = 0.0;
 			
 			for(int i = 0; i < this.board.length; i++){
 				for(int j = 0; j < this.board[i].length; j++){
 					double Vkplus1 = 0.0;
 					double oldStateValue = this.board[i][j].getStateValue();
 					
-					neighbors = getNeighbors(i, j);
-					
-					for (State st : neighbors) {
+					for (State st : getNeighbors(i, j)) {
 						// the action that would be required to move to state st
-						action ac = this.board[i][j].getTransitionAction(st); 
+						action ac = this.board[i][j].getTransitionAction(st);
+						// the probability of taking action  in state  under policy π (0.2 in this case)
 						double pi = predators.get(0).getPolicy().getActionProbability(ac);
-						Vkplus1 += pi * (this.oldBoard[i][j].getStateValue() + GAMMA * st.getStateValue());
+						
+						Vkplus1 += pi * (st.getStateReward() + GAMMA * st.getStateValue());
 					}
 					this.board[i][j].incrementStateValue(Vkplus1);
-//					System.out.println("incr: "+Vkplus1);
 					
 					//after new state value is set update the value of maxMargin.
-					maxMargin = Math.max(Vkplus1-oldStateValue, maxMargin);
+					maxMargin = Math.max(Math.abs(Vkplus1-oldStateValue), maxMargin);
 				}
 			}
 			
-			for(int ii = 0; ii < this.board.length; ii++){
-				for(int jj = 0; jj < this.board[ii].length; jj++){
-					System.out.println(this.board[ii][jj]);
-				}
-			}
-//			System.out.println();
+//			for(int ii = 0; ii < this.board.length; ii++){
+//				for(int jj = 0; jj < this.board[ii].length; jj++){
+//					System.out.println(this.board[ii][jj]);
+//				}
+//			}
+			printBoardDebug();
 			debugRuns++;
 			// loop end
 			this.oldBoard = board;
@@ -178,6 +169,17 @@ public class Board {
 			}
 		}
 		System.out.println("Runs: " + debugRuns);
+	}
+	
+	private void printBoardDebug() {
+		DecimalFormat twoDForm = new DecimalFormat("#.###");
+		for(int ii = 0; ii < this.board.length; ii++){
+			for(int jj = 0; jj < this.board[ii].length; jj++){				
+				System.out.print(twoDForm.format(this.board[ii][jj].getStateValue()) + "\t");
+//				System.out.print(this.board[ii][jj].getStateValue() + "\t");
+			}
+			System.out.println();
+		}
 	}
 	
 	private ArrayList<State> getNeighbors(int x, int y) {
@@ -215,6 +217,7 @@ public class Board {
 		for(int i = 0; i < this.board.length; i++){
 			for(int j = 0; j < this.board[i].length; j++){
 				this.board[i][j].setStateValue(d);
+				this.board[i][j].setStateReward(d);
 			}
 		}
 	}

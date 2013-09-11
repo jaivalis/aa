@@ -8,6 +8,7 @@ public class State {
 
 	private Actor actor;
 	private double stateValue;
+	private double stateReward;
 	private int x, y;
 	
 	DecimalFormat twoDForm = new DecimalFormat("#.##");
@@ -29,9 +30,12 @@ public class State {
 	 * @param double stateValue
 	 */
 	public void setStateValue(double stateValue) { this.stateValue = stateValue; }
-	public void incrementStateValue(double v) { this.stateValue += v; }
+	public void setStateReward(double stateReward) { this.stateReward = stateReward; }
 	
+	public void incrementStateValue(double v) { this.stateValue += v; }
+
 	public double getStateValue() {	return this.stateValue; }
+	public double getStateReward() { return this.stateReward; }
 
 	public int getX() { return this.x; }
 	public int getY() { return this.y; }
