@@ -1,6 +1,5 @@
 package aa2013;
 
-
 public class Predator extends Actor{
 	
 	public Predator(int x, int y) {

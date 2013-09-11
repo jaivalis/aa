@@ -6,10 +6,10 @@ import aa2013.Board.action;
 
 public class State {
 
-	private Actor actor;
-	private double stateValue;
-	private double stateReward;
-	private int x, y;
+	private Actor actor;		// null if state cell is empty.
+	private double stateValue;	// Corresponds to value V (for the policy evaluation algorithm).
+	private double stateReward;	// Corresponds to value R (for the policy evaluation algorithm).
+	private int x, y;			// coordinates of cell.
 	
 	DecimalFormat twoDForm = new DecimalFormat("#.##");
 	
@@ -18,28 +18,22 @@ public class State {
 		this.y = y;
 		this.actor = null; 
 		this.stateValue = 0.0f; 
-	}	
-	/**
-	 * set the actor connected to this state
-	 * @param Actor actor ; set as null for removal
-	 */
-	public void setActor(Actor actor) { this.actor = actor; }
-	public Actor getActor()	{ return this.actor; }
-	/**
-	 * value of V for the state (for the policy evaluation algorithm)
-	 * @param double stateValue
-	 */
-	public void setStateValue(double stateValue) { this.stateValue = stateValue; }
-	public void setStateReward(double stateReward) { this.stateReward = stateReward; }
+	}
 	
-	public void incrementStateValue(double v) { this.stateValue += v; }
-
-	public double getStateValue() {	return this.stateValue; }
-	public double getStateReward() { return this.stateReward; }
-
+	public Actor getActor()	{ return this.actor; }
 	public int getX() { return this.x; }
 	public int getY() { return this.y; }
+	public double getStateValue() {	return this.stateValue; }
+	public double getStateReward() { return this.stateReward; }
 	
+	// set to null for removal
+	public void setStateValue(double stateValue) { this.stateValue = stateValue; }
+	public void setActor(Actor actor) { this.actor = actor; }
+	public void setStateReward(double stateReward) { this.stateReward = stateReward; }
+	public void setX(int x) { this.x = x; }
+	public void setY(int y) { this.y = y; }
+
+	@Override
 	public String toString() { return "(" + x + ", "+ y + ") V = " + Double.valueOf(twoDForm.format(stateValue)); }
 	
 	public action getTransitionAction(State other){

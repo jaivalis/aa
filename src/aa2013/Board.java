@@ -71,6 +71,9 @@ public class Board {
 		}
 	}
 	
+	/**
+	 * Returns the coordinates of the block to be visited next according to the action chosen.
+	 */
 	public ArrayList<Integer> getCoordinates(int x, int y, action dir) {
 		ArrayList<Integer> coordinates = new ArrayList<Integer>();		
 		switch (dir) {
@@ -107,12 +110,18 @@ public class Board {
 	
 	public boolean isEpisodeOver() { return !this.prey.getAlive(); }
 	
+	/**
+	 * used for debugging
+	 */
 	public void printCoordinates() {
 		for(Predator p : predators) { System.out.println("\t" + p); }
 		System.out.println("\t" + prey);
 		System.out.println("end of round");
 	}
 	
+	/**
+	 * For extensive explanation see : http://webdocs.cs.ualberta.ca/~sutton/book/ebook/node41.html
+	 */
 	public void policyEvaluation() {
 		double delta = 0.0; // defines the maximum difference observed in the stateValue of all states
 		int debugRuns = 0;
@@ -128,7 +137,7 @@ public class Board {
 			for(int i = 0; i < this.board.length; i++) {
 				for(int j = 0; j < this.board[i].length; j++) {
 					State currState = this.board[i][j];
-					double Vkplus1 = 0.0;
+					double Vkplus1 = 0.0; // the new value V.
 					double oldStateValue = currState.getStateValue();
 					
 					for (State st : getNeighbors(i, j)) {
@@ -144,8 +153,7 @@ public class Board {
 					// after new state value is set update the value of delta.
 					delta = Math.max(Math.abs(Vkplus1-oldStateValue), delta);
 				}
-			}
-			
+			}			
 			debugRuns++;
 		} while (delta > THETA);
 		
@@ -155,6 +163,9 @@ public class Board {
 		System.out.println("Runs: " + debugRuns);
 	}
 	
+	/**
+	 * used for debugging
+	 */
 	private void printStateValues() {
 		DecimalFormat twoDForm = new DecimalFormat("#.###");
 		for(int i = 0; i < this.board.length; i++){
@@ -167,6 +178,9 @@ public class Board {
 		System.out.println(twoDForm.format(this.board[5][5].getStateValue()) + "\t");
 	}
 	
+	/**
+	 * returns all the states that can be visited from coordinates x,y
+	 */
 	private ArrayList<State> getNeighbors(int x, int y) {
 		ArrayList<State> neighbours = new ArrayList<State>();
 		int neighx, neighy;
