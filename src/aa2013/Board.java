@@ -141,18 +141,19 @@ public class Board {
 			
 			for(int i = 0; i < this.board.length; i++){
 				for(int j = 0; j < this.board[i].length; j++){
+					State currState = this.board[i][j];
 					double Vkplus1 = 0.0;
-					double oldStateValue = this.board[i][j].getStateValue();
+					double oldStateValue = currState.getStateValue();
 					
 					neighbors = getNeighbors(i, j);
 					
 					for (State st : neighbors) {
 						// the action that would be required to move to state st
-						action ac = this.board[i][j].getTransitionAction(st); 
+						action ac = currState.getTransitionAction(st); 
 						double pi = predators.get(0).getPolicy().getActionProbability(ac);
-						Vkplus1 += pi * (this.oldBoard[i][j].getStateValue() + GAMMA * st.getStateValue());
+						Vkplus1 += pi * (currState.getStateValue() + GAMMA * st.getStateValue());
 					}
-					this.board[i][j].incrementStateValue(Vkplus1);
+					currState.incrementStateValue(Vkplus1);
 //					System.out.println("incr: "+Vkplus1);
 					
 					//after new state value is set update the value of maxMargin.
@@ -160,11 +161,6 @@ public class Board {
 				}
 			}
 			
-			for(int ii = 0; ii < this.board.length; ii++){
-				for(int jj = 0; jj < this.board[ii].length; jj++){
-					System.out.println(this.board[ii][jj]);
-				}
-			}
 //			System.out.println();
 			debugRuns++;
 			// loop end
