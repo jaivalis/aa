@@ -1,20 +1,168 @@
 \documentclass[11pt]{article}
-
 \usepackage{array}
-\usepackage{graphicx}
 \usepackage{tabularx}
-\usepackage{color}
-\usepackage{float}
-\usepackage{hyperref}
-\usepackage{amsmath}
-\usepackage{mathtools}
+\title{
+	\textbf{Data Mining Techniques 2013}
+}
 
-\title{	\textbf{Autonomous Agents 2013 \\ Universiteit van Amsterdam} \\ Assignment 1: Single Agent Planning}
-
-\author{Ioannis-Giounous Aivalis \\ 10524851 \and Tobias Stahl \\ 10528199 \and Spyros Michaelides\\ 10523316 \and Francesco \\ XXXXXXXX}
+\author{Tobias Stahl \\ 10528199 \and Spyros Michaelides \\ 10523316 \and Ioannis Giounous Aivalis \\ s2538161 \and Francesco xxxxxxx \\ xxxxxxxx}
 \date{}
+\usepackage{graphicx}
 \begin{document}
+
 \maketitle
 
+\section{Introduction}
 
+
+
+\section{Part 1}
+
+In the initial section of the assignment an environment is constructed for the simulation of the agent, (the predator), and the prey. The environment is is a two dimensional toroidal grid in which if an agent moves off the boundary of a side of the grid, he will appear in the opposite side of the board. The board has a size of 11 by 11 cells.\\
+Both the predator and the prey move with a random policy inclusive of directions NORTH, SOUTH, WEST, EAST along with an option of staying still. While the predator has a 0.2 probability of taking any action, the prey has a probability 0.8 of staying in the same cell, and moves with a probability of only 0.05 in any direction.\\
+The probability for action taken by the prey is changed when the predator will be standing in a neighboring cell, since the prey is not supposed to move into the cell of the predator. This will change the probability of the prey moving to 0.067 toward any of the remaining directions.\\
+In order to find the average of moves it takes the predator to catch the prey a simulation of 100 runs is made. The resulting value for the average is 226 actions with a standard deviation of 289.02
+
+
+
+\section{Part 2}
+
+In the second part of the assignment, and iterative policy evaluation is used to determine the value of the random policy for all possible states, using a discount factor of 0.8.
+Policy evaluation evaluates each state, in order to find the best action for the predator to take, regarding the reward to expect in the next state.\\
+Starting with an arbitrary policy, the value of all states is updated and the action leading to the state with the highest value is taken. This is repeated as long as the policy keeps changing. Once this stops, the best policy is found.\\
+The policy evaluation will stop once the change in values is smaller than threshold Theta, where Theta is 0.00001.\\
+The following images display the values after the policy evaluation of the different states of predator and prey.
+
+\subsection{State predator(0,0), prey(5,5)}
+
+\begin{center}
+\begin{table*}[ht]
+{\small
+\hfill{}
+\begin{tabular}{c|c|c|c|c|c|c|c|c|c|c|c}
+\textbf{} & \textbf{0} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} & \textbf{7} & \textbf{8} & \textbf{9} & \textbf{10}\\
+	\hline
+	\textbf{0} 		& 0.004	& 0.007 & 0.013	& 0.022 & 0.033 & 0.04 & 0.033 & 0.022 & 0.013 & 0.007 & 0.004\\
+	\textbf{1} 		& 0.007 & 0.012 & 0.025 & 0.048 & 0.08 & 0.102 & 0.08 & 0.048 & 0.025 & 0.012 & 0.007\\
+\textbf{2} & 0.013	& 0.025	& 0.057	& 0.125	& 0.237	& 0.335	& 0.237	& 0.125	& 0.057	& 0.025	& 0.013	\\
+\textbf{3} & 0.022	& 0.048	& 0.125	& 0.316	& 0.705	& 1.181	& 0.705	& 0.316	& 0.125	& 0.048	& 0.022	\\
+\textbf{4} & 0.033	& 0.08	& 0.237	& 0.705	& 1.965	& 4.455	& 1.965	& 0.705	& 0.237	& 0.08	& 0.033	\\
+\textbf{5} & 0.04	& 0.102	& 0.335	& 1.181	& 4.455	& 5.775	& 4.455	& 1.181	& 0.335	& 0.102	& 0.04	\\
+\textbf{6} & 0.033	& 0.08	& 0.237	& 0.705	& 1.965	& 4.455	& 1.965	& 0.705	& 0.237	& 0.08	& 0.033	\\
+\textbf{7} & 0.022	& 0.048	& 0.125	& 0.316	& 0.705	& 1.181	& 0.705	& 0.316	& 0.125	& 0.048	& 0.022	\\
+\textbf{8} & 0.013	& 0.025	& 0.057	& 0.125	& 0.237	& 0.335	& 0.237	& 0.125	& 0.057	& 0.025	& 0.013	\\
+\textbf{9} & 0.007	& 0.012	& 0.025	& 0.048	& 0.08	& 0.102	& 0.08	& 0.048	& 0.025	& 0.012	& 0.007	\\
+\textbf{10} & 0.004	& 0.007	& 0.013	& 0.022	& 0.033	& 0.04	& 0.033	& 0.022	& 0.013	& 0.007	& 0.004	\\	
+\end{tabular}}
+\hfill{}
+\caption{Policy evaluation of state predator(0,0), prey(5,5)}
+\label{state1}
+\end{table*}
+\end{center}
+
+\subsection{State predator(2,3), prey(5,4)}
+
+
+\begin{center}
+\begin{table*}[ht]
+{\small
+\hfill{}
+\begin{tabular}{c|c|c|c|c|c|c|c|c|c|c|c}
+\textbf{} & \textbf{0} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} & \textbf{7} & \textbf{8} & \textbf{9} & \textbf{10}\\
+	\hline
+	\textbf{0}& 0.007	& 0.013	& 0.022	& 0.033	& 0.04	& 0.033	& 0.022	& 0.013	& 0.007	& 0.004	& 0.004	\\
+	\textbf{1}& 0.012	& 0.025	& 0.048	& 0.08	& 0.102	& 0.08	& 0.048	& 0.025	& 0.012	& 0.007	& 0.007	\\
+	\textbf{2}& 0.025	& 0.057	& 0.125	& 0.237	& 0.335	& 0.237	& 0.125	& 0.057	& 0.025	& 0.013	& 0.013	\\
+	\textbf{3}& 0.048	& 0.125	& 0.316	& 0.705	& 1.181	& 0.705	& 0.316	& 0.125	& 0.048	& 0.022	& 0.022	\\
+	\textbf{4}& 0.08	& 0.237	& 0.705	& 1.965	& 4.455	& 1.965	& 0.705	& 0.237	& 0.08	& 0.033	& 0.033	\\
+	\textbf{5}& 0.102	& 0.335	& 1.181	& 4.455	& 5.775	& 4.455	& 1.181	& 0.335	& 0.102	& 0.04	& 0.04	\\
+	\textbf{6}& 0.08	& 0.237	& 0.705	& 1.965	& 4.455	& 1.965	& 0.705	& 0.237	& 0.08	& 0.033	& 0.033	\\
+	\textbf{7}& 0.048	& 0.125	& 0.316	& 0.705	& 1.181	& 0.705	& 0.316	& 0.125	& 0.048	& 0.022	& 0.022	\\
+	\textbf{8}& 0.025	& 0.057	& 0.125	& 0.237	& 0.335	& 0.237	& 0.125	& 0.057	& 0.025	& 0.013	& 0.013	\\
+	\textbf{9}& 0.012	& 0.025	& 0.048	& 0.08	& 0.102	& 0.08	& 0.048	& 0.025	& 0.012	& 0.007	& 0.007	\\
+	\textbf{10}& 0.007	& 0.013	& 0.022	& 0.033	& 0.04	& 0.033	& 0.022	& 0.013	& 0.007	& 0.004	& 0.004	\\
+\end{tabular}}
+\hfill{}
+\caption{Policy evaluation of state predator(2,3), prey(5,4)}
+\label{state2}
+\end{table*}
+\end{center}
+
+\subsection{State predator(2,10), prey(10,0)}
+
+
+\begin{center}
+\begin{table*}[ht]
+{\small
+\hfill{}
+\begin{tabular}{c|c|c|c|c|c|c|c|c|c|c|c}
+\textbf{} & \textbf{0} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} & \textbf{7} & \textbf{8} & \textbf{9} & \textbf{10}\\
+	\hline
+\textbf{0}& 4.455	& 1.965	& 0.705	& 0.237	& 0.08	& 0.033	& 0.033	& 0.08	& 0.237	& 0.705	& 1.965	\\
+\textbf{1}& 1.181	& 0.705	& 0.316	& 0.125	& 0.048	& 0.022	& 0.022	& 0.048	& 0.125	& 0.316	& 0.705	\\
+\textbf{2}& 0.335	& 0.237	& 0.125	& 0.057	& 0.025	& 0.013	& 0.013	& 0.025	& 0.057	& 0.125	& 0.237	\\
+\textbf{3}& 0.102	& 0.08	& 0.048	& 0.025	& 0.012	& 0.007	& 0.007	& 0.012	& 0.025	& 0.048	& 0.08	\\
+\textbf{4}& 0.04	& 0.033	& 0.022	& 0.013	& 0.007	& 0.004	& 0.004	& 0.007	& 0.013	& 0.022	& 0.033	\\
+\textbf{5}& 0.04	& 0.033	& 0.022	& 0.013	& 0.007	& 0.004	& 0.004	& 0.007	& 0.013	& 0.022	& 0.033	\\
+\textbf{6}& 0.102	& 0.08	& 0.048	& 0.025	& 0.012	& 0.007	& 0.007	& 0.012	& 0.025	& 0.048	& 0.08	\\
+\textbf{7}& 0.335	& 0.237	& 0.125	& 0.057	& 0.025	& 0.013	& 0.013	& 0.025	& 0.057	& 0.125	& 0.237	\\
+\textbf{8}& 1.181	& 0.705	& 0.316	& 0.125	& 0.048	& 0.022	& 0.022	& 0.048	& 0.125	& 0.316	& 0.705	\\
+\textbf{9}& 4.455	& 1.965	& 0.705	& 0.237	& 0.08	& 0.033	& 0.033	& 0.08	& 0.237	& 0.705	& 1.965	\\
+\textbf{10}& 5.775	& 4.455	& 1.181	& 0.335	& 0.102	& 0.04	& 0.04	& 0.102	& 0.335	& 1.181	& 4.455	\\
+\end{tabular}}
+\hfill{}
+\caption{Policy evaluation of state predator(2,10), prey(10,0)}
+\label{state3}
+\end{table*}
+\end{center}	
+	
+	
+\subsubsection{State predator(10,10), prey(0,0)}
+
+\begin{center}
+\begin{table*}[ht]
+{\small
+\hfill{}
+\begin{tabular}{c|c|c|c|c|c|c|c|c|c|c|c}
+\textbf{} & \textbf{0} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} & \textbf{7} & \textbf{8} & \textbf{9} & \textbf{10}\\
+	\hline
+\textbf{0}& 5.775	& 4.455	& 1.181	& 0.335	& 0.102	& 0.04	& 0.04	& 0.102	& 0.335	& 1.181	& 4.455	\\
+\textbf{1}& 4.455	& 1.965	& 0.705	& 0.237	& 0.08	& 0.033	& 0.033	& 0.08	& 0.237	& 0.705	& 1.965	\\
+\textbf{2}& 1.181	& 0.705	& 0.316	& 0.125	& 0.048	& 0.022	& 0.022	& 0.048	& 0.125	& 0.316	& 0.705	\\
+\textbf{3}& 0.335	& 0.237	& 0.125	& 0.057	& 0.025	& 0.013	& 0.013	& 0.025	& 0.057	& 0.125	& 0.237	\\
+\textbf{4}& 0.102	& 0.08	& 0.048	& 0.025	& 0.012	& 0.007	& 0.007	& 0.012	& 0.025	& 0.048	& 0.08	\\
+\textbf{5}& 0.04	& 0.033	& 0.022	& 0.013	& 0.007	& 0.004	& 0.004	& 0.007	& 0.013	& 0.022	& 0.033	\\
+\textbf{6}& 0.04	& 0.033	& 0.022	& 0.013	& 0.007	& 0.004	& 0.004	& 0.007	& 0.013	& 0.022	& 0.033	\\
+\textbf{7}& 0.102	& 0.08	& 0.048	& 0.025	& 0.012	& 0.007	& 0.007	& 0.012	& 0.025	& 0.048	& 0.08	\\
+\textbf{8}& 0.335	& 0.237	& 0.125	& 0.057	& 0.025	& 0.013	& 0.013	& 0.025	& 0.057	& 0.125	& 0.237	\\
+\textbf{9}& 1.181	& 0.705	& 0.316	& 0.125	& 0.048	& 0.022	& 0.022	& 0.048	& 0.125	& 0.316	& 0.705	\\
+\textbf{10}& 4.455	& 1.965	& 0.705	& 0.237	& 0.08	& 0.033	& 0.033	& 0.08	& 0.237	& 0.705	& 1.965	\\
+\end{tabular}}
+\hfill{}
+\caption{Policy evaluation of state predator(10,10), prey(0,0)}
+\label{state4}
+\end{table*}
+\end{center}	
+
+
+
+
+\begin{thebibliography}{7}
+
+\bibitem{hassaine} Hassaïne, A., Al-Maadeed, S. and Bouridane, A., A Set of Geometrical Features for Writer Identification. Neural Information Processing. Springer Berlin/Heidelberg, 2012.
+
+\bibitem{thomas} Thomas, A., ICDAR2013 - Gender Prediction from Handwriting
+
+\bibitem{mandeed} Al Madeed, S., QUWI: An Arabic and English Handwriting Dataset for Offline Writer Identification
+
+\bibitem{willmott} Cort J. Willmott*, Kenji Matsuura: Advantages of the mean absolute error (MAE) over the root mean square error (RMSE) in assessing average model performance
+
+\bibitem{makridakis} Makridakis, S., Hibon, M.: Evaluating Accuracy (or Error) Measures
+
+\bibitem{wallach} Wallach, D., Makowski, D., Jones, J.W.: Working with Dynamic Crop Models
+
+\bibitem{oly} http://exploringdata.net/oly\_gold.htm
+
+
+\end{thebibliography}
 \end{document}
