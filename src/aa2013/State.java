@@ -9,20 +9,18 @@ public class State {
 	private Actor actor;		// null if state cell is empty.
 	private double stateValue;	// Corresponds to value V (for the policy evaluation algorithm).
 	private double stateReward;	// Corresponds to value R (for the policy evaluation algorithm).
-	private int x, y;			// coordinates of cell.
+	private Coordinates coordinates; // coordinates of cell.
 	
 	DecimalFormat twoDForm = new DecimalFormat("#.##");
 	
-	public State(int x, int y) { 
-		this.x = x;
-		this.y = y;
+	public State(Coordinates c) { 
+		this.coordinates = c;
 		this.actor = null; 
 		this.stateValue = 0.0f; 
 	}
 	
 	public Actor getActor()	{ return this.actor; }
-	public int getX() { return this.x; }
-	public int getY() { return this.y; }
+	public Coordinates getCoordinates() { return this.coordinates; }
 	public double getStateValue() {	return this.stateValue; }
 	public double getStateReward() { return this.stateReward; }
 	
@@ -30,18 +28,23 @@ public class State {
 	public void setStateValue(double stateValue) { this.stateValue = stateValue; }
 	public void setActor(Actor actor) { this.actor = actor; }
 	public void setStateReward(double stateReward) { this.stateReward = stateReward; }
-	public void setX(int x) { this.x = x; }
-	public void setY(int y) { this.y = y; }
+	public void setCoordinates(Coordinates c) { this.coordinates = c; }
 
 	@Override
-	public String toString() { return "(" + x + ", "+ y + ") V = " + Double.valueOf(twoDForm.format(stateValue)); }
+	public String toString() { return "(" + this.getCoordinates().getX() + ", "+ this.getCoordinates().getY() + ") V = " + Double.valueOf(twoDForm.format(stateValue)); }
 	
 	public action getTransitionAction(State other){
-		int xOther = other.getX(), yOther = other.getY();		
-		if (this.x < xOther) { return action.NORTH; }
-		if (this.x > xOther) { return action.SOUTH; }
-		if (this.y < yOther) { return action.WEST; }
-		if (this.y > yOther) { return action.EAST; }
+		int xOther = other.getCoordinates().getX(), yOther = other.getCoordinates().getY();
+		int x = this.getCoordinates().getX();
+		int y = this.getCoordinates().getX();
+		if (x < xOther) { return action.NORTH; }
+		if (x > xOther) { return action.SOUTH; }
+		if (y < yOther) { return action.WEST; }
+		if (y > yOther) { return action.EAST; }
 		return action.WAIT;
+	}
+	
+	public boolean sameAs(State other) {
+		return this.getCoordinates().sameAs(other.getCoordinates());
 	}
 }

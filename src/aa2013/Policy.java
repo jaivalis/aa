@@ -14,4 +14,9 @@ public abstract class Policy {
 	public double getActionProbability(State s, action a) {
 		return this.stateActionMapping.get(s).getActionProbability(a);
 	}
+	
+	public void setTheOnlyAction(State s, action a) {
+		this.stateActionMapping.get(s).setAllActionProbabilitiesTo(0.0);
+		this.stateActionMapping.get(s).setActionProbability(a, 1.0);
+	}
 }

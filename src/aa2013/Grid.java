@@ -18,7 +18,7 @@ public class Grid {
 		this.states = new State[dim][dim];
 		for(int i = 0; i < this.states.length; i++) {
 			for(int j = 0; j < this.states[i].length; j++) {
-				this.states[i][j] = new State(i, j);
+				this.states[i][j] = new State(new Coordinates(i,j));
 			}
 		}
 	}
@@ -104,36 +104,12 @@ public class Grid {
 	/**
 	 * returns all the states that can be visited from coordinates x,y
 	 */
-	public ArrayList<State> getNeighbors(int x, int y) {
+	public ArrayList<State> getNeighbors(Coordinates c) {
 		ArrayList<State> neighbours = new ArrayList<State>();
-		int neighx, neighy;
 		
-		// SELF
-		neighbours.add(this.states[x][y]);
-		
-		// NORTH
-		neighy = y;
-		if (x-1 < 0) { neighx = dim - 1; }
-		else { neighx = x-1; }
-		neighbours.add(this.states[neighx][neighy]);
-		
-		// SOUTH		
-		neighy = y;
-		if (x+1 > dim-1) { neighx = 0; }
-		else { neighx = x+1; }
-		neighbours.add(this.states[neighx][neighy]);
-		
-		// EAST
-		neighx = x;
-		if (y+1 > dim-1) { neighy = 0; }
-		else { neighy = y+1; }
-		neighbours.add(this.states[neighx][neighy]);
-		
-		// WEST
-		neighx = x;
-		if (y-1 < 0) { neighy = dim - 1; }
-		else { neighy = y-1; }
-		neighbours.add(this.states[neighx][neighy]);
+		for(action a : Environment.action.values()) {
+			neighbours.add(this.getState(this.nearbyCoordinates(c, a)));
+		}
 		
 		return neighbours;
 	}
