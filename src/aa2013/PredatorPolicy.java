@@ -5,7 +5,7 @@ import java.util.HashMap;
 public class PredatorPolicy extends Policy {
 	
 	public PredatorPolicy(Grid g) {
-		this.stateActionMapping = new HashMap<State, Action>();
+		this.stateActionMapping = new HashMap<State, PossibleActions>();
 		
 		for (int i = 0; i < g.getDim(); i++) {
 			for (int j = 0; j < g.getDim(); j++) {

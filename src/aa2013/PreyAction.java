@@ -10,7 +10,7 @@ import aa2013.Environment.action;
  * actionProbability HashMap. But might be used in the future when prey
  * too will be an agent.
  */
-public class PreyAction extends Action {
+public class PreyAction extends PossibleActions {
 
 	public PreyAction() { 	
 		actionProbability = new HashMap<Environment.action, Double>(); 

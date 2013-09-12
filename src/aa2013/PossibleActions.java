@@ -3,7 +3,7 @@ package aa2013;
 import java.util.HashMap;
 
 import aa2013.Environment.action;
-public abstract class Action {
+public abstract class PossibleActions {
 	
 	protected HashMap<action, Double> actionProbability;
 	

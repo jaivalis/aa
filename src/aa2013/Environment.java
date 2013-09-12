@@ -99,12 +99,13 @@ public class Environment {
 					double Vkplus1 = 0.0; // the new value V.
 					double oldStateValue = currState.getStateValue();
 					
-					for (State st : this.grid.getNeighbors(i, j)) {
-						// the action that would be required to move to state st
-						action ac = currState.getTransitionAction(st);
+					for (action ac : Environment.action.values()) {
+						// ac: the action that would be required to move to state st
+						
 						// the probability of taking action  in state  under policy π (0.2 in this case)
 						double pi = predators.get(0).getPolicy().getActionProbability(currState, ac);
-						
+						ArrayList<Integer> newPos = this.grid.getCoordinates(j, j, ac);
+						State st = grid.getState(newPos.get(0), newPos.get(1));
 						Vkplus1 += pi * (st.getStateReward() + GAMMA * st.getStateValue());
 					}
 					currState.setStateValue(Vkplus1);

@@ -6,7 +6,7 @@ import java.util.Random;
 
 import aa2013.Environment.action;
 
-public class PredatorAction extends Action {
+public class PredatorAction extends PossibleActions {
 	
 	/**
 	 * Constructor initializes all predator action probabilities to 0.2.

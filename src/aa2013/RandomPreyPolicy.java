@@ -8,7 +8,7 @@ import aa2013.Environment.action;
 public class RandomPreyPolicy extends Policy {
 
 	public RandomPreyPolicy(Grid g) {
-		this.stateActionMapping = new HashMap<State, Action>();
+		this.stateActionMapping = new HashMap<State, PossibleActions>();
 		
 		for (int i = 0; i < g.getDim(); i++) {
 			for (int j = 0; j < g.getDim(); j++) {
