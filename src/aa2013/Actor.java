@@ -20,6 +20,11 @@ public abstract class Actor {
 		this.x = newCoordinates.get(0); 
 		this.y = newCoordinates.get(1);
 	}
+	
+	public void move(int xNew, int yNew) {
+		this.x = xNew; 
+		this.y = yNew;
+	}
 
 	public action getNextMoveDirection(State s) { return this.policy.getAction(s); }
 }

@@ -36,21 +36,37 @@ public class Board {
 		board[pred.getX()][pred.getY()].setActor(pred);
 	}
 	
+	/**
+	 * Update the board according to Actor move.
+	 */
+	private void moveActor(Actor a, int xNew, int yNew) {
+		this.board[a.getX()][a.getY()].setActor(null);
+
+		if (a instanceof Prey) { // move reward
+			this.board[a.getX()][a.getY()].setStateReward(0);
+			this.board[xNew][yNew].setStateReward(this.PREYREWARD);
+		}
+		a.move(xNew, yNew);
+		this.board[a.getX()][a.getY()].setActor(a);
+	}
+	
 	public void nextRound() {
 		for(Predator p : predators) { // move predator(s)
 			action nextMoveDirection = p.getNextMoveDirection(this.board[p.getX()][p.getY()]);			
 			ArrayList<Integer> newCoordinates = getCoordinates(p.getX(), p.getY(), nextMoveDirection);
 			
-			p.move(newCoordinates);
+//			p.move(newCoordinates);
+			moveActor(p, newCoordinates.get(0), newCoordinates.get(1));
 		} collisionDetection();
 		
-		// move prey. Don't allow to move on the predator.
+		// move prey.
 		ArrayList<Integer> newCoordinates = new ArrayList<Integer>();
-		do {
+		do { // find appropriate coordinates (not on predators).
 			action nextMoveDirection = prey.getNextMoveDirection(this.board[prey.getX()][prey.getY()]);		
 			newCoordinates = getCoordinates(prey.getX(), prey.getY(), nextMoveDirection);
 		} while ( !isPositionAvailable(newCoordinates) );
-		prey.move(newCoordinates);
+		
+		moveActor(prey, newCoordinates.get(0), newCoordinates.get(1));
 
 		collisionDetection();
 	}
@@ -154,6 +170,7 @@ public class Board {
 					delta = Math.max(Math.abs(Vkplus1-oldStateValue), delta);
 				}
 			}			
+			printStateValues();
 			debugRuns++;
 		} while (delta > THETA);
 		
