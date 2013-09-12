@@ -2,11 +2,11 @@ package aa2013;
 
 public class Predator extends Actor {
 	
-	public Predator(Grid g, int x, int y) {
-		this.x = x; this.y = y;
+	public Predator(Grid g, Coordinates c) {
+		this.coordinates = c;
 		this.policy = new PredatorPolicy(g);
 	}
 
 	@Override
-	public String toString() { return "Predator (" + this.x + ", " + this.y + ")"; }
+	public String toString() { return "Predator (" + this.coordinates.getX() + ", " + this.coordinates.getY() + ")"; }
 }

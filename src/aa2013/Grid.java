@@ -25,10 +25,10 @@ public class Grid {
 	
 	public State[][] getStates() { return this.states; }
 	
-	public State getState(int x, int y) { return this.states[x][y]; }
-	public State getState(Actor a) { return this.states[a.getX()][a.getY()]; }
+	public State getState(Coordinates pos) { return this.states[pos.getX()][pos.getY()]; }
+	public State getState(Actor a) { return this.getState(a.getCoordinates()); }
 	
-	public void setActor(Actor a, int x, int y) { this.states[x][y].setActor(a); }
+	public void setActor(Actor a, Coordinates c) { this.states[c.getX()][c.getY()].setActor(a); }
 	
 	public int getDim() { return this.dim; }
 	
@@ -44,52 +44,61 @@ public class Grid {
 	/**
 	 * Update the board according to Actor move.
 	 */
-	public void moveActor(Actor a, int xNew, int yNew) {
-		this.states[a.getX()][a.getY()].setActor(null);
+	public void moveActor(Actor a, Coordinates c) {
+		Coordinates oldPos = a.getCoordinates();
+		this.states[oldPos.getX()][oldPos.getY()].setActor(null);
 
 		if (a instanceof Prey) { // move reward
-			this.states[a.getX()][a.getY()].setStateReward(0);
-			this.states[xNew][yNew].setStateReward(this.PREYREWARD);
+			this.states[oldPos.getX()][oldPos.getY()].setStateReward(0);
+			this.states[c.getX()][c.getY()].setStateReward(this.PREYREWARD);
 		}
-		a.move(xNew, yNew);
-		this.states[a.getX()][a.getY()].setActor(a);
+		a.move(c);
+		this.states[oldPos.getX()][oldPos.getY()].setActor(a);
 	}
 	
 	/**
 	 * Returns the coordinates of the block to be visited next according to the action chosen.
 	 */
-	public ArrayList<Integer> getCoordinates(int x, int y, action dir) {
-		ArrayList<Integer> coordinates = new ArrayList<Integer>();		
+	public Coordinates nearbyCoordinates(Coordinates orig, action dir) {
+		Coordinates dest = null;
 		switch (dir) {
 			case WAIT:
-				coordinates.add(x);
-				coordinates.add(y);
+				dest = orig.getCopy();
 				break;
 			case NORTH:
-				if (x-1 < 0) { coordinates.add(dim - 1); }
-				else { coordinates.add(x-1); }
-				
-				coordinates.add(y);
+				dest = new Coordinates(
+					orig.getX() - 1 < 0 
+						? dim - 1 
+						: orig.getX() - 1,
+					orig.getY()
+				);
 				break;
 			case SOUTH:
-				if (x+1 > dim-1) { coordinates.add(0); }
-				else { coordinates.add(x+1); }
-				
-				coordinates.add(y);
+				dest = new Coordinates(
+					orig.getX() + 1 > dim - 1 
+						? 0 
+						: orig.getX() + 1,
+					orig.getY()
+				);
 				break;
 			case EAST:
-				coordinates.add(x);
-				
-				if (y+1 > dim-1) { coordinates.add(0); }
-				else { coordinates.add(y+1); }
+				dest = new Coordinates(
+					orig.getX(),
+					orig.getY()+1 > dim-1
+						? 0
+					    : orig.getY() + 1
+					);
 				break;
 			case WEST:
-				coordinates.add(x);
-				
-				if (y-1 < 0) { coordinates.add(dim - 1); }
-				else { coordinates.add(y-1); }
+				dest = new Coordinates(
+					orig.getX(),
+					orig.getY() - 1 < 0
+						? dim - 1
+						: orig.getY() - 1
+				);
 				break;
-		} return coordinates;
+		}
+		return dest;
 	}
 	
 	/**

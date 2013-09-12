@@ -17,14 +17,14 @@ public class Environment {
 	public Environment(int dim) {
 		this.grid = new Grid(dim);
 		
-		Predator pred = new Predator(this.grid, 0, 0);
-		this.prey = new Prey(this.grid, 5, 5);
+		Predator pred = new Predator(this.grid, new Coordinates(0,0));
+		this.prey = new Prey(this.grid, new Coordinates(5,5));
 		
 		this.predators = new ArrayList<Predator>();
 		this.predators.add(pred);
 
-		this.grid.setActor(prey, prey.getX(), prey.getY());
-		this.grid.setActor(pred, pred.getX(), pred.getY());
+		this.grid.setActor(prey, prey.getCoordinates());
+		this.grid.setActor(pred, pred.getCoordinates());
 	}
 	
 
@@ -32,29 +32,29 @@ public class Environment {
 	
 	public void collisionDetection() {		
 		for(Predator p : predators) {
-			if (p.getX() == prey.getX() && p.getY() == prey.getY()) { prey.setAlive(false); }
+			if (p.getCoordinates().sameAs(prey.getCoordinates())) { prey.setAlive(false); }
 		}
 	}
 	
 	public void nextRound() {
 		for(Predator p : predators) { // move predator(s)
-			State pState = this.grid.getState(p.getX(), p.getY());
+			State pState = this.grid.getState(p.getCoordinates());
 			action nextMoveDirection = p.getNextMoveDirection(pState);			
-			ArrayList<Integer> newCoordinates = this.grid.getCoordinates(p.getX(), p.getY(), nextMoveDirection);
+			Coordinates newCoordinates = this.grid.nearbyCoordinates(p.getCoordinates(), nextMoveDirection);
 			
 //			p.move(newCoordinates);
-			this.grid.moveActor(p, newCoordinates.get(0), newCoordinates.get(1));
+			this.grid.moveActor(p, newCoordinates);
 		} collisionDetection();
 		
 		// move prey.
-		ArrayList<Integer> newCoordinates = new ArrayList<Integer>();
+		Coordinates newCoordinates = null;
 		do { // find appropriate coordinates (not on predators).
-			State preyState = this.grid.getState(prey.getX(), prey.getY());
+			State preyState = this.grid.getState(prey.getCoordinates());
 			action nextMoveDirection = prey.getNextMoveDirection(preyState);		
-			newCoordinates = this.grid.getCoordinates(prey.getX(), prey.getY(), nextMoveDirection);
+			newCoordinates = this.grid.nearbyCoordinates(prey.getCoordinates(), nextMoveDirection);
 		} while ( !isPositionAvailable(newCoordinates) );
 		
-		this.grid.moveActor(prey, newCoordinates.get(0), newCoordinates.get(1));
+		this.grid.moveActor(prey, newCoordinates);
 
 		collisionDetection();
 	}
@@ -62,10 +62,9 @@ public class Environment {
 	/**
 	 * used before the prey moves so that it does not move on predators.
 	 */
-	private boolean isPositionAvailable(ArrayList<Integer> coords) {
-		int x = coords.get(0), y = coords.get(1);
+	private boolean isPositionAvailable(Coordinates c) {
 		for (Predator p : predators) {
-			if (p.getX() == x && p.getY() == y) { return false; }
+			if (p.getCoordinates().sameAs(c)) { return false; }
 		} return true;
 	}
 	
@@ -95,7 +94,8 @@ public class Environment {
 			
 			for(int i = 0; i < this.grid.getDim(); i++) {
 				for(int j = 0; j < this.grid.getDim(); j++) {
-					State currState = grid.getState(i, j);
+					Coordinates pos = new Coordinates(i,j);
+					State currState = grid.getState(pos);
 					double Vkplus1 = 0.0; // the new value V.
 					double oldStateValue = currState.getStateValue();
 					
@@ -104,8 +104,8 @@ public class Environment {
 						
 						// the probability of taking action  in state  under policy π (0.2 in this case)
 						double pi = predators.get(0).getPolicy().getActionProbability(currState, ac);
-						ArrayList<Integer> newPos = this.grid.getCoordinates(j, j, ac);
-						State st = grid.getState(newPos.get(0), newPos.get(1));
+						Coordinates nearby = this.grid.nearbyCoordinates(pos, ac);
+						State st = grid.getState(nearby);
 						Vkplus1 += pi * (st.getStateReward() + GAMMA * st.getStateValue());
 					}
 					currState.setStateValue(Vkplus1);

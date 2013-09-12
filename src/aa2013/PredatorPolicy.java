@@ -9,7 +9,8 @@ public class PredatorPolicy extends Policy {
 		
 		for (int i = 0; i < g.getDim(); i++) {
 			for (int j = 0; j < g.getDim(); j++) {
-				this.stateActionMapping.put(g.getState(i, j), new PredatorAction());
+				Coordinates pos = new Coordinates(i,j);
+				this.stateActionMapping.put(g.getState(pos), new PredatorAction());
 			}
 		}
 	}

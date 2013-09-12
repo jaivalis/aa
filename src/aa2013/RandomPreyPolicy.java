@@ -12,7 +12,8 @@ public class RandomPreyPolicy extends Policy {
 		
 		for (int i = 0; i < g.getDim(); i++) {
 			for (int j = 0; j < g.getDim(); j++) {
-				this.stateActionMapping.put(g.getState(i, j), new PreyAction());
+				Coordinates pos = new Coordinates(i,j);
+				this.stateActionMapping.put(g.getState(pos), new PreyAction());
 			}
 		}
 	}
