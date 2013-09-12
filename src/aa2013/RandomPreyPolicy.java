@@ -1,11 +1,22 @@
 package aa2013;
 
+import java.util.HashMap;
 import java.util.Random;
 
-import aa2013.Board.action;
+import aa2013.Environment.action;
 
-public class RandomPreyPolicy implements Policy {
+public class RandomPreyPolicy extends Policy {
 
+	public RandomPreyPolicy(Grid g) {
+		this.stateActionMapping = new HashMap<State, Action>();
+		
+		for (int i = 0; i < g.getDim(); i++) {
+			for (int j = 0; j < g.getDim(); j++) {
+				this.stateActionMapping.put(g.getState(i, j), new PreyAction());
+			}
+		}
+	}
+	
 	@Override
 	public action getAction(State s) {
 		Random r = new Random();
@@ -19,15 +30,8 @@ public class RandomPreyPolicy implements Policy {
 	}
 
 	@Override
-	public double getActionProbability(action a) {
-		switch (a) {
-			case NORTH:	return 0.05;
-			case SOUTH:	return 0.05;
-			case EAST:	return 0.05;
-			case WEST:	return 0.05;
-			case WAIT:	return 0.8;
-			default:	return 0.0;
-		}
+	public double getActionProbability(State s, action a) {
+		return this.stateActionMapping.get(s).getActionProbability(a);
 	}
 
 }

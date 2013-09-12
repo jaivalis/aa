@@ -2,7 +2,7 @@ package aa2013;
 
 import java.util.ArrayList;
 
-import aa2013.Board.action;
+import aa2013.Environment.action;
 
 public abstract class Actor {
 	protected int x,y;

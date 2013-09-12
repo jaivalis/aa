@@ -2,7 +2,7 @@ package aa2013;
 
 import java.text.DecimalFormat;
 
-import aa2013.Board.action;
+import aa2013.Environment.action;
 
 public class State {
 

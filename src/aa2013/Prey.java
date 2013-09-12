@@ -4,11 +4,10 @@ package aa2013;
 public class Prey extends Actor {
 	private boolean alive;
 
-	public Prey(int x, int y) {
-		this.x = x;
-		this.y = y;
+	public Prey(Grid g, int x, int y) {
+		this.x = x;	this.y = y;
 		this.alive = true;
-		this.policy = new RandomPreyPolicy();
+		this.policy = new RandomPreyPolicy(g);
 	}
 
 	@Override

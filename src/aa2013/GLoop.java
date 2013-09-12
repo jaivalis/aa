@@ -7,23 +7,23 @@ public class GLoop {
 	
 	public static void main(String[] args) {
 		int runs = 1, time = 0;
-		Board b = new Board(DIM);
+		Environment env = new Environment(DIM);
 		
-//		b.policyEvaluation();
+		env.policyEvaluation();
 		
-		while (runs > 0) {
-			b.nextRound();
-			b.printCoordinates();
-			
-			time++;
-			if (b.isEpisodeOver()) {
-				b = new Board(DIM);
-				runs--;
-//				time = 0;
-			}
-		}
+//		while (runs > 0) {
+//			env.nextRound();
+//			env.printCoordinates();
+//			
+//			time++;
+//			if (env.isEpisodeOver()) {
+//				env = new Environment(DIM);
+//				runs--;
+////				time = 0;
+//			}
+//		}
 		
-//		System.out.println("total time = " + time);
+		System.out.println("total time = " + time);
 //		System.out.println("average time = " + time / 100);
 	}
 
