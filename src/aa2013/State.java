@@ -30,9 +30,6 @@ public class State {
 	public void setStateReward(double stateReward) { this.stateReward = stateReward; }
 	public void setCoordinates(Coordinates c) { this.coordinates = c; }
 
-	@Override
-	public String toString() { return "(" + this.getCoordinates().getX() + ", "+ this.getCoordinates().getY() + ") V = " + Double.valueOf(twoDForm.format(stateValue)); }
-	
 	public action getTransitionAction(State other){
 		int xOther = other.getCoordinates().getX(), yOther = other.getCoordinates().getY();
 		int x = this.getCoordinates().getX();
@@ -44,7 +41,15 @@ public class State {
 		return action.WAIT;
 	}
 	
-	public boolean sameAs(State other) {
-		return this.getCoordinates().equals(other.getCoordinates());
+	@Override
+	public String toString() { return "(" + this.getCoordinates().getX() + ", "+ this.getCoordinates().getY() + ") V = " + Double.valueOf(twoDForm.format(stateValue)); }
+		
+	@Override
+	public boolean equals(Object other) {
+		if (other == null) return false;
+	    if (other == this) return true;
+	    if (!(other instanceof State)) { return false; }
+	    State otherState = (State) other;
+		return this.getCoordinates().equals(otherState.getCoordinates());
 	}
 }
