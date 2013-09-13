@@ -45,6 +45,6 @@ public class State {
 	}
 	
 	public boolean sameAs(State other) {
-		return this.getCoordinates().sameAs(other.getCoordinates());
+		return this.getCoordinates().equals(other.getCoordinates());
 	}
 }

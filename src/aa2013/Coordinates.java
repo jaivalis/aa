@@ -16,21 +16,21 @@ public class Coordinates {
 		this.y = y;
 	}
 
-	public int getX() {
-		return x;
-	}
-	
-	public int getY() {
-		return y;
-	}
+	public int getX() { return x; }	
+	public int getY() { return y; }
 	
 	public Coordinates getCopy() {
 		return new Coordinates(this.x, this.y);
 	}
 	
-	public boolean sameAs(Coordinates c) {
-		return this.getX() == c.getX() 
-				&& this.getY() == c.getY();
+	@Override
+	public boolean equals(Object other) {
+		if (other == null) return false;
+	    if (other == this) return true;
+	    if (!(other instanceof Coordinates)) { return false; }
+	    Coordinates otherCoordinates = (Coordinates) other;
+		return this.getX() == otherCoordinates.getX() 
+				&& this.getY() == otherCoordinates.getY();
 	}
 	
 }

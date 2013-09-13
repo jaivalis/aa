@@ -33,7 +33,7 @@ public class Environment {
 	
 	public void collisionDetection() {		
 		for(Predator p : predators) {
-			if (p.getCoordinates().sameAs(prey.getCoordinates())) { prey.setAlive(false); }
+			if (p.getCoordinates().equals(prey.getCoordinates())) { prey.setAlive(false); }
 		}
 	}
 	
@@ -65,7 +65,7 @@ public class Environment {
 	 */
 	private boolean isPositionAvailable(Coordinates c) {
 		for (Predator p : predators) {
-			if (p.getCoordinates().sameAs(c)) { return false; }
+			if (p.getCoordinates().equals(c)) { return false; }
 		} return true;
 	}
 	
@@ -188,13 +188,13 @@ public class Environment {
 						// ac: the action that would be required to move to state st
 						sum += p * (s.getStateReward() + GAMMA * s_prime.getStateValue());
 					}
-					if(sum > max){
+					if(sum > max) {
 						argmax_a = a;
 						max = sum;
 					}
 				}
 				predators.get(0).getPolicy().setTheOnlyAction(s, argmax_a);
-				if(argmax_a != b){
+				if(argmax_a != b) {
 					policyStable = false;
 				}
 			}

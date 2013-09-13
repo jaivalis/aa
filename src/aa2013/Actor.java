@@ -1,7 +1,5 @@
 package aa2013;
 
-import java.util.ArrayList;
-
 import aa2013.Environment.action;
 
 public abstract class Actor {
