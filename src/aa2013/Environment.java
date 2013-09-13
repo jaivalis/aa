@@ -130,7 +130,6 @@ public class Environment {
 	 */	
 	public void policyEvaluationForImprovement() {
 		double delta = 0.0; // defines the maximum difference observed in the stateValue of all states
-		int debugRuns = 0;
 				
 		do {
 			delta = 0.0;
@@ -144,29 +143,23 @@ public class Environment {
 					ArrayList<State> neighbours = grid.getNeighbors(pos);
 					Iterator<State> it = neighbours.iterator();
 					double v_s = 0.0;
-					while(!it.hasNext()) {
+					while(it.hasNext()) {
 						State s_prime = it.next();
 						Coordinates pi_s_nextpos = grid.nearbyCoordinates(s.getCoordinates(), pi_s);
 						
 						// P^(pi(s))_ss' has only two possible values: 1 if the action will lead to s', 0 otherwise
 						double p = s_prime.sameAs(grid.getState(pi_s_nextpos)) ? 1.0 : 0.0;
 						// ac: the action that would be required to move to state st
-						v_s += p * (s.getStateReward() + GAMMA * s.getStateValue());
+						v_s += p * (s.getStateReward() + GAMMA * s_prime.getStateValue());
 					}
+					
 					s.setStateValue(v_s);
 					
 					// after new state value is set update the value of delta.
 					delta = Math.max(Math.abs(v_s - v), delta);
 				}
-			}			
-			this.grid.printStateValues();
-			debugRuns++;
+			}
 		} while (delta > THETA);
-		
-		// output stateValues.
-		this.grid.printStateValues();
-		
-		System.out.println("Runs: " + debugRuns);
 	}
 
 	public boolean policyImprovement()
@@ -186,14 +179,14 @@ public class Environment {
 					ArrayList<State> neighbours = grid.getNeighbors(pos);
 					Iterator<State> it = neighbours.iterator();
 					double sum = 0.0;
-					while(!it.hasNext()) {
+					while(it.hasNext()) {
 						State s_prime = it.next();
 						Coordinates pi_s_nextpos = grid.nearbyCoordinates(s.getCoordinates(), pi_s);
 						
 						// P^(pi(s))_ss' has only two possible values: 1 if the action will lead to s', 0 otherwise
 						double p = s_prime.sameAs(grid.getState(pi_s_nextpos)) ? 1.0 : 0.0;
 						// ac: the action that would be required to move to state st
-						sum += p * (s.getStateReward() + GAMMA * s.getStateValue());
+						sum += p * (s.getStateReward() + GAMMA * s_prime.getStateValue());
 					}
 					if(sum > max){
 						argmax_a = a;
@@ -209,14 +202,19 @@ public class Environment {
 		return policyStable;
 	}
 	
-	public void policyImprovementMain() {
+	public void policyIteration() {
 		this.grid.initializeStateValues(0.0); // initialize R(s) = V(s) = 0, for all states.
 		
 		// initialize Reward for prey cell.
 		this.grid.getState(prey).setStateReward(grid.PREYREWARD);
-		
+		int debugRuns = 0;
+
 		do {
 			this.policyEvaluationForImprovement();
+			debugRuns++;
+			this.grid.printActions(predators.get(0).getPolicy());
+			System.out.println("Runs: " + debugRuns);
+
 		} while(! this.policyImprovement());
 	}
 }

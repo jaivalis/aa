@@ -128,4 +128,20 @@ public class Grid {
 		}
 		System.out.println(twoDForm.format(this.states[5][5].getStateValue()) + "\t");
 	}	
+
+	/**
+	 * used for debugging actions
+	 */
+	public void printActions(Policy policy) {
+		DecimalFormat twoDForm = new DecimalFormat("#.###");
+		for(int i = 0; i < this.states.length; i++){
+			for(int j = 0; j < this.states[i].length; j++){				
+				System.out.print(twoDForm.format(policy.getAction(this.states[i][j])) + "\t");
+				// System.out.print(this.board[i][j].getStateValue() + "\t");
+			}
+			System.out.println();
+		}
+		System.out.println(twoDForm.format(this.states[5][5].getStateValue()) + "\t");
+	}	
+
 }

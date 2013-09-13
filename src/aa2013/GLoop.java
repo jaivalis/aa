@@ -9,7 +9,8 @@ public class GLoop {
 		int runs = 1, time = 0;
 		Environment env = new Environment(DIM);
 		
-		env.policyEvaluation();
+		//env.policyEvaluation();
+		env.policyIteration();
 		
 //		while (runs > 0) {
 //			env.nextRound();
