@@ -6,7 +6,6 @@ public class Environment {
 	private Grid grid;
 	private Prey prey;
 	private ArrayList<Predator> predators;
-
 	
 	private final double THETA = 0.00001; // threshold for the loop end condition
 	private final double GAMMA = 0.8;
@@ -167,7 +166,6 @@ public class Environment {
 				Coordinates currPos = new Coordinates(i,j);
 				State currState = grid.getState(currPos);
 				action b = predators.get(0).getPolicy().getAction(currState);
-				action pi_s = null;
 				
 				double max = 0.0;
 				action argmax_a = null;
@@ -178,12 +176,9 @@ public class Environment {
 						double p;
 						if( this.grid.getTransitionAction(currState, s_prime) == a ) {
 							p = 1.0;
-						} else {
-							p = 0.0;
-						}
+						} else { p = 0.0; }
 						// P^(pi(s))_ss' has only two possible values: 1 if the action will lead to s', 0 otherwise
 						// ac: the action that would be required to move to state st
-//						System.out.println("neighbor:"+neighbor+" getStateReward:"+currState.getStateReward()+" s_prime.getStateValue():"+s_prime.getStateValue());
 						double r = grid.getActionReward(currState, a);
 						sum += p * (r + GAMMA * s_prime.getStateValue());
 					}
@@ -191,12 +186,8 @@ public class Environment {
 						argmax_a = a;
 						max = sum;
 					}
-//					System.out.println("action:"+a+" sum:"+sum );
 				}
-				
-				//System.out.println(i+" "+j+" "+argmax_a);
 				predators.get(0).getPolicy().setUniqueAction(currState, argmax_a);
-				//System.exit(0);
 				
 				if(argmax_a != b) {
 					policyStable = false;
@@ -214,15 +205,9 @@ public class Environment {
 					Coordinates currPos = new Coordinates(i,j);
 					State currState = grid.getState(currPos);
 					action b = predators.get(0).getPolicy().getAction(currState);
-					
 					action argmax_a = this.argmax(currState);
 	
-//					System.out.println("argmax_a");
-//					System.out.println(argmax_a);
-					predators.get(0).getPolicy().setUniqueAction(currState, argmax_a);
-//					System.out.println("getAction");
-//					System.out.println(predators.get(0).getPolicy().getAction(currState));
-					
+					predators.get(0).getPolicy().setUniqueAction(currState, argmax_a);				
 					
 					if(argmax_a != b) {
 						policyStable = false;
@@ -279,7 +264,6 @@ public class Environment {
 	public void policyIteration() {
 		this.grid.initializeStateValues(0.0); // initialize R(s) = V(s) = 0, for all states.
 		
-
 		// initialize Reward for prey cell.
 		this.grid.getState(prey).setStateReward(grid.PREYREWARD);
 		int debugRuns = 0;

@@ -28,7 +28,12 @@ public class Grid {
 	public State getState(Coordinates pos) { return this.states[pos.getX()][pos.getY()]; }
 	public State getState(Actor a) { return this.getState(a.getCoordinates()); }
 	
-	public void setActor(Actor a, Coordinates c) { this.states[c.getX()][c.getY()].setActor(a); }
+	public void setActor(Actor a, Coordinates c) {
+		if (a instanceof Prey) {
+			this.states[c.getX()][c.getY()].setStateReward(PREYREWARD);
+		}
+		this.states[c.getX()][c.getY()].setActor(a);
+	}
 	
 	public int getDim() { return this.dim; }
 	
