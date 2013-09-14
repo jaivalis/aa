@@ -184,7 +184,8 @@ public class Environment {
 						// P^(pi(s))_ss' has only two possible values: 1 if the action will lead to s', 0 otherwise
 						// ac: the action that would be required to move to state st
 //						System.out.println("neighbor:"+neighbor+" getStateReward:"+currState.getStateReward()+" s_prime.getStateValue():"+s_prime.getStateValue());
-						sum += p * (currState.getStateReward() + GAMMA * s_prime.getStateValue());
+						double r = grid.getActionReward(currState, a);
+						sum += p * (r + GAMMA * s_prime.getStateValue());
 					}
 					if(sum > max) {
 						argmax_a = a;
@@ -247,12 +248,9 @@ public class Environment {
 		int debugRuns = 0;
 		
 
-		this.policyEvaluation(true);
-		this.policyImprovementFrancesco();
-		this.grid.printActions(predators.get(0).getPolicy());
 		do {
-			this.policyEvaluation(false);
-//			System.exit(0);
+			this.policyEvaluation(true);
+			
 			debugRuns++;
 			this.grid.printActions(predators.get(0).getPolicy());
 			System.out.println("Runs: " + debugRuns);

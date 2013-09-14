@@ -36,7 +36,6 @@ public class Grid {
 		for(int i = 0; i < this.states.length; i++) {
 			for(int j = 0; j < this.states[i].length; j++) {
 				this.states[i][j].setStateValue(d);
-				this.states[i][j].setStateReward(d);
 			}
 		}
 	} 
@@ -55,7 +54,18 @@ public class Grid {
 		a.move(c);
 		this.states[oldPos.getX()][oldPos.getY()].setActor(a);
 	}
-	
+
+	public double getActionReward(State orig, action dir){
+		State nearby = this.nearbyState(orig, dir);
+		return nearby.getStateReward();
+	}
+
+	public State nearbyState(State orig, action dir) {
+		Coordinates nearbyPos = this.nearbyCoordinates(orig.getCoordinates(),dir);
+		State ret = this.getState(nearbyPos);
+		return ret;
+	}
+
 	/**
 	 * Returns the coordinates of the block to be visited next according to the action chosen.
 	 */
