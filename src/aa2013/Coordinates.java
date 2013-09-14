@@ -23,6 +23,10 @@ public class Coordinates {
 		return new Coordinates(this.x, this.y);
 	}
 	
+	public String toString() { 
+		return "(" + this.x + ", " + this.y + ")";
+	}
+	
 	@Override
 	public boolean equals(Object other) {
 		if (other == null) return false;

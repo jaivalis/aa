@@ -1,7 +1,6 @@
 package aa2013;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class Environment {	
 	private Grid grid;
@@ -42,8 +41,7 @@ public class Environment {
 			State pState = this.grid.getState(p.getCoordinates());
 			action nextMoveDirection = p.getNextMoveDirection(pState);			
 			Coordinates newCoordinates = this.grid.nearbyCoordinates(p.getCoordinates(), nextMoveDirection);
-			
-//			p.move(newCoordinates);
+
 			this.grid.moveActor(p, newCoordinates);
 		} collisionDetection();
 		
@@ -56,7 +54,6 @@ public class Environment {
 		} while ( !isPositionAvailable(newCoordinates) );
 		
 		this.grid.moveActor(prey, newCoordinates);
-
 		collisionDetection();
 	}
 	
@@ -114,8 +111,7 @@ public class Environment {
 					// after new state value is set update the value of delta.
 					delta = Math.max(Math.abs(Vkplus1-oldStateValue), delta);
 				}
-			}			
-			this.grid.printStateValues();
+			}
 			debugRuns++;
 		} while (delta > THETA);
 		
@@ -137,81 +133,122 @@ public class Environment {
 			for(int i = 0; i < this.grid.getDim(); i++) {
 				for(int j = 0; j < this.grid.getDim(); j++) {
 					Coordinates pos = new Coordinates(i,j);
-					State s = grid.getState(pos);
-					action pi_s = predators.get(0).getPolicy().getAction(s);
-					double v = s.getStateValue();
-//					ArrayList<State> neighbours = grid.getNeighbors(pos);
-//					Iterator<State> it = neighbours.iterator();
-					double v_s = 0.0;
+					State currState = grid.getState(pos);
+					action pi_s = predators.get(0).getPolicy().getAction(currState);
+					double oldStateValue = currState.getStateValue();
+					double Vkplus1 = 0.0;
 					for (State neighbor : grid.getNeighbors(pos)) {
 						State s_prime = neighbor;
-						Coordinates pi_s_nextpos = grid.nearbyCoordinates(s.getCoordinates(), pi_s);
-						
-						// P^(pi(s))_ss' has only two possible values: 1 if the action will lead to s', 0 otherwise
-						double p = s_prime.equals(grid.getState(pi_s_nextpos)) ? 1.0 : 0.0;
-						// ac: the action that would be required to move to state st
-						v_s += p * (s.getStateReward() + GAMMA * s_prime.getStateValue());
-					}
-					
-					s.setStateValue(v_s);
-					
-					// after new state value is set update the value of delta.
-					delta = Math.max(Math.abs(v_s - v), delta);
-				}
-			}
-		} while (delta > THETA);
-	}
-
-	public boolean policyImprovement() {
-		boolean policyStable = true;
-
-		for(int i = 0; i < this.grid.getDim(); i++) {
-			for(int j = 0; j < this.grid.getDim(); j++) {
-				Coordinates currPos = new Coordinates(i,j);
-				State currState = grid.getState(currPos);
-				action b = predators.get(0).getPolicy().getAction(currState);
-				action pi_s = null;
-				
-				double max = 0.0;
-				action argmax_a = null;
-				for(action a : Environment.action.values()) {
-//					ArrayList<State> neighbours = grid.getNeighbors(pos);
-//					Iterator<State> it = neighbours.iterator();
-					double sum = 0.0;
-					for (State neighbour : grid.getNeighbors(currPos)) {
-						State s_prime = neighbour;
-						//action pi_s
-						pi_s = predators.get(0).getPolicy().getAction(currState);
 						Coordinates pi_s_nextpos = grid.nearbyCoordinates(currState.getCoordinates(), pi_s);
 						
 						// P^(pi(s))_ss' has only two possible values: 1 if the action will lead to s', 0 otherwise
 						double p = s_prime.equals(grid.getState(pi_s_nextpos)) ? 1.0 : 0.0;
 						// ac: the action that would be required to move to state st
-						sum += p * (currState.getStateReward() + GAMMA * s_prime.getStateValue());
-					}
-					if(sum > max) {
-						argmax_a = a;
-						max = sum;
-					}
-				}
-				predators.get(0).getPolicy().setUniqueAction(currState, argmax_a);
-				if(argmax_a != b) {
-					policyStable = false;
+						Vkplus1 += p * (currState.getStateReward() + GAMMA * s_prime.getStateValue());
+					}					
+					currState.setStateValue(Vkplus1);
+					
+					// after new state value is set update the value of delta.
+					delta = Math.max(Math.abs(Vkplus1 - oldStateValue), delta);
 				}
 			}
-		}
+		} while (delta > THETA);
+
+		this.grid.printStateValues();
+	}
+
+//	public boolean policyImprovement() {
+//		boolean policyStable = true;
+//
+//		for(int i = 0; i < this.grid.getDim(); i++) {
+//			for(int j = 0; j < this.grid.getDim(); j++) {
+//				Coordinates currPos = new Coordinates(i,j);
+//				State currState = grid.getState(currPos);
+//				action b = predators.get(0).getPolicy().getAction(currState);
+//				action pi_s = null;
+//				
+//				double max = 0.0;
+//				action argmax_a = null;
+//				for(action a : Environment.action.values()) {
+//					double sum = 0.0;
+//					for (State neighbor : grid.getNeighbors(currPos)) {
+//						State s_prime = neighbor;
+//						pi_s = predators.get(0).getPolicy().getAction(currState);
+//						Coordinates pi_s_nextpos = grid.nearbyCoordinates(currState.getCoordinates(), pi_s);
+//						
+//						// P^(pi(s))_ss' has only two possible values: 1 if the action will lead to s', 0 otherwise
+//						double p = s_prime.equals(grid.getState(pi_s_nextpos)) ? 1.0 : 0.0;
+//						// ac: the action that would be required to move to state st
+//						sum += p * (currState.getStateReward() + GAMMA * s_prime.getStateValue());
+//					}
+//					if(sum > max) {
+//						argmax_a = a;
+//						max = sum;
+//					}
+//				}
+//				predators.get(0).getPolicy().setUniqueAction(currState, argmax_a);
+//				if(argmax_a != b) {
+//					policyStable = false;
+//				}
+//			}
+//		} return policyStable;
+//	}
+	
+	public boolean policyImprovement() {
+		boolean policyStable = true;
+		int sweeps = 0;
+		do {
+			for (int i = 0; i < this.grid.getDim(); i++) {
+				for (int j = 0; j < this.grid.getDim(); j++) {				
+					Coordinates currPos = new Coordinates(i,j);
+					State currState = grid.getState(currPos);
+					action b = predators.get(0).getPolicy().getAction(currState);
+					
+					action argmax_a = this.argmax(predators.get(0), currState);
+	
+					predators.get(0).getPolicy().setUniqueAction(currState, argmax_a);
+					if(argmax_a != b) {
+						policyStable = false;
+					}
+					sweeps++;
+				}
+			}
+		} while(policyStable);
+		System.out.println("sweeps "+sweeps / 121);
 		return policyStable;
+	}
+	
+	public action argmax(Actor a, State s) {
+		double max = 0.0, sum = 0.0;
+		action argmax = null;
+		Coordinates nextpos = null;
+		
+		for (State neighbor : grid.getNeighbors(s.getCoordinates())) {
+			for (action ac : Environment.action.values()) {
+				nextpos = grid.nearbyCoordinates(s.getCoordinates(), ac);
+				double p = neighbor.equals(grid.getState(nextpos)) ? 1.0 : 0.0;
+				sum += grid.getState(nextpos).getStateValue();
+				if (sum > max) {
+					argmax = ac;
+					max = sum;
+				}
+			}
+		} return argmax;
 	}
 	
 	public void policyIteration() {
 		this.grid.initializeStateValues(0.0); // initialize R(s) = V(s) = 0, for all states.
 		
+
 		// initialize Reward for prey cell.
 		this.grid.getState(prey).setStateReward(grid.PREYREWARD);
 		int debugRuns = 0;
+		
 
+		this.policyEvaluation();
+		this.grid.printActions(predators.get(0).getPolicy());
 		do {
-			this.policyEvaluationForImprovement();
+			this.policyEvaluation();
 			debugRuns++;
 			this.grid.printActions(predators.get(0).getPolicy());
 			System.out.println("Runs: " + debugRuns);

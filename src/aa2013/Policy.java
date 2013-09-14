@@ -13,18 +13,12 @@ public abstract class Policy {
 	
 	public String getActionString(State s) {
 		switch (this.stateActionMapping.get(s).getAction()) {
-		case NORTH:
-			return "^";
-		case SOUTH:
-			return "V";
-		case EAST:
-			return ">";
-		case WEST:
-			return "<";
-		case WAIT:
-			return "-";
-		default:
-			return "?";			
+			case NORTH: return "^";
+			case SOUTH:	return "V";
+			case EAST:	return ">";
+			case WEST:	return "<";
+			case WAIT:	return "-";
+			default:	return "?";			
 		}
 	}
 	
@@ -33,6 +27,7 @@ public abstract class Policy {
 	}
 	
 	public void setUniqueAction(State s, action a) {
+		if (a == null) { return; } // bug fix (?) 1
 		this.stateActionMapping.get(s).setAllActionProbabilitiesTo(0.0);
 		this.stateActionMapping.get(s).setActionProbability(a, 1.0);
 	}

@@ -2,8 +2,6 @@ package aa2013;
 
 import java.text.DecimalFormat;
 
-import aa2013.Environment.action;
-
 public class State {
 
 	private Actor actor;		// null if state cell is empty.
@@ -11,7 +9,7 @@ public class State {
 	private double stateReward;	// Corresponds to value R (for the policy evaluation algorithm).
 	private Coordinates coordinates; // coordinates of cell.
 	
-	DecimalFormat twoDForm = new DecimalFormat("#.##");
+	DecimalFormat twoDForm = new DecimalFormat("#.###");
 	
 	public State(Coordinates c) { 
 		this.coordinates = c;
@@ -30,17 +28,6 @@ public class State {
 	public void setStateReward(double stateReward) { this.stateReward = stateReward; }
 	public void setCoordinates(Coordinates c) { this.coordinates = c; }
 
-	public action getTransitionAction(State other){
-		int xOther = other.getCoordinates().getX(), yOther = other.getCoordinates().getY();
-		int x = this.getCoordinates().getX();
-		int y = this.getCoordinates().getX();
-		if (x < xOther) { return action.NORTH; }
-		if (x > xOther) { return action.SOUTH; }
-		if (y < yOther) { return action.WEST; }
-		if (y > yOther) { return action.EAST; }
-		return action.WAIT;
-	}
-	
 	@Override
 	public String toString() { return "(" + this.getCoordinates().getX() + ", "+ this.getCoordinates().getY() + ") V = " + Double.valueOf(twoDForm.format(stateValue)); }
 		

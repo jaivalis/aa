@@ -102,6 +102,21 @@ public class Grid {
 	}
 	
 	/**
+	 * Returns the action required to move from this state to state other.
+	 * (requires this to be neighboring to other)
+	 */
+	public action getTransitionAction(State s1, State s2) {		
+		int x = s1.getCoordinates().getX(), y = s1.getCoordinates().getY();
+		int xOther = s2.getCoordinates().getX(), yOther = s2.getCoordinates().getY();
+		if (x == xOther	&& y == yOther) { return action.WAIT; }
+		if (x == xOther - 1 || (xOther == 0 && x == 10)) { return action.SOUTH; }
+		if (x == xOther + 1 || (xOther == dim-1 && x == 0)) { return action.NORTH; }
+		if (y == yOther - 1 || (yOther == 0 && y == 10)) { return action.EAST; }
+		if (y == yOther + 1 || (yOther == dim-1 && y == 0)) { return action.WEST; }
+		return null;
+	}
+	
+	/**
 	 * returns all the states that can be visited from coordinates x,y
 	 */
 	public ArrayList<State> getNeighbors(Coordinates c) {

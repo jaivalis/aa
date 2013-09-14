@@ -46,7 +46,7 @@ public class PredatorAction extends PossibleActions {
 	 */
 	private action getRandomAction() {
 		Random r = new Random();
-		int randint = r.nextInt(5);
+		int randint = r.nextInt(actionProbability.size());
 		ArrayList<action> keys = new ArrayList<action>(actionProbability.keySet());
 		return keys.get(randint);
 	}
