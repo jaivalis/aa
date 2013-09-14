@@ -238,7 +238,52 @@ public class Environment {
 	public action argmax(State s) {
 		return action.WAIT;//FIXME
 	}
-	
+
+	public void valueIteration() {
+		System.out.println("begin valueIteration");
+		this.grid.initializeStateValues(0.0);
+		
+		double delta = 0.0;
+		
+		do {
+			for(int i = 0; i < this.grid.getDim(); i++) {
+				for(int j = 0; j < this.grid.getDim(); j++) {
+
+					Coordinates currPos = new Coordinates(i,j);
+					State currState = grid.getState(currPos);
+
+					double v;
+					v = currState.getStateValue();
+					
+					double max = 0.0;
+					action argmax_a = null;
+					for(action a : Environment.action.values()) { // max
+						double sum = 0.0;
+						for (State neighbor : grid.getNeighbors(currPos)) { // sum
+							State s_prime = neighbor;
+							double p;
+							if( this.grid.getTransitionAction(currState, s_prime) == a ) {
+								p = 1.0;
+							} else {
+								p = 0.0;
+							}
+							double r = grid.getActionReward(currState, a);
+							sum += p * (r + GAMMA * s_prime.getStateValue());
+						}
+						if(sum > max) {
+							max = sum;
+						}
+					}
+					currState.setStateValue(max);
+
+					delta = Math.max(delta, Math.abs(currState.getStateValue() - v));
+				}
+			}
+		} while(delta > this.THETA);
+		System.out.println("end valueIteration");
+		this.grid.printStateValues();
+	}
+
 	public void policyIteration() {
 		this.grid.initializeStateValues(0.0); // initialize R(s) = V(s) = 0, for all states.
 		

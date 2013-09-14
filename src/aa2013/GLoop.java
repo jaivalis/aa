@@ -10,7 +10,8 @@ public class GLoop {
 		Environment env = new Environment(DIM);
 		
 //		env.policyEvaluation();
-		env.policyIteration();
+//		env.policyIteration();
+		env.valueIteration();
 		
 //		while (runs > 0) {
 //			env.nextRound();
