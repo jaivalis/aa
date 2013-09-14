@@ -239,24 +239,20 @@ public class Environment {
 		return action.WAIT;//FIXME
 	}
 
-	public void valueIteration() {
-		System.out.println("begin valueIteration");
+	public void valueIteration() {		
+		double delta, v, max;
 		this.grid.initializeStateValues(0.0);
-		
-		double delta = 0.0;
+		this.grid.getState(prey).setStateReward(grid.PREYREWARD);
 		
 		do {
+			delta = 0.0;
 			for(int i = 0; i < this.grid.getDim(); i++) {
 				for(int j = 0; j < this.grid.getDim(); j++) {
-
 					Coordinates currPos = new Coordinates(i,j);
 					State currState = grid.getState(currPos);
 
-					double v;
-					v = currState.getStateValue();
-					
-					double max = 0.0;
-					action argmax_a = null;
+					v = currState.getStateValue();					
+					max = 0.0;
 					for(action a : Environment.action.values()) { // max
 						double sum = 0.0;
 						for (State neighbor : grid.getNeighbors(currPos)) { // sum
@@ -264,15 +260,11 @@ public class Environment {
 							double p;
 							if( this.grid.getTransitionAction(currState, s_prime) == a ) {
 								p = 1.0;
-							} else {
-								p = 0.0;
-							}
+							} else { p = 0.0; }
 							double r = grid.getActionReward(currState, a);
 							sum += p * (r + GAMMA * s_prime.getStateValue());
 						}
-						if(sum > max) {
-							max = sum;
-						}
+						if(sum > max) {	max = sum; }
 					}
 					currState.setStateValue(max);
 
@@ -280,7 +272,7 @@ public class Environment {
 				}
 			}
 		} while(delta > this.THETA);
-		System.out.println("end valueIteration");
+		// output State values.
 		this.grid.printStateValues();
 	}
 
