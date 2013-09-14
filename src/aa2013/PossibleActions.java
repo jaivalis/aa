@@ -20,4 +20,7 @@ public abstract class PossibleActions {
 		}
 	}
 
+	public String toString(){
+		return this.actionProbability.toString();
+	}
 }

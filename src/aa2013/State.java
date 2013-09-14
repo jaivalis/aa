@@ -29,7 +29,9 @@ public class State {
 	public void setCoordinates(Coordinates c) { this.coordinates = c; }
 
 	@Override
-	public String toString() { return "(" + this.getCoordinates().getX() + ", "+ this.getCoordinates().getY() + ") V = " + Double.valueOf(twoDForm.format(stateValue)); }
+	public String toString() { 
+		return "(" + this.getCoordinates().getX() + ", "+ this.getCoordinates().getY() + ") V = " + twoDForm.format(stateValue);
+	}
 		
 	@Override
 	public boolean equals(Object other) {

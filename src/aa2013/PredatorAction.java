@@ -28,6 +28,7 @@ public class PredatorAction extends PossibleActions {
 		double maxProb = 0.0;
 		for (action ac : this.actionProbability.keySet()) {
 			if ( maxProb <= this.actionProbability.get(ac)) {
+				maxProb = this.actionProbability.get(ac);
 				maxProbAction = ac;
 			}
 		}
