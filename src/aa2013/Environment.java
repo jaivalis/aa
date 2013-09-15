@@ -1,5 +1,8 @@
 package aa2013;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Environment {	
@@ -7,7 +10,7 @@ public class Environment {
 	private Prey prey;
 	private ArrayList<Predator> predators;
 	
-	private final double THETA = 0.00001; // threshold for the loop end condition
+	private final double THETA = 0.00000001; // threshold for the loop end condition
 	private final double GAMMA = 0.8;
 	
 		
@@ -224,19 +227,19 @@ public class Environment {
 		return action.WAIT;//FIXME
 	}
 
-	public void valueIteration() {		
+	public int valueIteration(double local_gamma) {		
 		double delta, v, max;
 		this.grid.initializeStateValues(0.0);
 		this.grid.getState(prey).setStateReward(grid.PREYREWARD);
-		
+		int numIterations = 0;
 		do {
+			numIterations++;
 			delta = 0.0;
 			for(int i = 0; i < this.grid.getDim(); i++) {
 				for(int j = 0; j < this.grid.getDim(); j++) {
 					Coordinates currPos = new Coordinates(i,j);
 					State currState = grid.getState(currPos);
-
-					v = currState.getStateValue();					
+					v = currState.getStateValue();
 					max = 0.0;
 					for(action a : Environment.action.values()) { // max
 						double sum = 0.0;
@@ -247,18 +250,50 @@ public class Environment {
 								p = 1.0;
 							} else { p = 0.0; }
 							double r = grid.getActionReward(currState, a);
-							sum += p * (r + GAMMA * s_prime.getStateValue());
+							sum += p * (r + local_gamma * s_prime.getStateValue());
 						}
 						if(sum > max) {	max = sum; }
 					}
+
 					currState.setStateValue(max);
 
 					delta = Math.max(delta, Math.abs(currState.getStateValue() - v));
+
 				}
+			}
+			//System.out.println("numIterations: "+numIterations+" delta: "+delta+" gamma:"+local_gamma);
+			if(numIterations > 100000) {
+				return 100000;
 			}
 		} while(delta > this.THETA);
 		// output State values.
 		this.grid.printStateValues();
+		return numIterations;
+	}
+	
+	public void valueIterationGammas() {
+		double gamma = 0.0;
+		int size = 1000;
+		int[] iterations = new int[size];
+		BufferedWriter br;
+		try {
+			br = new BufferedWriter(new FileWriter("results.csv"));
+			for(int i = 0; i < size-1; i++) 
+			{
+				gamma += 0.001;
+				System.out.println("gamma:"+gamma);
+				iterations[i] = this.valueIteration(gamma);
+				System.out.println("num iterations:"+iterations[i]);
+				String str = i+","+gamma+","+iterations[i]+"\n";
+				System.out.println(str);
+				br.write(str);
+			}
+			br.close();		
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("end.");
 	}
 
 	public void policyIteration() {
@@ -268,7 +303,6 @@ public class Environment {
 		this.grid.getState(prey).setStateReward(grid.PREYREWARD);
 		int debugRuns = 0;
 		
-
 		do {
 			this.policyEvaluation(true);
 			

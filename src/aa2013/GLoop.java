@@ -11,7 +11,7 @@ public class GLoop {
 		
 //		env.policyEvaluation();
 //		env.policyIteration();
-		env.valueIteration();
+		env.valueIterationGammas();
 		
 //		while (runs > 0) {
 //			env.nextRound();
