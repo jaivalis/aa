@@ -1,6 +1,7 @@
 \documentclass[11pt]{article}
 \usepackage{array}
 \usepackage{tabularx}
+\usepackage{graphicx}
 \title{
 	\textbf{Data Mining Techniques 2013}
 }
@@ -27,13 +28,17 @@ In order to find the average of moves it takes the predator to catch the prey a 
 
 \section{Part 2}
 
-In the second part of the assignment, and iterative policy evaluation is used to determine the value of the random policy for all possible states, using a discount factor of 0.8.
-Policy evaluation evaluates each state, in order to find the best action for the predator to take, regarding the reward to expect in the next state.\\
-Starting with an arbitrary policy, the value of all states is updated and the action leading to the state with the highest value is taken. This is repeated as long as the policy keeps changing. Once this stops, the best policy is found.\\
+In the second part of the assignment, an iterative policy evaluation is used to determine the value for all possible states, using a discount factor of 0.8.\\
+The value of a state is determined by summing the expected reward and value of all possible next states s' multiplied by the probability of actually moving into this state s'.\\
+This is repeated as long as the policy keeps changing. Once this stops, the best policy is found.\\
 The policy evaluation will stop once the change in values is smaller than threshold Theta, where Theta is 0.00001.\\
 The following images display the values after the policy evaluation of the different states of predator and prey.
 
+
+
 \subsection{State predator(0,0), prey(5,5)}
+
+The values of all possible states with the prey beeing in (5,5) are shown in Table ~\ref{state1}
 
 \begin{center}
 \begin{table*}[ht]
@@ -60,8 +65,11 @@ The following images display the values after the policy evaluation of the diffe
 \end{table*}
 \end{center}
 
+
+
 \subsection{State predator(2,3), prey(5,4)}
 
+The values of all states with the prey starting in (5,4) are shown in Table ~\ref{state2}
 
 \begin{center}
 \begin{table*}[ht]
@@ -88,8 +96,11 @@ The following images display the values after the policy evaluation of the diffe
 \end{table*}
 \end{center}
 
+
+
 \subsection{State predator(2,10), prey(10,0)}
 
+The values of all possible states with the prey beeing in (10,0) are shown in Table ~\ref{state3}
 
 \begin{center}
 \begin{table*}[ht]
@@ -115,9 +126,12 @@ The following images display the values after the policy evaluation of the diffe
 \label{state3}
 \end{table*}
 \end{center}	
-	
-	
+
+
+
 \subsubsection{State predator(10,10), prey(0,0)}
+
+The values of all possible states with the prey beeing in (0,0) are shown in Table ~\ref{state4}
 
 \begin{center}
 \begin{table*}[ht]
@@ -145,23 +159,159 @@ The following images display the values after the policy evaluation of the diffe
 \end{center}	
 
 
+\section{Part 3}
+In section three Policy Iteration has been implemented in order to find an optimal policy.
+Once the all the states are evaluated using  Policy Evaluation (explained in part 2), a policy improvement algorithm is used to find the best action for the predator to take, regarding the reward to expect in the next state.\\
+In order to do this the best action for each state is chosen by changing the probability of taking this action in this state to 1.0, while the rest of the actions in the state are reduced to a probability of 0. \\
+Because of this change of probabilities the states need to be re-evaluated, leading to an iterative process until the policy is stable.
+
+
+\subsection{Discount Factor ($\gamma$=0.1)}
+
+For $\gamma$=0.1 the convergence of policy iteration occurs after 3 iterations. On the other hand the convergence of the policy in value iteration occurs after 11 iterations. Because of the small $\gamma$ not every state has a value over 0.001 as you can see in Table ~\ref{table:gamma=0.1} 
+
+\begin{center}
+\begin{table*}[ht]
+{\small
+\hfill{}
+\begin{tabular}{c|c|c|c|c|c|c|c|c|c|c|c}
+\textbf{} & \textbf{0} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} & \textbf{7} & \textbf{8} & \textbf{9} & \textbf{10}\\
+	\hline
+
+\textbf(0)& 0	& 0	& 0	& 0	& 0	& 0.001	& 0	& 0	& 0	& 0	& 0	\\
+\textbf(1)& 0	& 0	& 0	& 0	& 0.001	& 0.011	& 0.001	& 0	& 0	& 0	& 0	\\
+\textbf(2)& 0	& 0	& 0	& 0.001	& 0.011	& 0.111	& 0.011	& 0.001	& 0	& 0	& 0	\\
+\textbf(3)& 0	& 0	& 0.001	& 0.011	& 0.111	& 1.111	& 0.111	& 0.011	& 0.001	& 0	& 0	\\
+\textbf(4)& 0	& 0.001	& 0.011	& 0.111	& 1.111	& 11.111	& 1.111	& 0.111	& 0.011	& 0.001	& 0	\\
+\textbf(5)& 0.001	& 0.011	& 0.111	& 1.111	& 11.111	& 11.111	& 11.111	& 1.111	& 0.111	& 0.011	& 0.001	\\
+\textbf(6)& 0	& 0.001	& 0.011	& 0.111	& 1.111	& 11.111	& 1.111	& 0.111	& 0.011	& 0.001	& 0	\\
+\textbf(7)& 0	& 0	& 0.001	& 0.011	& 0.111	& 1.111	& 0.111	& 0.011	& 0.001	& 0	& 0	\\
+\textbf(8)& 0	& 0	& 0	& 0.001	& 0.011	& 0.111	& 0.011	& 0.001	& 0	& 0	& 0	\\
+\textbf(9)& 0	& 0	& 0	& 0	& 0.001	& 0.011	& 0.001	& 0	& 0	& 0	& 0	\\
+\textbf(10)& 0	& 0	& 0	& 0	& 0	& 0.001	& 0	& 0	& 0	& 0	& 0	\\
+
+\end{tabular}}
+\hfill{}
+\caption{Policy Iteration for ($\gamma$=0.1), convergence after 3 iterations.}
+\label{table:gamma=0.1}
+\end{table*}
+\end{center}	
+
+\subsection{Discount Factor ($\gamma$=0.5)}
+
+For $\gamma$=0.5 the convergence of policy iteration occurs after 3 iterations. On the other hand the convergence of the policy in value iteration occurs after 31 iterations. The state values of the optimal policy can be seen in Table ~\ref{gamma=0.5}
+
+\begin{center}
+\begin{table*}[ht]
+{\small
+\hfill{}
+\begin{tabular}{c|c|c|c|c|c|c|c|c|c|c|c}
+\textbf{} & \textbf{0} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} & \textbf{7} & \textbf{8} & \textbf{9} & \textbf{10}\\
+	\hline
+
+\textbf(0)& 0.039	& 0.078	& 0.156	& 0.312	& 0.625	& 1.25	& 0.625	& 0.312	& 0.156	& 0.078	& 0.039	\\
+\textbf(1)& 0.078	& 0.156	& 0.312	& 0.625	& 1.25	& 2.5	& 1.25	& 0.625	& 0.312	& 0.156	& 0.078	\\
+\textbf(2)& 0.156	& 0.312	& 0.625	& 1.25	& 2.5	& 5	& 2.5	& 1.25	& 0.625	& 0.312	& 0.156	\\
+\textbf(3)& 0.312	& 0.625	& 1.25	& 2.5	& 5	& 10	& 5	& 2.5	& 1.25	& 0.625	& 0.312	\\
+\textbf(4)& 0.625	& 1.25	& 2.5	& 5	& 10	& 20	& 10	& 5	& 2.5	& 1.25	& 0.625	\\
+\textbf(5)& 1.25	& 2.5	& 5	& 10	& 20	& 20	& 20	& 10	& 5	& 2.5	& 1.25	\\
+\textbf(6)& 0.625	& 1.25	& 2.5	& 5	& 10	& 20	& 10	& 5	& 2.5	& 1.25	& 0.625	\\
+\textbf(7)& 0.312	& 0.625	& 1.25	& 2.5	& 5	& 10	& 5	& 2.5	& 1.25	& 0.625	& 0.312	\\
+\textbf(8)& 0.156	& 0.312	& 0.625	& 1.25	& 2.5	& 5	& 2.5	& 1.25	& 0.625	& 0.312	& 0.156	\\
+\textbf(9)& 0.078	& 0.156	& 0.312	& 0.625	& 1.25	& 2.5	& 1.25	& 0.625	& 0.312	& 0.156	& 0.078	\\
+\textbf(10)& 0.039	& 0.078	& 0.156	& 0.312	& 0.625	& 1.25	& 0.625	& 0.312	& 0.156	& 0.078	& 0.039	\\
+
+\end{tabular}}
+\hfill{}
+\caption{Policy Iteration for ($\gamma$=0.5), convergence after 3 iterations.}
+\label{gamma=0.5}
+\end{table*}
+\end{center}
+
+
+\subsection{Discount Factor ($\gamma$=0.7)}
+
+For $\gamma$=0.7 the convergence of policy iteration occurs after 3 iterations. On the other hand the convergence of the policy in value iteration occurs after 60 iterations. The state values of the optimal policy can be seen in Table ~\ref{gamma=0.7}
+
+\begin{center}
+\begin{table*}[ht]
+{\small
+\hfill{}
+\begin{tabular}{c|c|c|c|c|c|c|c|c|c|c|c}
+\textbf{} & \textbf{0} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} & \textbf{7} & \textbf{8} & \textbf{9} & \textbf{10}\\
+	\hline
+
+\textbf(0)& 1.345	& 1.922	& 2.745	& 3.922	& 5.602	& 8.003	& 5.602	& 3.922	& 2.745	& 1.922	& 1.345	\\
+\textbf(1)& 1.922	& 2.745	& 3.922	& 5.602	& 8.003	& 11.433	& 8.003	& 5.602	& 3.922	& 2.745	& 1.922	\\
+\textbf(2)& 2.745	& 3.922	& 5.602	& 8.003	& 11.433	& 16.333	& 11.433	& 8.003	& 5.602	& 3.922	& 2.745	\\
+\textbf(3)& 3.922	& 5.602	& 8.003	& 11.433	& 16.333	& 23.333	& 16.333	& 11.433	& 8.003	& 5.602	& 3.922	\\
+\textbf(4)& 5.602	& 8.003	& 11.433	& 16.333	& 23.333	& 33.333	& 23.333	& 16.333	& 11.433	& 8.003	& 5.602	\\
+\textbf(5)& 8.003	& 11.433	& 16.333	& 23.333	& 33.333	& 33.333	& 33.333	& 23.333	& 16.333	& 11.433	& 8.003	\\
+\textbf(6)& 5.602	& 8.003	& 11.433	& 16.333	& 23.333	& 33.333	& 23.333	& 16.333	& 11.433	& 8.003	& 5.602	\\
+\textbf(7)& 3.922	& 5.602	& 8.003	& 11.433	& 16.333	& 23.333	& 16.333	& 11.433	& 8.003	& 5.602	& 3.922	\\
+\textbf(8)& 2.745	& 3.922	& 5.602	& 8.003	& 11.433	& 16.333	& 11.433	& 8.003	& 5.602	& 3.922	& 2.745	\\
+\textbf(9)& 1.922	& 2.745	& 3.922	& 5.602	& 8.003	& 11.433	& 8.003	& 5.602	& 3.922	& 2.745	& 1.922	\\
+\textbf(10)& 1.345	& 1.922	& 2.745	& 3.922	& 5.602	& 8.003	& 5.602	& 3.922	& 2.745	& 1.922	& 1.345	\\
+
+\end{tabular}}
+\hfill{}
+\caption{Policy Iteration for ($\gamma$=0.7), convergence after 3 iterations.}
+\label{gamma=0.7}
+\end{table*}
+\end{center}
+
+
+\subsection{Discount Factor ($\gamma$=0.9)}
+
+For $\gamma$=0.9 the convergence of policy iteration occurs after 3 iterations. On the other hand the convergence of the policy in value iteration occurs after 198 iterations. The state values of the optimal policy can be seen in Table ~\ref{gamma=0.9}
+
+\begin{center}
+\begin{table*}[ht]
+{\small
+\hfill{}
+\begin{tabular}{c|c|c|c|c|c|c|c|c|c|c|c}
+\textbf{} & \textbf{0} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} & \textbf{7} & \textbf{8} & \textbf{9} & \textbf{10}\\
+	\hline
+
+\textbf(0)& 38.742	& 43.047	& 47.83	& 53.144	& 59.049	& 65.61	& 59.049	& 53.144	& 47.83	& 43.047	& 38.742	\\
+\textbf(1)& 43.047	& 47.83	& 53.144	& 59.049	& 65.61	& 72.9	& 65.61	& 59.049	& 53.144	& 47.83	& 43.047	\\
+\textbf(2)& 47.83	& 53.144	& 59.049	& 65.61	& 72.9	& 81	& 72.9	& 65.61	& 59.049	& 53.144	& 47.83	\\
+\textbf(3)& 53.144	& 59.049	& 65.61	& 72.9	& 81	& 90	& 81	& 72.9	& 65.61	& 59.049	& 53.144	\\
+\textbf(4)& 59.049	& 65.61	& 72.9	& 81	& 90	& 100	& 90	& 81	& 72.9	& 65.61	& 59.049	\\
+\textbf(5)& 65.61	& 72.9	& 81	& 90	& 100	& 100	& 100	& 90	& 81	& 72.9	& 65.61	\\
+\textbf(6)& 59.049	& 65.61	& 72.9	& 81	& 90	& 100	& 90	& 81	& 72.9	& 65.61	& 59.049	\\
+\textbf(7)& 53.144	& 59.049	& 65.61	& 72.9	& 81	& 90	& 81	& 72.9	& 65.61	& 59.049	& 53.144	\\
+\textbf(8)& 47.83	& 53.144	& 59.049	& 65.61	& 72.9	& 81	& 72.9	& 65.61	& 59.049	& 53.144	& 47.83	\\
+\textbf(9)& 43.047	& 47.83	& 53.144	& 59.049	& 65.61	& 72.9	& 65.61	& 59.049	& 53.144	& 47.83	& 43.047	\\
+\textbf(10)& 38.742	& 43.047	& 47.83	& 53.144	& 59.049	& 65.61	& 59.049	& 53.144	& 47.83	& 43.047	& 38.742	\\
+
+\end{tabular}}
+\hfill{}
+\caption{Policy Iteration for ($\gamma$=0.9), convergence after 3 iterations.}
+\label{gamma=0.9}
+\end{table*}
+\end{center}
+
+
+
+\section{Value Iteration}
+In section 4, value iteration is implemented. The difference between value iteration and policy iteration, is that "Value iteration effectively combines, in each of its sweeps, one sweep of policy evaluation and one sweep of policy improvement." \cite{barto1}\\
+A plot of all $\gamma$ between 0 and 1 can be seen in Figure ~\ref{plot}.
+\begin{figure}
+\centering
+\includegraphics[scale=0.8]{a14.png}
+\caption{Plot of $\gamma$ and their number of iterations to converge}
+\label{plot}
+\end{figure}
+
+
+
+
 
 
 \begin{thebibliography}{7}
 
-\bibitem{hassaine} Hassaïne, A., Al-Maadeed, S. and Bouridane, A., A Set of Geometrical Features for Writer Identification. Neural Information Processing. Springer Berlin/Heidelberg, 2012.
-
-\bibitem{thomas} Thomas, A., ICDAR2013 - Gender Prediction from Handwriting
-
-\bibitem{mandeed} Al Madeed, S., QUWI: An Arabic and English Handwriting Dataset for Offline Writer Identification
-
-\bibitem{willmott} Cort J. Willmott*, Kenji Matsuura: Advantages of the mean absolute error (MAE) over the root mean square error (RMSE) in assessing average model performance
-
-\bibitem{makridakis} Makridakis, S., Hibon, M.: Evaluating Accuracy (or Error) Measures
-
-\bibitem{wallach} Wallach, D., Makowski, D., Jones, J.W.: Working with Dynamic Crop Models
-
-\bibitem{oly} http://exploringdata.net/oly\_gold.htm
+\bibitem{barto1} http://webdocs.cs.ualberta.ca/~sutton/book/ebook/node44.html
 
 
 \end{thebibliography}
