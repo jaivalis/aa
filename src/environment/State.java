@@ -16,6 +16,11 @@ public class State {
 	
 	public State() {}
 	
+	public State(int i, int j, int k, int l) {
+		preyC = new Coordinates(i, j);
+		predC = new Coordinates(k, l);
+	}
+	
 //	public Cell getState(Coordinates pos) { return this.cells[pos.getX()][pos.getY()]; }
 
 	/**
@@ -27,17 +32,12 @@ public class State {
 		nextState.setPredator(this.predC.shift(a));
 		return nextState;
 	}
-	
-//	public Cell getState(Actor a) { return this.getState(a.getCoordinates()); }
 
 	public double getStateValue() {	return this.stateValue; }
 	public double getStateReward() { 
 		if (this.predC.equals(this.preyC)) {
 			return Util.PREYREWARD;
 		}
-//		if (this.prey.getCoordinates().equals(predator)) {
-//			return Util.PREYREWARD;
-//		} 
 		return 0.0;
 	}
 	

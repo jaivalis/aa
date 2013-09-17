@@ -20,8 +20,8 @@ public class Environment {
 		this.predator = new Predator(new Coordinates(0,0), stateSpace);
 		this.prey = new Prey(new Coordinates(5,5), stateSpace);
 
-		state.setPrey(this.prey.getCoordinates());
-		state.setPredator(this.predator.getCoordinates());
+//		state.setPrey(this.prey.getCoordinates());
+//		state.setPredator(this.predator.getCoordinates());
 	}
 	
 
@@ -89,44 +89,49 @@ public class Environment {
 		policy.initializeStateValues(0.0);
 		
 		do {
-			delta = 0.0;			
-			for(int i = 0; i < Util.DIM; i++) {
-				for(int j = 0; j < Util.DIM; j++) {
-					for(int k = 0; i < Util.DIM; k++) {
-						for(int l = 0; j < Util.DIM; l++) {
-							State currState = new State();
-							
-							Coordinates preyC = new Coordinates(i, j);
-							Coordinates predC = new Coordinates(k, l);
-							
-							currState.setPredator(predC);
-							currState.setPrey(preyC);
-							
-							double Vkplus1 = 0.0; // the new value V.
-							double oldStateValue = currState.getStateValue();
-							
-							for (action ac : Environment.action.values()) {
-								// ac: the action that would be required to move to state st
-								
-								// the probability of taking action  in state  under policy π (0.2 in this case)
-								double pi = policy.getActionProbability(currState, ac);
-//								Coordinates nearby = this.state.nearbyCoordinates(pos, ac);
-								State st = currState.getNextState(ac);
-								Vkplus1 += pi * (st.getStateReward() + GAMMA * st.getStateValue());
-							}
-							currState.setStateValue(Vkplus1);
-							
-							// after new state value is set update the value of delta.
-							delta = Math.max(Math.abs(Vkplus1-oldStateValue), delta);
-						}
-					}
-				}
+			delta = 0.0;
+			for (State currState : this.stateSpace) {
+				System.out.println(currState);
 			}
+
 			debugRuns++;
 		} while (delta > THETA);
+//			for(int i = 0; i < Util.DIM; i++) {
+//				for(int j = 0; j < Util.DIM; j++) {
+//					for(int k = 0; i < Util.DIM; k++) {
+//						for(int l = 0; j < Util.DIM; l++) {
+//							State currState = this.stateSpace.getState(i, j, k, l);
+//							
+//							Coordinates preyC = new Coordinates(i, j);
+//							Coordinates predC = new Coordinates(k, l);
+//							
+//							currState.setPredator(predC);
+//							currState.setPrey(preyC);
+//							
+//							double Vkplus1 = 0.0; // the new value V.
+//							double oldStateValue = currState.getStateValue();
+//							
+//							for (action ac : Environment.action.values()) {
+//								// ac: the action that would be required to move to state st
+//								
+//								// the probability of taking action  in state  under policy π (0.2 in this case)
+//								double pi = policy.getActionProbability(currState, ac);
+////								Coordinates nearby = this.state.nearbyCoordinates(pos, ac);
+//								State st = currState.getNextState(ac);
+//								Vkplus1 += pi * (st.getStateReward() + GAMMA * st.getStateValue());
+//							}
+//							currState.setStateValue(Vkplus1);
+//							
+//							// after new state value is set update the value of delta.
+//							delta = Math.max(Math.abs(Vkplus1-oldStateValue), delta);
+//						}
+//					}
+//				}
+////			}
+//			debugRuns++;
+//		} while (delta > THETA);
 		
 		// output stateValues.
-		this.state.toString();
 		
 		System.out.println("Runs: " + debugRuns);
 	}
