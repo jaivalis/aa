@@ -1,14 +1,22 @@
 package actor;
 
 import environment.Coordinates;
-import environment.Grid;
+import environment.State;
 import policy.PredatorPolicy;
 
 public class Predator extends Actor {
 	
-	public Predator(Grid g, Coordinates c) {
+	public Predator(State g, Coordinates c) {
 		this.coordinates = c;
-		this.policy = new PredatorPolicy(g);
+		this.policy = new PredatorPolicy();
+	}
+	
+	/**
+	 * copy constructor
+	 */
+	public Predator(Predator p) {
+		this.coordinates = p.coordinates;
+		this.policy = new PredatorPolicy();
 	}
 
 	@Override

@@ -1,7 +1,7 @@
 package actor;
 
 import environment.Coordinates;
-import environment.State;
+import environment.Cell;
 import environment.Environment.action;
 import policy.Policy;
 
@@ -19,7 +19,14 @@ public abstract class Actor {
 		this.coordinates = c;
 	}
 	
-	public action getNextMoveDirection(State s) { 
+	public action getNextMoveDirection(Cell s) { 
 		return this.policy.getAction(s);
+	}
+	
+	/**
+	 * updates the coordinates according to the action taken.
+	 */
+	public void move(action a) {
+		this.coordinates = coordinates.shift(a);
 	}
 }

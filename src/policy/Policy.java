@@ -2,18 +2,19 @@ package policy;
 
 import java.util.HashMap;
 
-import environment.State;
-import environment.Environment.action;
 import action.PossibleActions;
+import environment.Cell;
+import environment.Environment.action;
+import environment.State;
 
 public abstract class Policy {
 	protected HashMap<State, PossibleActions> stateActionMapping;
 	
-	public action getAction(State s) {
+	public action getAction(Cell s) {
 		return this.stateActionMapping.get(s).getAction();
 	}
 	
-	public String getActionString(State s) {
+	public String getActionString(Cell s) {
 		switch (this.stateActionMapping.get(s).getAction()) {
 			case NORTH: return "^";
 			case SOUTH:	return "V";
@@ -28,8 +29,12 @@ public abstract class Policy {
 		return this.stateActionMapping.get(s).getActionProbability(a);
 	}
 	
+	/**
+	 * For State s, set action probability of Action a to 1.0 and all the rest to 0.
+	 * (Deterministic policy) 
+	 */
 	public void setUniqueAction(State s, action a) {
-		if (a == null) { return; } // bug fix (?) 1
+		if (a == null) { return; }
 		this.stateActionMapping.get(s).setAllActionProbabilitiesTo(0.0);
 		this.stateActionMapping.get(s).setActionProbability(a, 1.0);
 	}

@@ -3,28 +3,51 @@ package policy;
 import java.util.HashMap;
 import java.util.Random;
 
-import environment.Coordinates;
-import environment.Grid;
-import environment.State;
-import environment.Environment.action;
 import action.PossibleActions;
 import action.PreyAction;
+import actor.Predator;
+import actor.Prey;
+import environment.Cell;
+import environment.Coordinates;
+import environment.Environment.action;
+import environment.State;
 
+/**
+ * changed according to new State definition Sep 17.
+ * @author aivalis
+ */
 public class RandomPreyPolicy extends Policy {
 
-	public RandomPreyPolicy(Grid g) {
+	public RandomPreyPolicy(State g) {
 		this.stateActionMapping = new HashMap<State, PossibleActions>();
 		
-		for (int i = 0; i < g.getDim(); i++) {
-			for (int j = 0; j < g.getDim(); j++) {
-				Coordinates pos = new Coordinates(i,j);
-				this.stateActionMapping.put(g.getState(pos), new PreyAction());
+		for (int i = 0; i < environment.Util.DIM; i++) {
+			for (int j = 0; j < environment.Util.DIM; j++) {
+				for (int k = 0; k < environment.Util.DIM; k++) {
+					for (int l = 0; l < environment.Util.DIM; l++) {
+						State currState = new State();
+						
+						Coordinates preyC = new Coordinates(i, j);
+						Coordinates predC = new Coordinates(k, l); 
+
+						currState.setActor(new Predator(currState, predC));
+						currState.setActor(new Prey(currState, preyC));
+						this.stateActionMapping.put(currState, new PreyAction());
+					}
+				}
 			}
 		}
 	}
 	
+	/**
+	 * copy constructor
+	 */
+	public RandomPreyPolicy(Policy p) {
+		this.stateActionMapping = p.stateActionMapping;
+	}
+	
 	@Override
-	public action getAction(State s) {
+	public action getAction(Cell s) {
 		Random r = new Random();
 		float randint = r.nextFloat();
 
