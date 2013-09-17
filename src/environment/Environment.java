@@ -77,19 +77,16 @@ public class Environment {
 //	}
 	
 	/**
-	 * Task 1.1
+	 * Task 1.2
 	 * For extensive explanation see : http://webdocs.cs.ualberta.ca/~sutton/book/ebook/node41.html
 	 * @param initialize0; flag that indicates whether or not to initialize all the state Values to 0.0 or not.
 	 */
-	public void policyEvaluation(boolean initialize0) {
+	public void policyEvaluation() {
 		double delta = 0.0; // defines the maximum difference observed in the stateValue of all states
 		int debugRuns = 0;
 		
 		Policy policy = this.predator.getPolicy();
 		policy.initializeStateValues(0.0);
-		
-		// initialize Reward for prey cell.
-//		this.state.getState(prey).setStateReward(state.PREYREWARD);
 		
 		do {
 			delta = 0.0;			

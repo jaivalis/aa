@@ -11,7 +11,7 @@ public class GLoop {
 		Environment env = new Environment();
 		
 		/* Task 2 */
-		env.policyEvaluation(true);
+		env.policyEvaluation();
 		/* Task 3 */
 //		env.policyIteration();
 		/* Task 4 */
