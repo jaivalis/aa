@@ -90,16 +90,26 @@ public class Environment {
 		
 		do {
 			delta = 0.0;
-			for (State currState : this.stateSpace) {
-				System.out.println(currState);
-			}
+			for (State currState : this.stateSpace) { // for s in S+
+				double Vkplus1 = 0.0;
+				double v = currState.getStateValue();
+				if (currState.getStateValue() != 0.0) { 
+					System.out.println("wow " + currState.getStateValue());
+				}
 
+				for (action ac : Environment.action.values()) {
+					double pi = policy.getActionProbability(currState, ac);
+//					Coordinates nearby = this.state.nearbyCoordinates(pos, ac);
+					State st = currState.getNextState(ac);
+					Vkplus1 += pi * (st.getStateReward() + GAMMA * st.getStateValue());
+				}
+				currState.setStateValue(Vkplus1);
+				
+				delta = Math.max(Math.abs(Vkplus1 - v), delta);
+			}
 			debugRuns++;
 		} while (delta > THETA);
-//			for(int i = 0; i < Util.DIM; i++) {
-//				for(int j = 0; j < Util.DIM; j++) {
-//					for(int k = 0; i < Util.DIM; k++) {
-//						for(int l = 0; j < Util.DIM; l++) {
+		System.out.println(this.stateSpace.getState(10, 10, 10, 10));
 //							State currState = this.stateSpace.getState(i, j, k, l);
 //							
 //							Coordinates preyC = new Coordinates(i, j);
@@ -124,10 +134,7 @@ public class Environment {
 //							
 //							// after new state value is set update the value of delta.
 //							delta = Math.max(Math.abs(Vkplus1-oldStateValue), delta);
-//						}
-//					}
-//				}
-////			}
+//		
 //			debugRuns++;
 //		} while (delta > THETA);
 		

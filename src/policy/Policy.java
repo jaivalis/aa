@@ -26,10 +26,6 @@ public abstract class Policy {
 	}
 	
 	public double getActionProbability(State s, action a) {
-		System.out.println(s);
-		PossibleActions action = stateActionMapping.get(s);
-		System.out.println(stateActionMapping.keySet().contains(s));
-		System.out.println(s.hashCode());
 		return this.stateActionMapping.get(s).getActionProbability(a);
 	}
 	

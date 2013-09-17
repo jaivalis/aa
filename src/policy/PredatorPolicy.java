@@ -19,9 +19,7 @@ public class PredatorPolicy extends Policy {
 			for (int j = 0; j < environment.Util.DIM; j++) {
 				for (int k = 0; k < environment.Util.DIM; k++) {
 					for (int l = 0; l < environment.Util.DIM; l++) {
-						State state = ss.getState(i, j, k, l);
-						
-						System.out.println(state.hashCode());
+						State state = ss.getState(i, j, k, l);						
 						this.stateActionMapping.put(state, new PredatorAction());
 					}
 				}

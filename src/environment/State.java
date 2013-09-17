@@ -7,21 +7,24 @@ import environment.Environment.action;
 
 public class State {
 //	private Cell[][] cells; obsolete
-//	private Prey prey;
-//	private Predator predator;
 	
 	private Coordinates preyC, predC;
 	
 	private double stateValue;	// Corresponds to value V (for the policy evaluation algorithm).
 	
-	public State() {}
+	public State() { /* empty constructor */ }
 	
+	/**
+	 * Constructor method.
+	 * @param i; prey x coordinate.
+	 * @param j; prey y coordinate.
+	 * @param k; predator x coordinate.
+	 * @param l; predator y coordinate.
+	 */
 	public State(int i, int j, int k, int l) {
 		preyC = new Coordinates(i, j);
 		predC = new Coordinates(k, l);
 	}
-	
-//	public Cell getState(Coordinates pos) { return this.cells[pos.getX()][pos.getY()]; }
 
 	/**
 	 * returns the new State that occurs after predator takes action a.
@@ -37,8 +40,7 @@ public class State {
 	public double getStateReward() { 
 		if (this.predC.equals(this.preyC)) {
 			return Util.PREYREWARD;
-		}
-		return 0.0;
+		} return 0.0;
 	}
 	
 //	private void collisionDetection() {
@@ -223,7 +225,7 @@ public class State {
 	@Override
 	public String toString() {
 		String ret = "";
-		ret += "Prey : " + this.preyC + " Predator : " + this.predC;
+		ret += "Prey : " + this.preyC + " Predator : " + this.predC + " Value = " + this.stateValue;
 		return ret;
 	}
 	
@@ -239,11 +241,12 @@ public class State {
 	/** Used by hashmap */
     @Override
     public int hashCode() {
-    	String hashString = "1";
-    	hashString += "" + this.predC.getX() + this.predC.getY() + this.preyC.getX() + this.preyC.getY();
-    	int hash = Integer.parseInt(hashString);
-        return hash;
+    	String hashString = "1" + this.predC.getX() + this.predC.getY() + this.preyC.getX() + this.preyC.getY();
+        return Integer.parseInt(hashString);
     }
+
+	public Coordinates getPreyCoordinates() { return this.preyC; }
+	public Coordinates getPredatorCoordinates() { return this.predC; }
 
 //	public void setPredator(Coordinates c) { this.predator = new Predator(this, c); }	
 //	public void setPrey(Coordinates c) { this.prey = new Prey(this, c); }

@@ -28,7 +28,7 @@ public class StateSpace implements Iterable<State>, Iterator<State> {
 	
 	public void setStateValue(int i, int j, int k, int l, double stateValue) {
 		this.states[i][j][k][l].setStateValue(stateValue);
-	}
+	}	
 	
 	public State getState(int i, int j, int k, int l) { return this.states[i][j][k][l]; }
 

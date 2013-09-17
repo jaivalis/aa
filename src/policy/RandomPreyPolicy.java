@@ -24,8 +24,6 @@ public class RandomPreyPolicy extends Policy {
 				for (int k = 0; k < environment.Util.DIM; k++) {
 					for (int l = 0; l < environment.Util.DIM; l++) {
 						State state = ss.getState(i, j, k, l);
-						
-						System.out.println(state.hashCode());
 						this.stateActionMapping.put(state, new PreyAction());
 					}
 				}
