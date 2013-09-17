@@ -1,6 +1,7 @@
 package environment;
 
 import java.util.HashMap;
+import java.util.Set;
 
 /**
  * contains some states and probabilities associates to jump into them
@@ -14,8 +15,9 @@ public class ProbableTransitions {
 		this.possibilities.put(s,p);
 	}
 	
-	public State[] getStates() {
-		return (State[]) this.possibilities.keySet().toArray();
+	public Set<State> getStates() {
+		Set<State> ret = this.possibilities.keySet();
+		return ret;
 	}
 	
 	public Double getProbability(State s) {

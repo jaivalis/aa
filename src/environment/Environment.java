@@ -1,6 +1,7 @@
 package environment;
 
 import java.util.Iterator;
+import java.util.Set;
 
 import policy.Policy;
 import actor.Predator;
@@ -80,21 +81,27 @@ public class Environment {
 		
 		Policy policy = this.predator.getPolicy();
 		
-		do {
+		do { // Repeat
 			delta = 0.0;
 			Iterator<State> stateSpaceIt = this.stateSpace.iterator();
 			while(stateSpaceIt.hasNext()) {
 				State currState = stateSpace.next(); // for s in S+
-				double Vkplus1 = 0.0;
+				double V_s = 0.0;
 				double v = currState.getStateValue();
 
-				for (action ac : Environment.action.values()) {
+				for (action ac : Environment.action.values()) { // summation over a
 					double pi = policy.getActionProbability(currState, ac);
-					State st = this.stateSpace.getNextState(currState, ac);
-					Vkplus1 += pi * (st.getStateReward() + GAMMA * st.getStateValue());
+					ProbableTransitions probableTransitions = stateSpace.getProbableTransitions(currState, ac);
+					Set<State> neighbours = probableTransitions.getStates();
+					double sum = 0.0;
+					for(State s_prime : neighbours){ // summation over s'
+						double p = probableTransitions.getProbability(s_prime);
+						sum += p * (s_prime.getStateReward() + GAMMA * s_prime.getStateValue());
+					}
+					V_s += pi * sum;
 				}
-				currState.setStateValue(Vkplus1);				
-				delta = Math.max(Math.abs(Vkplus1 - v), delta);
+				currState.setStateValue(V_s);				
+				delta = Math.max(Math.abs(V_s - v), delta);
 			}
 			debugRuns++;
 		} while (delta > THETA);
