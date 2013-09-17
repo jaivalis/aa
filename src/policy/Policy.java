@@ -26,6 +26,10 @@ public abstract class Policy {
 	}
 	
 	public double getActionProbability(State s, action a) {
+		System.out.println(s);
+		PossibleActions action = stateActionMapping.get(s);
+		System.out.println(stateActionMapping.keySet().contains(s));
+		System.out.println(s.hashCode());
 		return this.stateActionMapping.get(s).getActionProbability(a);
 	}
 	
@@ -37,5 +41,11 @@ public abstract class Policy {
 		if (a == null) { return; }
 		this.stateActionMapping.get(s).setAllActionProbabilitiesTo(0.0);
 		this.stateActionMapping.get(s).setActionProbability(a, 1.0);
+	}
+
+	public void initializeStateValues(double d) {
+		for (State state : stateActionMapping.keySet()) {
+			state.setStateValue(d);
+		}		
 	}
 }

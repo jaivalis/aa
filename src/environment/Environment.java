@@ -1,18 +1,13 @@
 package environment;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-
+import policy.Policy;
 import actor.Predator;
 import actor.Prey;
 
 public class Environment {	
 	private State state;
-	private static int dim;
 	private Prey prey;
-	private ArrayList<Predator> predators;
+	private Predator predator;
 	
 	private final double THETA = 0.00000001; // threshold for the loop end condition
 	private final double GAMMA = 0.8;
@@ -22,24 +17,24 @@ public class Environment {
 	public Environment() {
 		this.state = new State();
 		
-		Predator pred = new Predator(this.state, new Coordinates(0,0));
-		this.prey = new Prey(this.state, new Coordinates(5,5));
-		
-		this.predators = new ArrayList<Predator>();
-		this.predators.add(pred);
+		this.predator = new Predator(new Coordinates(0,0));
+		this.prey = new Prey(new Coordinates(5,5));
 
-		this.state.setActor(prey);
-		this.state.setActor(pred);
+		state.setPrey(this.prey.getCoordinates());
+		state.setPredator(this.predator.getCoordinates());
 	}
 	
 
 	public boolean isEpisodeOver() { return !this.prey.getAlive(); }
 	
-	private void collisionDetection() {		
-		for(Predator p : predators) {
-			if (p.getCoordinates().equals(prey.getCoordinates())) { prey.setAlive(false); }
-		}
-	}
+	/**
+	 * moved to State.
+	 */
+//	private void collisionDetection() {		
+//		for(Predator p : predators) {
+//			if (p.getCoordinates().equals(prey.getCoordinates())) { prey.setAlive(false); }
+//		}
+//	}
 	
 //	public void nextRound() {
 //		for(Predator p : predators) { // move predator(s)
@@ -71,14 +66,15 @@ public class Environment {
 //		} return true;
 //	}
 //	
-	/**
-	 * used for debugging
-	 */
-	public void printCoordinates() {
-		for(Predator p : predators) { System.out.println("\t" + p); }
-		System.out.println("\t" + prey);
-		System.out.println("end of round");
-	}
+	
+//	/**
+//	 * used for debugging
+//	 */
+//	public void printCoordinates() {
+//		for(Predator p : predators) { System.out.println("\t" + p); }
+//		System.out.println("\t" + prey);
+//		System.out.println("end of round");
+//	}
 	
 	/**
 	 * Task 1.1
@@ -89,19 +85,18 @@ public class Environment {
 		double delta = 0.0; // defines the maximum difference observed in the stateValue of all states
 		int debugRuns = 0;
 		
-		if(initialize0) { // initialize R(s) = V(s) = 0, for all states.
-			this.state.initializeStateValues(0.0);
-		}
+		Policy policy = this.predator.getPolicy();
+		policy.initializeStateValues(0.0);
 		
 		// initialize Reward for prey cell.
 //		this.state.getState(prey).setStateReward(state.PREYREWARD);
 		
 		do {
 			delta = 0.0;			
-			for(int i = 0; i < this.state.getDim(); i++) {
-				for(int j = 0; j < this.state.getDim(); j++) {
-					for(int k = 0; i < this.state.getDim(); k++) {
-						for(int l = 0; j < this.state.getDim(); l++) {
+			for(int i = 0; i < Util.DIM; i++) {
+				for(int j = 0; j < Util.DIM; j++) {
+					for(int k = 0; i < Util.DIM; k++) {
+						for(int l = 0; j < Util.DIM; l++) {
 							State currState = new State();
 							
 							Coordinates preyC = new Coordinates(i, j);
@@ -117,9 +112,9 @@ public class Environment {
 								// ac: the action that would be required to move to state st
 								
 								// the probability of taking action  in state  under policy π (0.2 in this case)
-								double pi = currState.getPredator().getPolicy().getActionProbability(currState, ac);
+								double pi = policy.getActionProbability(currState, ac);
 //								Coordinates nearby = this.state.nearbyCoordinates(pos, ac);
-								State st = state.getNextState(ac);
+								State st = currState.getNextState(ac);
 								Vkplus1 += pi * (st.getStateReward() + GAMMA * st.getStateValue());
 							}
 							currState.setStateValue(Vkplus1);

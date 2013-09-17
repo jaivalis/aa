@@ -1,19 +1,19 @@
 package actor;
 
-import environment.Coordinates;
-import environment.State;
 import policy.RandomPreyPolicy;
+import environment.Coordinates;
 
 
 public class Prey extends Actor {
 	private boolean alive;
 
-	public Prey(State s, Coordinates c) {
+	public Prey(Coordinates c) {
 		this.coordinates = c;
 		this.alive = true;
-		this.policy = new RandomPreyPolicy(s);
+		this.policy = new RandomPreyPolicy();
 	}
 	
+	/** copy constructor */
 	public Prey(Prey p) {
 		this.coordinates = p.coordinates;
 		this.alive = p.alive;

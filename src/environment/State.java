@@ -6,26 +6,15 @@ import actor.Prey;
 import environment.Environment.action;
 
 public class State {
-	private Cell[][] cells;
-	private int dim;
-	private Prey prey;
-	private Predator predator;
+//	private Cell[][] cells; obsolete
+//	private Prey prey;
+//	private Predator predator;
+	
+	private Coordinates preyC, predC;
 	
 	private double stateValue;	// Corresponds to value V (for the policy evaluation algorithm).
 	
-	public final double PREYREWARD = 10.0;
-	
-	public State() {
-		this.dim = Util.DIM;
-		this.cells = new Cell[dim][dim];
-		for(int i = 0; i < this.cells.length; i++) {
-			for(int j = 0; j < this.cells[i].length; j++) {
-				this.cells[i][j] = new Cell(new Coordinates(i,j));
-			}
-		}
-	}
-	
-	public Cell[][] getCells() { return this.cells; }
+	public State() {}
 	
 //	public Cell getState(Coordinates pos) { return this.cells[pos.getX()][pos.getY()]; }
 
@@ -33,23 +22,31 @@ public class State {
 	 * returns the new State that occurs after predator takes action a.
 	 */
 	public State getNextState(action a) {
-		// FIXME: looks okay, but is it ?
 		State nextState = new State();
-		nextState.setActor(new Prey(this.prey)); // prey doesn't move.
-		Predator predatorMoved = this.predator;
-		predatorMoved.move(a);
-		nextState.setActor(predatorMoved);
-		return new State();
+		nextState.setPrey(this.preyC);
+		nextState.setPredator(this.predC.shift(a));
+		return nextState;
 	}
 	
 //	public Cell getState(Actor a) { return this.getState(a.getCoordinates()); }
 
 	public double getStateValue() {	return this.stateValue; }
 	public double getStateReward() { 
-		if (this.prey.getCoordinates().equals(predator)) {
-			return PREYREWARD;
-		} return 0.0;
+		if (this.predC.equals(this.preyC)) {
+			return Util.PREYREWARD;
+		}
+//		if (this.prey.getCoordinates().equals(predator)) {
+//			return Util.PREYREWARD;
+//		} 
+		return 0.0;
 	}
+	
+//	private void collisionDetection() {
+//		if (this.predC.equals(this.preyC)) {
+//			return;
+//		}
+////		if (predator.getCoordinates().equals(prey.getCoordinates())) { prey.setAlive(false); }
+//	}
 	
 	public void setStateValue(double stateValue) { this.stateValue = stateValue; }
 	
@@ -64,17 +61,22 @@ public class State {
 //		}
 //		this.cells[c.getX()][c.getY()].setActor(a);
 //	}
-	
+	public void setPrey(Coordinates c) {
+		this.preyC = c;
+	}
+	public void setPredator(Coordinates c) {
+		this.predC = c;
+	}
 	public void setActor(Actor a) {
 		if (a instanceof Prey) {
-			this.prey = (Prey) a;
+			this.preyC = a.getCoordinates();
+//			this.prey = (Prey) a;
 		} else if (a instanceof Predator) {
-			this.predator = (Predator) a;
+			this.predC = a.getCoordinates();
+//			this.predator = (Predator) a;
 		}
 	}
-	
-	public int getDim() { return this.dim; }
-	
+		
 //	public void initializeStateValues(double d) {
 //		for(int i = 0; i < this.cells.length; i++) {
 //			for(int j = 0; j < this.cells[i].length; j++) {
@@ -218,22 +220,35 @@ public class State {
 //		}
 //	}
 //	
-//	@Override
-//	public String toString() {
-//		DecimalFormat twoDForm = new DecimalFormat("#.###");
-//		String ret = "";
-//		for(int i = 0; i < this.cells.length; i++){
-//			for(int j = 0; j < this.cells[i].length; j++){
-//				ret += twoDForm.format(this.cells[i][j].getStateValue()) + "\t";
-//			} ret += "\n";
-//		}
-//		return ret;
-//	}
+	@Override
+	public String toString() {
+		String ret = "";
+		ret += "Prey : " + this.preyC + " Predator : " + this.predC;
+		return ret;
+	}
+	
+	@Override
+	public boolean equals(Object other) {
+		if (other == null) return false;
+	    if (other == this) return true;
+	    if (!(other instanceof State)) { return false; }
+	    State otherState = (State) other;
+		return this.predC == otherState.predC && this.preyC == otherState.preyC;		
+	}
+	
+	/** Used by hashmap */
+    @Override
+    public int hashCode() {
+    	String hashString = "1";
+    	hashString += "" + this.predC.getX() + this.predC.getY() + this.preyC.getX() + this.preyC.getY();
+    	int hash = Integer.parseInt(hashString);
+        return hash;
+    }
 
-	public void setPredator(Coordinates c) { this.predator = new Predator(this, c); }	
-	public void setPrey(Coordinates c) { this.prey = new Prey(this, c); }
+//	public void setPredator(Coordinates c) { this.predator = new Predator(this, c); }	
+//	public void setPrey(Coordinates c) { this.prey = new Prey(this, c); }
 
-	public Predator getPredator() { return this.predator; }
-	public Prey getPrey() { return this.prey; }
+//	public Predator getPredator() { return this.predator; }
+//	public Prey getPrey() { return this.prey; }
 
 }

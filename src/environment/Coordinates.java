@@ -13,23 +13,17 @@ public class Coordinates {
 	private int y;
 	
 	public Coordinates(int x, int y) {
-		super();
-		this.x = x;
-		this.y = y;
+		this.x = x;	this.y = y;
 	}	
 	
 	public Coordinates(Coordinates c) {
-		return new Coordinates(c.x, c.y);
+		this.x = c.x; this.y = c.y;
 	}
 
 	public int getX() { return x; }	
 	public int getY() { return y; }
-	
-
-	
-	public String toString() { 
-		return "(" + this.x + ", " + this.y + ")";
-	}
+	@Override
+	public String toString() { return "(" + this.x + ", " + this.y + ")"; }
 	
 	@Override
 	public boolean equals(Object other) {

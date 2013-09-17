@@ -5,5 +5,6 @@ package environment;
  * @author aivalis
  */
 public class Util {
-	public static int DIM = 11;
+	public final static int DIM = 11;
+	public final static double PREYREWARD = 10.0;
 }

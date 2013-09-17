@@ -26,7 +26,5 @@ public abstract class Actor {
 	/**
 	 * updates the coordinates according to the action taken.
 	 */
-	public void move(action a) {
-		this.coordinates = coordinates.shift(a);
-	}
+	public void move(action a) { this.coordinates.shift(a); }
 }
