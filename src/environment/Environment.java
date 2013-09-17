@@ -93,53 +93,18 @@ public class Environment {
 			for (State currState : this.stateSpace) { // for s in S+
 				double Vkplus1 = 0.0;
 				double v = currState.getStateValue();
-				if (currState.getStateValue() != 0.0) { 
-					System.out.println("wow " + currState.getStateValue());
-				}
 
 				for (action ac : Environment.action.values()) {
 					double pi = policy.getActionProbability(currState, ac);
-//					Coordinates nearby = this.state.nearbyCoordinates(pos, ac);
-					State st = currState.getNextState(ac);
+					State st = this.stateSpace.getNextState(currState, ac);
 					Vkplus1 += pi * (st.getStateReward() + GAMMA * st.getStateValue());
 				}
-				currState.setStateValue(Vkplus1);
-				
+				currState.setStateValue(Vkplus1);				
 				delta = Math.max(Math.abs(Vkplus1 - v), delta);
 			}
 			debugRuns++;
 		} while (delta > THETA);
 		System.out.println(this.stateSpace.getState(10, 10, 10, 10));
-//							State currState = this.stateSpace.getState(i, j, k, l);
-//							
-//							Coordinates preyC = new Coordinates(i, j);
-//							Coordinates predC = new Coordinates(k, l);
-//							
-//							currState.setPredator(predC);
-//							currState.setPrey(preyC);
-//							
-//							double Vkplus1 = 0.0; // the new value V.
-//							double oldStateValue = currState.getStateValue();
-//							
-//							for (action ac : Environment.action.values()) {
-//								// ac: the action that would be required to move to state st
-//								
-//								// the probability of taking action  in state  under policy π (0.2 in this case)
-//								double pi = policy.getActionProbability(currState, ac);
-////								Coordinates nearby = this.state.nearbyCoordinates(pos, ac);
-//								State st = currState.getNextState(ac);
-//								Vkplus1 += pi * (st.getStateReward() + GAMMA * st.getStateValue());
-//							}
-//							currState.setStateValue(Vkplus1);
-//							
-//							// after new state value is set update the value of delta.
-//							delta = Math.max(Math.abs(Vkplus1-oldStateValue), delta);
-//		
-//			debugRuns++;
-//		} while (delta > THETA);
-		
-		// output stateValues.
-		
 		System.out.println("Runs: " + debugRuns);
 	}
 //	public void policyEvaluation(boolean initialize0) {

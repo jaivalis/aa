@@ -17,17 +17,9 @@ import environment.StateSpace;
 public class RandomPreyPolicy extends Policy {
 
 	public RandomPreyPolicy(StateSpace ss) {
-		this.stateActionMapping = new HashMap<State, PossibleActions>();
-		
-		for (int i = 0; i < environment.Util.DIM; i++) {
-			for (int j = 0; j < environment.Util.DIM; j++) {
-				for (int k = 0; k < environment.Util.DIM; k++) {
-					for (int l = 0; l < environment.Util.DIM; l++) {
-						State state = ss.getState(i, j, k, l);
-						this.stateActionMapping.put(state, new PreyAction());
-					}
-				}
-			}
+		this.stateActionMapping = new HashMap<State, PossibleActions>();		
+		for (State s : ss) {
+			this.stateActionMapping.put(s, new PreyAction());
 		}
 	}
 	
