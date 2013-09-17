@@ -1,5 +1,7 @@
 package environment;
 
+import java.util.Iterator;
+
 import policy.Policy;
 import actor.Predator;
 import actor.Prey;
@@ -90,7 +92,9 @@ public class Environment {
 		
 		do {
 			delta = 0.0;
-			for (State currState : this.stateSpace) { // for s in S+
+			Iterator<State> stateSpaceIt = this.stateSpace.iterator();
+			while(stateSpaceIt.hasNext()) {
+				State currState = stateSpace.next(); // for s in S+
 				double Vkplus1 = 0.0;
 				double v = currState.getStateValue();
 				if (currState.getStateValue() != 0.0) { 
