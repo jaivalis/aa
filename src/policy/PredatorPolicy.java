@@ -4,7 +4,6 @@ import java.util.HashMap;
 
 import action.PossibleActions;
 import action.PredatorAction;
-import environment.Coordinates;
 import environment.State;
 import environment.StateSpace;
 
@@ -20,13 +19,8 @@ public class PredatorPolicy extends Policy {
 			for (int j = 0; j < environment.Util.DIM; j++) {
 				for (int k = 0; k < environment.Util.DIM; k++) {
 					for (int l = 0; l < environment.Util.DIM; l++) {
-						State state = new State();
+						State state = ss.getState(i, j, k, l);
 						
-						Coordinates preyC = new Coordinates(i, j);
-						Coordinates predC = new Coordinates(k, l);
-
-						state.setPrey(preyC);
-						state.setPredator(predC);
 						System.out.println(state.hashCode());
 						this.stateActionMapping.put(state, new PredatorAction());
 					}
