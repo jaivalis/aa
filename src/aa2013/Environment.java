@@ -78,8 +78,10 @@ public class Environment {
 	}
 	
 	/**
+	 * Task 1.1
 	 * For extensive explanation see : http://webdocs.cs.ualberta.ca/~sutton/book/ebook/node41.html
-	 */	
+	 * @param initialize0; flag that indicates whether or not to initialize all the state Values to 0.0 or not.
+	 */
 	public void policyEvaluation(boolean initialize0) {
 		double delta = 0.0; // defines the maximum difference observed in the stateValue of all states
 		int debugRuns = 0;
@@ -126,7 +128,7 @@ public class Environment {
 	}
 
 	/**
-	 * For extensive explanation see : http://webdocs.cs.ualberta.ca/~sutton/book/ebook/node41.html
+	 * For details see : http://webdocs.cs.ualberta.ca/~sutton/book/ebook/node41.html
 	 */	
 	public void policyEvaluationForImprovement() {
 		double delta = 0.0; // defines the maximum difference observed in the stateValue of all states
@@ -161,6 +163,10 @@ public class Environment {
 		this.grid.printStateValues();
 	}
 
+	/**
+	 * Assign to policy, the action a which returns the maximum return for any given state s.
+	 * For details see : http://webdocs.cs.ualberta.ca/~sutton/book/ebook/node43.html 
+	 */
 	public boolean policyImprovementFrancesco() {
 		boolean policyStable = true;
 
@@ -192,41 +198,11 @@ public class Environment {
 				}
 				predators.get(0).getPolicy().setUniqueAction(currState, argmax_a);
 				
-				if(argmax_a != b) {
-					policyStable = false;
-				}
+				if(argmax_a != b) { policyStable = false; }
 			}
 		} return policyStable;
 	}
 	
-	public boolean policyImprovement() {
-		boolean policyStable = true;
-		int sweeps = 0;
-		do {
-			for (int i = 0; i < this.grid.getDim(); i++) {
-				for (int j = 0; j < this.grid.getDim(); j++) {				
-					Coordinates currPos = new Coordinates(i,j);
-					State currState = grid.getState(currPos);
-					action b = predators.get(0).getPolicy().getAction(currState);
-					action argmax_a = this.argmax(currState);
-	
-					predators.get(0).getPolicy().setUniqueAction(currState, argmax_a);				
-					
-					if(argmax_a != b) {
-						policyStable = false;
-					}
-					sweeps++;
-				}
-			}
-		} while(policyStable);
-		System.out.println("sweeps "+sweeps / 121);
-		return policyStable;
-	}
-	
-	public action argmax(State s) {
-		return action.WAIT;//FIXME
-	}
-
 	public int valueIteration(double local_gamma) {		
 		double delta, v, max;
 		this.grid.initializeStateValues(0.0);
@@ -254,23 +230,23 @@ public class Environment {
 						}
 						if(sum > max) {	max = sum; }
 					}
-
 					currState.setStateValue(max);
 
 					delta = Math.max(delta, Math.abs(currState.getStateValue() - v));
 
 				}
 			}
-			//System.out.println("numIterations: "+numIterations+" delta: "+delta+" gamma:"+local_gamma);
-			if(numIterations > 100000) {
-				return 100000;
-			}
+			if(numIterations > 100000) { return 100000; }
 		} while(delta > this.THETA);
 		// output State values.
 		this.grid.printStateValues();
 		return numIterations;
 	}
 	
+	
+	/**
+	 * increases gamma with step 0.001. Outputs to results.csv. Used for plotting.
+	 */
 	public void valueIterationGammas() {
 		double gamma = 0.0;
 		int size = 1000;
@@ -278,8 +254,7 @@ public class Environment {
 		BufferedWriter br;
 		try {
 			br = new BufferedWriter(new FileWriter("results.csv"));
-			for(int i = 0; i < size-1; i++) 
-			{
+			for(int i = 0; i < size-1; i++) {
 				gamma += 0.001;
 				System.out.println("gamma:"+gamma);
 				iterations[i] = this.valueIteration(gamma);
@@ -287,13 +262,9 @@ public class Environment {
 				String str = i+","+gamma+","+iterations[i]+"\n";
 				System.out.println(str);
 				br.write(str);
-			}
-			br.close();		
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println("end.");
+			} br.close();
+			
+		} catch (IOException e) { e.printStackTrace(); }
 	}
 
 	public void policyIteration() {
@@ -310,6 +281,5 @@ public class Environment {
 			this.grid.printActions(predators.get(0).getPolicy());
 			System.out.println("Runs: " + debugRuns);
 		} while(! this.policyImprovementFrancesco());
-		System.out.println("stable policy found!");
 	}
 }
