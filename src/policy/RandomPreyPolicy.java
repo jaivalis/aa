@@ -5,12 +5,11 @@ import java.util.Random;
 
 import action.PossibleActions;
 import action.PreyAction;
-import actor.Predator;
-import actor.Prey;
 import environment.Cell;
 import environment.Coordinates;
 import environment.Environment.action;
 import environment.State;
+import environment.StateSpace;
 
 /**
  * changed according to new State definition Sep 17.
@@ -18,7 +17,7 @@ import environment.State;
  */
 public class RandomPreyPolicy extends Policy {
 
-	public RandomPreyPolicy() {
+	public RandomPreyPolicy(StateSpace ss) {
 		this.stateActionMapping = new HashMap<State, PossibleActions>();
 		
 		for (int i = 0; i < environment.Util.DIM; i++) {

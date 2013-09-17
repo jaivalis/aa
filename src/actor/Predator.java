@@ -2,20 +2,19 @@ package actor;
 
 import policy.PredatorPolicy;
 import environment.Coordinates;
+import environment.StateSpace;
 
 public class Predator extends Actor {
 	
-	public Predator(Coordinates c) {
+	public Predator(Coordinates c, StateSpace ss) {
 		this.coordinates = c;
-		this.policy = new PredatorPolicy();
+		this.policy = new PredatorPolicy(ss);
 	}
 	
-	/**
-	 * copy constructor
-	 */
+	/** copy constructor */
 	public Predator(Predator p) {
 		this.coordinates = p.coordinates;
-		this.policy = new PredatorPolicy();
+		this.policy = p.policy;
 	}
 
 	@Override

@@ -6,6 +6,7 @@ import action.PossibleActions;
 import action.PredatorAction;
 import environment.Coordinates;
 import environment.State;
+import environment.StateSpace;
 
 /**
  * changed according to new State definition Sep 17.
@@ -13,7 +14,7 @@ import environment.State;
  */
 public class PredatorPolicy extends Policy {
 	
-	public PredatorPolicy() {
+	public PredatorPolicy(StateSpace ss) {
 		this.stateActionMapping = new HashMap<State, PossibleActions>();
 		for (int i = 0; i < environment.Util.DIM; i++) {
 			for (int j = 0; j < environment.Util.DIM; j++) {

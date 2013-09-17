@@ -5,7 +5,7 @@ import actor.Predator;
 import actor.Prey;
 
 public class Environment {	
-	private State state;
+	private StateSpace stateSpace;
 	private Prey prey;
 	private Predator predator;
 	
@@ -15,10 +15,10 @@ public class Environment {
 	public enum action { NORTH, SOUTH, EAST, WEST, WAIT };
 	
 	public Environment() {
-		this.state = new State();
+		this.stateSpace = new StateSpace();
 		
-		this.predator = new Predator(new Coordinates(0,0));
-		this.prey = new Prey(new Coordinates(5,5));
+		this.predator = new Predator(new Coordinates(0,0), stateSpace);
+		this.prey = new Prey(new Coordinates(5,5), stateSpace);
 
 		state.setPrey(this.prey.getCoordinates());
 		state.setPredator(this.predator.getCoordinates());
