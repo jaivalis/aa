@@ -29,15 +29,6 @@ public class Environment {
 
 	public boolean isEpisodeOver() { return !this.prey.getAlive(); }
 	
-	/**
-	 * moved to State.
-	 */
-//	private void collisionDetection() {		
-//		for(Predator p : predators) {
-//			if (p.getCoordinates().equals(prey.getCoordinates())) { prey.setAlive(false); }
-//		}
-//	}
-	
 //	public void nextRound() {
 //		for(Predator p : predators) { // move predator(s)
 //			Cell pState = this.state.getState(p.getCoordinates());
@@ -81,14 +72,13 @@ public class Environment {
 	/**
 	 * Task 1.2
 	 * For extensive explanation see : http://webdocs.cs.ualberta.ca/~sutton/book/ebook/node41.html
-	 * @param initialize0; flag that indicates whether or not to initialize all the state Values to 0.0 or not.
+	 * @param policy; The policy to evaluate.
 	 */
-	public void policyEvaluation() {
+	public void policyEvaluation(/*Policy policy, */) {
 		double delta = 0.0; // defines the maximum difference observed in the stateValue of all states
 		int debugRuns = 0;
 		
 		Policy policy = this.predator.getPolicy();
-		policy.initializeStateValues(0.0);
 		
 		do {
 			delta = 0.0;
@@ -111,128 +101,37 @@ public class Environment {
 		System.out.println(this.stateSpace.getState(10, 10, 10, 10));
 		System.out.println("Runs: " + debugRuns);
 	}
-//	public void policyEvaluation(boolean initialize0) {
-//		double delta = 0.0; // defines the maximum difference observed in the stateValue of all states
-//		int debugRuns = 0;
-//		
-//		if(initialize0) {
-//			this.grid.initializeStateValues(0.0); // initialize R(s) = V(s) = 0, for all states.
-//		}
-//		
-//		// initialize Reward for prey cell.
-//		this.grid.getState(prey).setStateReward(grid.PREYREWARD);
-//		
-//		do {
-//			delta = 0.0;
-//			
-//			for(int i = 0; i < this.grid.getDim(); i++) {
-//				for(int j = 0; j < this.grid.getDim(); j++) {
-//					Coordinates pos = new Coordinates(i,j);
-//					Cell currState = grid.getState(pos);
-//					double Vkplus1 = 0.0; // the new value V.
-//					double oldStateValue = currState.getStateValue();
-//					
-//					for (action ac : Environment.action.values()) {
-//						// ac: the action that would be required to move to state st
-//						
-//						// the probability of taking action  in state  under policy π (0.2 in this case)
-//						double pi = predators.get(0).getPolicy().getActionProbability(currState, ac);
-//						Coordinates nearby = this.grid.nearbyCoordinates(pos, ac);
-//						Cell st = grid.getState(nearby);
-//						Vkplus1 += pi * (st.getStateReward() + GAMMA * st.getStateValue());
-//					}
-//					currState.setStateValue(Vkplus1);
-//					
-//					// after new state value is set update the value of delta.
-//					delta = Math.max(Math.abs(Vkplus1-oldStateValue), delta);
-//				}
-//			}
-//			debugRuns++;
-//		} while (delta > THETA);
-//		
-//		// output stateValues.
-//		this.grid.printStateValues();
-//		
-//		System.out.println("Runs: " + debugRuns);
-//	}
-//
-//// START COMMENTS
-//	/**
-//	 * For details see : http://webdocs.cs.ualberta.ca/~sutton/book/ebook/node41.html
-//	 */	
-//	public void policyEvaluationForImprovement() {
-//		double delta = 0.0; // defines the maximum difference observed in the stateValue of all states
-//				
-//		do {
-//			delta = 0.0;
-//			
-//			for(int i = 0; i < this.state.getDim(); i++) {
-//				for(int j = 0; j < this.state.getDim(); j++) {
-//					Coordinates pos = new Coordinates(i,j);
-//					Cell currState = state.getState(pos);
-//					action pi_s = predators.get(0).getPolicy().getAction(currState);
-//					double oldStateValue = currState.getStateValue();
-//					double Vkplus1 = 0.0;
-//					for (Cell neighbor : state.getNeighbors(pos)) {
-//						Cell s_prime = neighbor;
-//						Coordinates pi_s_nextpos = state.nearbyCoordinates(currState.getCoordinates(), pi_s);
-//						
-//						// P^(pi(s))_ss' has only two possible values: 1 if the action will lead to s', 0 otherwise
-//						double p = s_prime.equals(state.getState(pi_s_nextpos)) ? 1.0 : 0.0;
-//						// ac: the action that would be required to move to state st
-//						Vkplus1 += p * (currState.getStateReward() + GAMMA * s_prime.getStateValue());
-//					}					
-//					currState.setStateValue(Vkplus1);
-//					
-//					// after new state value is set update the value of delta.
-//					delta = Math.max(Math.abs(Vkplus1 - oldStateValue), delta);
-//				}
-//			}
-//		} while (delta > THETA);
-//
-//		this.state.printStateValues();
-//	}
-//
-//	/**
-//	 * Assign to policy, the action a which returns the maximum return for any given state s.
-//	 * For details see : http://webdocs.cs.ualberta.ca/~sutton/book/ebook/node43.html 
-//	 */
-//	public boolean policyImprovementFrancesco() {
-//		boolean policyStable = true;
-//
-//		for(int i = 0; i < this.state.getDim(); i++) {
-//			for(int j = 0; j < this.state.getDim(); j++) {
-//				Coordinates currPos = new Coordinates(i,j);
-//				Cell currState = state.getState(currPos);
-//				action b = predators.get(0).getPolicy().getAction(currState);
-//				
-//				double max = 0.0;
-//				action argmax_a = null;
-//				for(action a : Environment.action.values()) {
-//					double sum = 0.0;
-//					for (Cell neighbor : state.getNeighbors(currPos)) {
-//						Cell s_prime = neighbor;
-//						double p;
-//						if( this.state.getTransitionAction(currState, s_prime) == a ) {
-//							p = 1.0;
-//						} else { p = 0.0; }
-//						// P^(pi(s))_ss' has only two possible values: 1 if the action will lead to s', 0 otherwise
-//						// ac: the action that would be required to move to state st
-//						double r = state.getActionReward(currState, a);
-//						sum += p * (r + GAMMA * s_prime.getStateValue());
-//					}
-//					if(sum > max) {
-//						argmax_a = a;
-//						max = sum;
-//					}
-//				}
-//				predators.get(0).getPolicy().setUniqueAction(currState, argmax_a);
-//				
-//				if(argmax_a != b) { policyStable = false; }
-//			}
-//		} return policyStable;
-//	}
-//	
+
+	public boolean policyImprovement(/*Policy policy*/) {
+		boolean policyStable = true;
+		Policy policy = this.predator.getPolicy();
+		for (State s : this.stateSpace) {
+			action b = policy.getAction(s);
+			
+			double max = 0.0;
+			action argmax_a = null;
+			for (action a : Environment.action.values()) {
+				double sum = 0.0;
+				for (State s_prime : this.stateSpace.getNeighbors(s)) {
+					double p;
+					if (this.stateSpace.getTransitionAction(s, s_prime) == a) { p = 1.0; }
+					else { p = 0.0; }
+					// P^(pi(s))_ss' has only two possible values: 1 if the action will lead to s', 0 otherwise
+//					// ac: the action that would be required to move to state st
+					double r = stateSpace.getActionReward(s, a);
+					sum += p * (r + GAMMA * s_prime.getStateValue());
+				}
+				if(sum > max) {
+					argmax_a = a;
+					max = sum;
+				}
+			}
+			policy.setUniqueAction(s, argmax_a);			
+			if(argmax_a != b) { policyStable = false; }
+		}
+		return policyStable;
+	}
+	
 //	public int valueIteration(double local_gamma) {		
 //		double delta, v, max;
 //		this.state.initializeStateValues(0.0);
@@ -297,6 +196,17 @@ public class Environment {
 //		} catch (IOException e) { e.printStackTrace(); }
 //	}
 //
+	public void policyIteration(/*Policy policy*/) {
+		Policy policy = this.predator.getPolicy();
+		this.stateSpace.initializeStateValues(0.0);
+		
+		do {
+			this.policyEvaluation();
+			
+			this.stateSpace.printActions(policy);
+			
+		} while (!this.policyImprovement());
+	}
 //	public void policyIteration() {
 //		this.state.initializeStateValues(0.0); // initialize R(s) = V(s) = 0, for all states.
 //		

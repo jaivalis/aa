@@ -1,9 +1,9 @@
 package actor;
 
-import environment.Coordinates;
-import environment.Cell;
-import environment.Environment.action;
 import policy.Policy;
+import environment.Coordinates;
+import environment.Environment.action;
+import environment.State;
 
 public abstract class Actor {
 	protected Coordinates coordinates;
@@ -19,7 +19,7 @@ public abstract class Actor {
 		this.coordinates = c;
 	}
 	
-	public action getNextMoveDirection(Cell s) { 
+	public action getNextMoveDirection(State s) { 
 		return this.policy.getAction(s);
 	}
 	

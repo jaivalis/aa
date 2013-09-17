@@ -34,6 +34,20 @@ public class Coordinates {
 		return this.getX() == otherCoordinates.getX() 
 				&& this.getY() == otherCoordinates.getY();
 	}
+	
+	/**
+	 * Returns the action required to move from this state to state other.
+	 * (requires this to be neighboring to other)
+	 */
+	public action getTransitionAction(Coordinates other) {
+		int xOther = other.x, yOther = other.y;
+		if (x == xOther	&& y == yOther) { return action.WAIT; }
+		if (x == xOther - 1 || (xOther == 0 && x == 10)) { return action.SOUTH; }
+		if (x == xOther + 1 || (xOther == Util.DIM-1 && x == 0)) { return action.NORTH; }
+		if (y == yOther - 1 || (yOther == 0 && y == 10)) { return action.EAST; }
+		if (y == yOther + 1 || (yOther == Util.DIM-1 && y == 0)) { return action.WEST; }
+		return null;
+	}
 
 	/**
 	 * Returns the new coordinates after taking action a 

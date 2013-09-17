@@ -1,9 +1,11 @@
 package environment;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import action.PreyAction;
+import policy.Policy;
 import environment.Environment.action;
 
 public class StateSpace implements Iterable<State>, Iterator<State> {
@@ -67,6 +69,44 @@ public class StateSpace implements Iterable<State>, Iterator<State> {
 			ret.add(this.getState(predatorNewPos, preyPossiblePos), p);
 		}
 		return ret;
+	}
+
+	/** 
+	 * Returns the action required for prey to move from state s to state s_prime.
+	 * @param s
+	 * @param s_prime
+	 * @return
+	 */
+	public action getTransitionAction(State s, State s_prime) {
+		Coordinates c = s.getPredatorCoordinates();
+		Coordinates c_prime = s_prime.getPredatorCoordinates();
+		return c.getTransitionAction(c_prime);
+	}
+	
+	/**
+	 * Returns all the possible adjacent states to state s.
+	 * @param s
+	 * @return
+	 */
+	public ArrayList<State> getNeighbors(State s) {
+		ArrayList<State> ret = new ArrayList<State>();
+		for (action a : action.values()) {
+			ret.add(this.getNextState(s, a));
+		}
+		return ret;
+	}
+	
+	public double getActionReward(State s, action a) {
+		State newState = this.getNextState(s, a);
+		return newState.getStateReward();
+	}
+	
+	public void initializeStateValues(double d) {
+		for (State s : this) { s.setStateValue(0.0); }
+	}
+	
+	public void printActions(Policy policy) {
+		//TODO
 	}
 	
 	/******************************* Iterator Related ************************************/

@@ -10,7 +10,7 @@ import environment.State;
 public abstract class Policy {
 	protected HashMap<State, PossibleActions> stateActionMapping;
 	
-	public action getAction(Cell s) {
+	public action getAction(State s) {
 		return this.stateActionMapping.get(s).getAction();
 	}
 	

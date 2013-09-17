@@ -29,7 +29,7 @@ public class RandomPreyPolicy extends Policy {
 	}
 	
 	@Override
-	public action getAction(Cell s) {
+	public action getAction(State s) {
 		Random r = new Random();
 		float randfloat = r.nextFloat();
 
