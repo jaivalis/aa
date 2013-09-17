@@ -3,6 +3,8 @@ package environment;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import environment.Environment.action;
+
 public class StateSpace implements Iterable<State>, Iterator<State> {
 
 	private State[/*preyX*/][/*preyY*/][/*predX*/][/*predY*/] states;
@@ -28,10 +30,21 @@ public class StateSpace implements Iterable<State>, Iterator<State> {
 	
 	public void setStateValue(int i, int j, int k, int l, double stateValue) {
 		this.states[i][j][k][l].setStateValue(stateValue);
-	}	
+	}
 	
 	public State getState(int i, int j, int k, int l) { return this.states[i][j][k][l]; }
+	public State getState(Coordinates preyC, Coordinates predC) { return this.states[preyC.getX()][preyC.getY()][predC.getX()][predC.getY()]; }
 
+	/**
+	 * returns the new State that occurs after predator takes action a.
+	 */
+	public State getNextState(State s, action a) {
+		Coordinates predNew = s.getPredatorCoordinates();
+		predNew = predNew.shift(a);
+		return this.getState(s.getPreyCoordinates(), predNew);
+	}
+	
+	/******************************* Iterator Related ************************************/
 	@Override
 	public Iterator<State> iterator() {
 		this.resetIterator();
@@ -62,4 +75,5 @@ public class StateSpace implements Iterable<State>, Iterator<State> {
 
 	@Override
 	public void remove() { }
+	/******************************* Iterator Related ************************************/
 }
