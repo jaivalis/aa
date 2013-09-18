@@ -23,4 +23,8 @@ public class ProbableTransitions {
 	public Double getProbability(State s) {
 		return this.possibilities.get(s);
 	}
+	
+	public int size() {
+		return this.possibilities.size();
+	}
 }

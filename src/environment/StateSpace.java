@@ -64,8 +64,8 @@ public class StateSpace implements Iterable<State>, Iterator<State> {
 		// where could the prey be going?
 		for(action act : Environment.action.values()) {
 			PreyAction tmp = new PreyAction();
-			double p = tmp.getActionProbability(a);
-			Coordinates preyPossiblePos = preyCurrPos.shift(a);
+			double p = tmp.getActionProbability(act);
+			Coordinates preyPossiblePos = preyCurrPos.shift(act);
 			ret.add(this.getState(predatorNewPos, preyPossiblePos), p);
 		}
 		return ret;
