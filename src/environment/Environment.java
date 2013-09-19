@@ -100,7 +100,7 @@ public class Environment {
 					}
 					V_s += pi * sum;
 				}
-				currState.setStateValue(V_s);				
+				currState.setStateValue(V_s);
 				delta = Math.max(Math.abs(V_s - v), delta);
 			}
 			debugRuns++;
@@ -139,45 +139,40 @@ public class Environment {
 		return policyStable;
 	}
 	
-//	public int valueIteration(double local_gamma) {		
-//		double delta, v, max;
-//		this.state.initializeStateValues(0.0);
-//		this.state.getState(prey).setStateReward(state.PREYREWARD);
-//		int numIterations = 0;
-//		do {
-//			numIterations++;
-//			delta = 0.0;
-//			for(int i = 0; i < this.state.getDim(); i++) {
-//				for(int j = 0; j < this.state.getDim(); j++) {
-//					Coordinates currPos = new Coordinates(i,j);
-//					Cell currState = state.getState(currPos);
-//					v = currState.getStateValue();
-//					max = 0.0;
-//					for(action a : Environment.action.values()) { // max
-//						double sum = 0.0;
-//						for (Cell neighbor : state.getNeighbors(currPos)) { // sum
-//							Cell s_prime = neighbor;
-//							double p;
-//							if( this.state.getTransitionAction(currState, s_prime) == a ) {
-//								p = 1.0;
-//							} else { p = 0.0; }
-//							double r = state.getActionReward(currState, a);
-//							sum += p * (r + local_gamma * s_prime.getStateValue());
-//						}
-//						if(sum > max) {	max = sum; }
-//					}
-//					currState.setStateValue(max);
-//
-//					delta = Math.max(delta, Math.abs(currState.getStateValue() - v));
-//
-//				}
-//			}
-//			if(numIterations > 100000) { return 100000; }
-//		} while(delta > this.THETA);
-//		// output State values.
-//		this.state.printStateValues();
-//		return numIterations;
-//	}
+	public int valueIteration(double local_gamma) {		
+		double delta;
+		this.stateSpace.initializeStateValues(0.0);
+		int numIterations = 0;
+		do {
+			numIterations++;
+			delta = 0.0;
+			
+			// for each s in S
+			Iterator<State> stateSpaceIt = this.stateSpace.iterator();
+			while(stateSpaceIt.hasNext()) {
+				State s = stateSpaceIt.next();
+				double v = s.getStateValue();
+				double max = 0.0;
+				for (action a: Environment.action.values()) { // max over a
+					ProbableTransitions probableTransitions = stateSpace.getProbableTransitions(s, a);
+					Set<State> neighbours = probableTransitions.getStates();
+					double sum = 0.0;
+					for(State s_prime : neighbours){ // summation over s'
+						double p = probableTransitions.getProbability(s_prime);
+						sum += p * (s_prime.getStateReward() + GAMMA * s_prime.getStateValue());
+					}
+					max = Math.max(max, sum);
+				}
+				double V_s = max;
+
+				s.setStateValue(V_s);
+				delta = Math.max(delta, Math.abs(s.getStateValue() - v));
+			}
+			if(numIterations > 100000) { return 100000; }
+		} while(delta > this.THETA);
+		// output State values FIXME TODO
+		return numIterations;
+	}
 //	
 //	
 //	/**
