@@ -1,5 +1,8 @@
 package environment;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -162,7 +165,6 @@ public class Environment {
 					max = Math.max(max, sum);
 				}
 				double V_s = max;
-
 				s.setStateValue(V_s);
 				delta = Math.max(delta, Math.abs(s.getStateValue() - v));
 			}
@@ -171,30 +173,29 @@ public class Environment {
 		// output State values FIXME TODO
 		return numIterations;
 	}
-//	
-//	
-//	/**
-//	 * increases gamma with step 0.001. Outputs to results.csv. Used for plotting.
-//	 */
-//	public void valueIterationGammas() {
-//		double gamma = 0.0;
-//		int size = 1000;
-//		int[] iterations = new int[size];
-//		BufferedWriter br;
-//		try {
-//			br = new BufferedWriter(new FileWriter("results.csv"));
-//			for(int i = 0; i < size-1; i++) {
-//				gamma += 0.001;
-//				System.out.println("gamma:"+gamma);
-//				iterations[i] = this.valueIteration(gamma);
-//				System.out.println("num iterations:"+iterations[i]);
-//				String str = i+","+gamma+","+iterations[i]+"\n";
-//				System.out.println(str);
-//				br.write(str);
-//			} br.close();
-//			
-//		} catch (IOException e) { e.printStackTrace(); }
-//	}
+	
+	
+	/**
+	 * increases gamma with step 0.001. Outputs to results.csv. Used for plotting.
+	 */
+	public void valueIterationGammas() {
+		double gamma = 0.0;
+		int size = 1000;
+		int[] iterations = new int[size];
+		BufferedWriter br;
+		try {
+			br = new BufferedWriter(new FileWriter("results.csv"));
+			for(int i = 0; i < size-1; i++) {
+				gamma += 0.001;
+				System.out.println("gamma:"+gamma);
+				iterations[i] = this.valueIteration(gamma);
+				System.out.println("num iterations:"+iterations[i]);
+				String str = i+","+gamma+","+iterations[i]+"\n";
+				System.out.println(str);
+				br.write(str);
+			} br.close();
+		} catch (IOException e) { e.printStackTrace(); }
+	}
 
 	public void policyIteration(/*Policy policy*/) {
 		int debugIterations = 0;
