@@ -1,11 +1,14 @@
 package environment;
 
-import java.util.Iterator;
-import java.util.Set;
-
-import policy.Policy;
 import actor.Predator;
 import actor.Prey;
+import policy.Policy;
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.Set;
 
 public class Environment {	
 	private StateSpace stateSpace;
@@ -65,8 +68,7 @@ public class Environment {
 	/**
 	 * Task 1.2
 	 * For extensive explanation see : http://webdocs.cs.ualberta.ca/~sutton/book/ebook/node41.html
-	 * @param policy; The policy to evaluate.
-	 */
+     */
 	public void policyEvaluation(/*Policy policy, */) {
 		double delta = 0.0; // defines the maximum difference observed in the stateValue of all states
 		int sweeps = 0;
@@ -107,6 +109,9 @@ public class Environment {
 		// /REPORT
 	}
 
+    /**
+     * Task 1.3
+     */
 	public boolean policyImprovement(/*Policy policy*/) {
 		boolean policyStable = true;
 		Policy policy = this.predator.getPolicy();
@@ -136,76 +141,77 @@ public class Environment {
 		}
 		return policyStable;
 	}
-	
-	public int valueIteration(double local_gamma) {		
-		double delta;
+
+    /**
+     * Task 1.3
+     */
+    public void policyIteration(/*Policy policy*/) {
+        int debugIterations = 0;
+        Policy policy = this.predator.getPolicy();
+        this.stateSpace.initializeStateValues(0.0);
+
+        do {
+            this.policyEvaluation();
+            this.stateSpace.printActions(policy);
+            debugIterations++;
+        } while (!this.policyImprovement());
+        System.out.println("[policyIteration()] Number of Iterations : " + debugIterations);
+    }
+
+	public int valueIteration(double local_gamma) {
+		double delta, v, max;
 		this.stateSpace.initializeStateValues(0.0);
 		int numIterations = 0;
 		do {
 			numIterations++;
 			delta = 0.0;
-			
-			// for each s in S
-			Iterator<State> stateSpaceIt = this.stateSpace.iterator();
-			while(stateSpaceIt.hasNext()) {
-				State s = stateSpaceIt.next();
-				double v = s.getStateValue();
-				double max = 0.0;
-				for (action a: Environment.action.values()) { // max over a
-					ProbableTransitions probableTransitions = stateSpace.getProbableTransitions(s, a);
-					Set<State> neighbours = probableTransitions.getStates();
-					double sum = 0.0;
-					for(State s_prime : neighbours){ // summation over s'
-						double p = probableTransitions.getProbability(s_prime);
-						sum += p * (s_prime.getStateReward() + GAMMA * s_prime.getStateValue());
-					}
-					max = Math.max(max, sum);
-				}
-				double V_s = max;
-
-				s.setStateValue(V_s);
-				delta = Math.max(delta, Math.abs(s.getStateValue() - v));
+            for (State s : this.stateSpace) {
+                State currState = s;
+                v = currState.getStateValue();
+                max = 0.0;
+                for(action a : Environment.action.values()) { // max
+                    double sum = 0.0;
+                    for (State neighbor : stateSpace.getNeighbors(s)) { // sum
+                        State s_prime = neighbor;
+                        double p;
+                        if(this.stateSpace.getTransitionAction(currState, s_prime) == a) {
+                            p = 1.0;
+                        } else { p = 0.0; }
+                        double r = stateSpace.getActionReward(currState, a);
+                        sum += p * (r + local_gamma * s_prime.getStateValue());
+                    }
+                    if(sum > max) {	max = sum; }
+                }
+                currState.setStateValue(max);
+                delta = Math.max(delta, Math.abs(currState.getStateValue() - v));
 			}
 			if(numIterations > 100000) { return 100000; }
 		} while(delta > this.THETA);
-		// output State values FIXME TODO
+		// TODO: output State values somehow.
+//		this.state.printStateValues();
 		return numIterations;
 	}
-//	
-//	
-//	/**
-//	 * increases gamma with step 0.001. Outputs to results.csv. Used for plotting.
-//	 */
-//	public void valueIterationGammas() {
-//		double gamma = 0.0;
-//		int size = 1000;
-//		int[] iterations = new int[size];
-//		BufferedWriter br;
-//		try {
-//			br = new BufferedWriter(new FileWriter("results.csv"));
-//			for(int i = 0; i < size-1; i++) {
-//				gamma += 0.001;
-//				System.out.println("gamma:"+gamma);
-//				iterations[i] = this.valueIteration(gamma);
-//				System.out.println("num iterations:"+iterations[i]);
-//				String str = i+","+gamma+","+iterations[i]+"\n";
-//				System.out.println(str);
-//				br.write(str);
-//			} br.close();
-//			
-//		} catch (IOException e) { e.printStackTrace(); }
-//	}
 
-	public void policyIteration(/*Policy policy*/) {
-		int debugIterations = 0;
-		Policy policy = this.predator.getPolicy();
-		this.stateSpace.initializeStateValues(0.0);
-		
-		do {
-			this.policyEvaluation();			
-			this.stateSpace.printActions(policy);
-			debugIterations++;
-		} while (!this.policyImprovement());
-		System.out.println("[policyIteration()] Number of Iterations : " + debugIterations);	
-	}
+    /**
+     * increases gamma with step 0.001. Outputs to results.csv. Used for plotting.
+     */
+    public void valueIterationGammas() {
+        double gamma = 0.0;
+        int size = 1000;
+        int[] iterations = new int[size];
+        BufferedWriter br;
+        try {
+            br = new BufferedWriter(new FileWriter("results.csv"));
+            for(int i = 0; i < size-1; i++) {
+                gamma += 0.001;
+//				System.out.println("gamma:"+gamma);
+                iterations[i] = this.valueIteration(gamma);
+//				System.out.println("num iterations:"+iterations[i]);
+                String str = i+","+gamma+","+iterations[i]+"\n";
+//				System.out.println(str);
+                br.write(str);
+            } br.close();
+        } catch (IOException e) { e.printStackTrace(); }
+    }
+
 }

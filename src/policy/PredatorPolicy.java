@@ -1,11 +1,11 @@
 package policy;
 
-import java.util.HashMap;
-
 import action.PossibleActions;
 import action.PredatorAction;
 import environment.State;
 import environment.StateSpace;
+
+import java.util.HashMap;
 
 public class PredatorPolicy extends Policy {
 	
@@ -17,5 +17,5 @@ public class PredatorPolicy extends Policy {
 	}
 	
 	/** copy constructor */
-	public PredatorPolicy(Policy p) { this.stateActionMapping = p.stateActionMapping; }
+//	public PredatorPolicy(Policy p) { this.stateActionMapping = p.stateActionMapping; }
 }
