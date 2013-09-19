@@ -34,7 +34,7 @@ public class State {
 	public State getNextState(action a) {
 		State nextState = new State();
 		nextState.setPrey(this.preyC);
-		nextState.setPredator(this.predC.shift(a));
+		nextState.setPredator(this.predC.getShifted(a));
 		return nextState;
 	}
 

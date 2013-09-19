@@ -35,7 +35,7 @@ public class Prey extends Actor {
 	public void move(State s) {
 		Coordinates newC = this.coordinates;
 		do {
-			newC = newC.shift(this.policy.getAction(s));
+			newC = newC.getShifted(this.policy.getAction(s));
 		} while (s.getPredatorCoordinates().equals(newC));
 		this.setCoordinates(newC);
 	}

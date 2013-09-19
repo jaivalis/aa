@@ -23,7 +23,7 @@ public abstract class Actor {
 	/**
 	 * Updates the coordinates according to the action taken.
 	 */
-	public void move(action a) { this.coordinates = this.coordinates.shift(a); }
+	public void move(action a) { this.coordinates = this.coordinates.getShifted(a); }
 	/**
 	 * Move the Actor according to an action picked from the policy of the Actor.
 	 * @param s; The current state.

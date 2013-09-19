@@ -52,7 +52,7 @@ public class Coordinates {
 	/**
 	 * Returns the new coordinates after taking action a 
 	 */
-	public Coordinates shift(action a) {
+	public Coordinates getShifted(action a) {
 		Coordinates dest = null;
 		switch (a) {
 			case WAIT:

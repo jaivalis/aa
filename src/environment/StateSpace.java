@@ -50,7 +50,7 @@ public class StateSpace implements Iterable<State>, Iterator<State> {
 	 */
 	public State getNextState(State s, action a) {
 		Coordinates predNew = s.getPredatorCoordinates();
-		predNew = predNew.shift(a);
+		predNew = predNew.getShifted(a);
 		return this.getState(s.getPreyCoordinates(), predNew);
 	}
 	
@@ -64,7 +64,7 @@ public class StateSpace implements Iterable<State>, Iterator<State> {
 	public ProbableTransitions getProbableTransitions(State s, action a) {
 		ProbableTransitions ret = new ProbableTransitions();
 		// the first two index are for the predator
-		Coordinates predatorNewPos = s.getPredatorCoordinates().shift(a);
+		Coordinates predatorNewPos = s.getPredatorCoordinates().getShifted(a);
 		// the last two indexes are for the prey
 		Coordinates preyCurrPos = s.getPreyCoordinates();
 		
@@ -72,7 +72,7 @@ public class StateSpace implements Iterable<State>, Iterator<State> {
 		for(action act : Environment.action.values()) {
 			PreyAction tmp = new PreyAction();
 			double p = tmp.getActionProbability(act);
-			Coordinates preyPossiblePos = preyCurrPos.shift(act);
+			Coordinates preyPossiblePos = preyCurrPos.getShifted(act);
 			ret.add(this.getState(predatorNewPos, preyPossiblePos), p);
 		}
 		return ret;
