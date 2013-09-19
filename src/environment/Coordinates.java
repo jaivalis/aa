@@ -6,12 +6,11 @@ import environment.Environment.action;
  * represents a bi-dimensional coordinate.
  * x and y are set at construction time and cannot be changed later.
  * @author stablum
- *
  */
 public class Coordinates {
 	private int x;
 	private int y;
-	
+		
 	public Coordinates(int x, int y) {
 		this.x = x;	this.y = y;
 	}	
@@ -49,10 +48,11 @@ public class Coordinates {
 		return null;
 	}
 
+	// TODO : set to void.
 	/**
 	 * Returns the new coordinates after taking action a 
 	 */
-	public Coordinates shift(action a) {
+	public Coordinates getShifted(action a) {
 		Coordinates dest = null;
 		switch (a) {
 			case WAIT:

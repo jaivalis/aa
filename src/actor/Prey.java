@@ -2,6 +2,7 @@ package actor;
 
 import policy.RandomPreyPolicy;
 import environment.Coordinates;
+import environment.State;
 import environment.StateSpace;
 
 
@@ -26,4 +27,16 @@ public class Prey extends Actor {
 
 	public boolean getAlive() { return alive; }
 	public void setAlive(boolean a) { this.alive = a; }
+	
+	@Override
+	/**
+	 * Moves prey with respect to the predator's position.
+	 */
+	public void move(State s) {
+		Coordinates newC = this.coordinates;
+		do {
+			newC = newC.getShifted(this.policy.getAction(s));
+		} while (s.getPredatorCoordinates().equals(newC));
+		this.setCoordinates(newC);
+	}
 }
