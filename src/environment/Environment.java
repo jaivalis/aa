@@ -6,9 +6,9 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.Set;
 
-import policy.Policy;
 import actor.Predator;
 import actor.Prey;
+import policy.Policy;
 
 public class Environment {	
 	private StateSpace stateSpace;
@@ -68,8 +68,7 @@ public class Environment {
 	/**
 	 * Task 1.2
 	 * For extensive explanation see : http://webdocs.cs.ualberta.ca/~sutton/book/ebook/node41.html
-	 * @param policy; The policy to evaluate.
-	 */
+     */
 	public void policyEvaluation(/*Policy policy, */) {
 		double delta = 0.0; // defines the maximum difference observed in the stateValue of all states
 		int sweeps = 0;
@@ -110,6 +109,9 @@ public class Environment {
 		// /REPORT
 	}
 
+    /**
+     * Task 1.3
+     */
 	public boolean policyImprovement(/*Policy policy*/) {
 		boolean policyStable = true;
 		Policy policy = this.predator.getPolicy();
@@ -139,8 +141,24 @@ public class Environment {
 		}
 		return policyStable;
 	}
-	
-	public int valueIteration(double local_gamma) {		
+
+    /**
+     * Task 1.3
+     */
+    public void policyIteration(/*Policy policy*/) {
+        int debugIterations = 0;
+        Policy policy = this.predator.getPolicy();
+        this.stateSpace.initializeStateValues(0.0);
+
+        do {
+            this.policyEvaluation();
+            this.stateSpace.printActions(policy);
+            debugIterations++;
+        } while (!this.policyImprovement());
+        System.out.println("[policyIteration()] Number of Iterations : " + debugIterations);
+    }
+
+	public int valueIteration(double local_gamma) {
 		double delta;
 		this.stateSpace.initializeStateValues(0.0);
 		int numIterations = 0;
@@ -170,7 +188,8 @@ public class Environment {
 			}
 			if(numIterations > 100000) { return 100000; }
 		} while(delta > this.THETA);
-		// output State values FIXME TODO
+		// TODO: output State values somehow.
+//		this.state.printStateValues();
 		return numIterations;
 	}
 	
@@ -195,18 +214,5 @@ public class Environment {
 				br.write(str);
 			} br.close();
 		} catch (IOException e) { e.printStackTrace(); }
-	}
-
-	public void policyIteration(/*Policy policy*/) {
-		int debugIterations = 0;
-		Policy policy = this.predator.getPolicy();
-		this.stateSpace.initializeStateValues(0.0);
-		
-		do {
-			this.policyEvaluation();			
-			this.stateSpace.printActions(policy);
-			debugIterations++;
-		} while (!this.policyImprovement());
-		System.out.println("[policyIteration()] Number of Iterations : " + debugIterations);	
 	}
 }
