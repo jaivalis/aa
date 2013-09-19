@@ -8,14 +8,16 @@ import java.util.Set;
 
 import actor.Predator;
 import actor.Prey;
+import policy.LearnedPolicy;
 import policy.Policy;
 
 public class Environment {	
 	private StateSpace stateSpace;
 	private Prey prey;
 	private Predator predator;
-	
-	private final double THETA = 0.00000001; // threshold for the loop end condition
+
+	private static final int MAX_ITERATIONS = 1000;
+	private final double THETA = 0.00001; // threshold for the loop end condition
 	private final double GAMMA = 0.8;
 	
 	public enum action { NORTH, SOUTH, EAST, WEST, WAIT };
@@ -158,10 +160,14 @@ public class Environment {
         System.out.println("[policyIteration()] Number of Iterations : " + debugIterations);
     }
 
-	public int valueIteration(double local_gamma) {
+	public ValueIterationResult valueIteration(double local_gamma) {
 		double delta;
+		
+		// initialization
 		this.stateSpace.initializeStateValues(0.0);
 		int numIterations = 0;
+		
+		// calculation of the V(s)
 		do {
 			numIterations++;
 			delta = 0.0;
@@ -186,13 +192,36 @@ public class Environment {
 				s.setStateValue(V_s);
 				delta = Math.max(delta, Math.abs(s.getStateValue() - v));
 			}
-			if(numIterations > 100000) { return 100000; }
+			if(numIterations >= this.MAX_ITERATIONS) { break; }
 		} while(delta > this.THETA);
+
+		// production of the policy
+		LearnedPolicy pi = new LearnedPolicy();
+		Iterator<State> stateSpaceIt = this.stateSpace.iterator();
+		while(stateSpaceIt.hasNext()) {
+			State s = stateSpaceIt.next();
+			action argmax_a = action.WAIT;
+			double max = 0.0;
+			for (action a: Environment.action.values()) { // argmax over a
+				ProbableTransitions probableTransitions = stateSpace.getProbableTransitions(s, a);
+				Set<State> neighbours = probableTransitions.getStates();
+				double sum = 0.0;
+				for(State s_prime : neighbours){ // summation over s'
+					double p = probableTransitions.getProbability(s_prime);
+					sum += p * (s_prime.getStateReward() + GAMMA * s_prime.getStateValue());
+				}
+				if(sum > max) {
+					max = sum;
+					argmax_a = a;
+				}
+			}
+			pi.setUniqueAction(s, argmax_a);
+		}
+		
 		// TODO: output State values somehow.
 //		this.state.printStateValues();
-		return numIterations;
+		return new ValueIterationResult(numIterations,pi);
 	}
-	
 	
 	/**
 	 * increases gamma with step 0.001. Outputs to results.csv. Used for plotting.
@@ -200,7 +229,7 @@ public class Environment {
 	public void valueIterationGammas() {
 		double gamma = 0.0;
 		int size = 1000;
-		int[] iterations = new int[size];
+		ValueIterationResult[] iterations = new ValueIterationResult[size];
 		BufferedWriter br;
 		try {
 			br = new BufferedWriter(new FileWriter("results.csv"));
@@ -208,8 +237,8 @@ public class Environment {
 				gamma += 0.001;
 				System.out.println("gamma:"+gamma);
 				iterations[i] = this.valueIteration(gamma);
-				System.out.println("num iterations:"+iterations[i]);
-				String str = i+","+gamma+","+iterations[i]+"\n";
+				System.out.println("num iterations:"+iterations[i].getNumIterations());
+				String str = i+","+gamma+","+iterations[i].getNumIterations()+"\n";
 				System.out.println(str);
 				br.write(str);
 			} br.close();

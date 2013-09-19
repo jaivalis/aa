@@ -2,12 +2,18 @@ package policy;
 
 import java.util.HashMap;
 
+import action.LearnedAction;
 import action.PossibleActions;
 import environment.Environment.action;
 import environment.State;
 
 public abstract class Policy {
+	
 	protected HashMap<State, PossibleActions> stateActionMapping;
+	
+	public Policy(){
+		this.stateActionMapping = new HashMap<State, PossibleActions>();
+	}
 	
 	public action getAction(State s) {
 		return this.stateActionMapping.get(s).getAction();
@@ -34,6 +40,9 @@ public abstract class Policy {
 	 */
 	public void setUniqueAction(State s, action a) {
 		if (a == null) { return; }
+		if(!this.stateActionMapping.containsKey(s)){
+			this.stateActionMapping.put(s, new LearnedAction());
+		}
 		this.stateActionMapping.get(s).setAllActionProbabilitiesTo(0.0);
 		this.stateActionMapping.get(s).setActionProbability(a, 1.0);
 	}
