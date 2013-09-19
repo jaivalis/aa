@@ -7,10 +7,6 @@ import action.PredatorAction;
 import environment.State;
 import environment.StateSpace;
 
-/**
- * changed according to new State definition Sep 17.
- * @author aivalis
- */
 public class PredatorPolicy extends Policy {
 	
 	public PredatorPolicy(StateSpace ss) {
@@ -21,7 +17,5 @@ public class PredatorPolicy extends Policy {
 	}
 	
 	/** copy constructor */
-	public PredatorPolicy(Policy p) {
-		this.stateActionMapping = p.stateActionMapping;
-	}
+	public PredatorPolicy(Policy p) { this.stateActionMapping = p.stateActionMapping; }
 }

@@ -3,7 +3,6 @@ package policy;
 import java.util.HashMap;
 
 import action.PossibleActions;
-import environment.Cell;
 import environment.Environment.action;
 import environment.State;
 
@@ -14,7 +13,7 @@ public abstract class Policy {
 		return this.stateActionMapping.get(s).getAction();
 	}
 	
-	public String getActionString(Cell s) {
+	public String getActionString(State s) {
 		switch (this.stateActionMapping.get(s).getAction()) {
 			case NORTH: return "^";
 			case SOUTH:	return "V";

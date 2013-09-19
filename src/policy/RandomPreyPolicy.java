@@ -5,15 +5,10 @@ import java.util.Random;
 
 import action.PossibleActions;
 import action.PreyAction;
-import environment.Cell;
 import environment.Environment.action;
 import environment.State;
 import environment.StateSpace;
 
-/**
- * changed according to new State definition Sep 17.
- * @author aivalis
- */
 public class RandomPreyPolicy extends Policy {
 
 	public RandomPreyPolicy(StateSpace ss) {
@@ -24,9 +19,7 @@ public class RandomPreyPolicy extends Policy {
 	}
 	
 	/** copy constructor */
-	public RandomPreyPolicy(Policy p) {
-		this.stateActionMapping = p.stateActionMapping;
-	}
+	public RandomPreyPolicy(Policy p) {	this.stateActionMapping = p.stateActionMapping; }
 	
 	@Override
 	public action getAction(State s) {
@@ -44,5 +37,4 @@ public class RandomPreyPolicy extends Policy {
 	public double getActionProbability(State s, action a) {
 		return this.stateActionMapping.get(s).getActionProbability(a);
 	}
-
 }

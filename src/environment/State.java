@@ -5,14 +5,11 @@ import actor.Predator;
 import actor.Prey;
 import environment.Environment.action;
 
-public class State {
-//	private Cell[][] cells; obsolete
-	
-	private Coordinates preyC, predC;
-	
+public class State {	
+	private Coordinates preyC, predC;	
 	private double stateValue;	// Corresponds to value V (for the policy evaluation algorithm).
 	
-	public State() { /* empty constructor */ }
+	public State() {}
 	
 	/**
 	 * Constructor method.
@@ -22,8 +19,13 @@ public class State {
 	 * @param l; predator y coordinate.
 	 */
 	public State(int i, int j, int k, int l) {
-		preyC = new Coordinates(i, j);
-		predC = new Coordinates(k, l);
+		this.preyC = new Coordinates(i, j);
+		this.predC = new Coordinates(k, l);
+	}
+	
+	public State(Prey p, Predator pp) {
+		this.preyC = p.getCoordinates();
+		this.predC = pp.getCoordinates();
 	}
 
 	/**
@@ -42,13 +44,6 @@ public class State {
 			return Util.PREYREWARD;
 		} return 0.0;
 	}
-	
-//	private void collisionDetection() {
-//		if (this.predC.equals(this.preyC)) {
-//			return;
-//		}
-////		if (predator.getCoordinates().equals(prey.getCoordinates())) { prey.setAlive(false); }
-//	}
 	
 	public void setStateValue(double stateValue) { this.stateValue = stateValue; }
 	
@@ -78,15 +73,6 @@ public class State {
 //			this.predator = (Predator) a;
 		}
 	}
-		
-//	public void initializeStateValues(double d) {
-//		for(int i = 0; i < this.cells.length; i++) {
-//			for(int j = 0; j < this.cells[i].length; j++) {
-//				this.cells[i][j].setStateValue(d);
-//			}
-//		}
-//	} 
-	
 //	/**
 //	 * Update the board according to Actor move.
 //	 */
@@ -110,59 +96,6 @@ public class State {
 //		return nearby.getStateReward();
 //	}
 //
-//	/**
-//	 * Returns the State that will occur after taking action a in State s
-//	 */
-//	public State getNextState(action a) {
-//		Coordinates nearbyPos = this.nearbyCoordinates(s.getCoordinates(), a);
-//		Cell ret = this.getState(nearbyPos);
-//		return ret;
-//	}
-//
-//	/**
-//	 * Returns the coordinates of the block to be visited next according to the action chosen.
-//	 */
-//	public Coordinates nearbyCoordinates(Coordinates orig, action a) {
-//		Coordinates dest = null;
-//		switch (a) {
-//			case WAIT:
-//				dest = orig.getCopy();
-//				break;
-//			case NORTH:
-//				dest = new Coordinates(
-//					orig.getX() - 1 < 0 
-//						? dim - 1 
-//						: orig.getX() - 1,
-//					orig.getY()
-//				);
-//				break;
-//			case SOUTH:
-//				dest = new Coordinates(
-//					orig.getX() + 1 > dim - 1 
-//						? 0 
-//						: orig.getX() + 1,
-//					orig.getY()
-//				);
-//				break;
-//			case EAST:
-//				dest = new Coordinates(
-//					orig.getX(),
-//					orig.getY()+1 > dim-1
-//						? 0
-//					    : orig.getY() + 1
-//					);
-//				break;
-//			case WEST:
-//				dest = new Coordinates(
-//					orig.getX(),
-//					orig.getY() - 1 < 0
-//						? dim - 1
-//						: orig.getY() - 1
-//				);
-//				break;
-//		}
-//		return dest;
-//	}
 //	
 //	/**
 //	 * Returns the action required to move from this state to state other.
@@ -247,11 +180,4 @@ public class State {
 
 	public Coordinates getPreyCoordinates() { return this.preyC; }
 	public Coordinates getPredatorCoordinates() { return this.predC; }
-
-//	public void setPredator(Coordinates c) { this.predator = new Predator(this, c); }	
-//	public void setPrey(Coordinates c) { this.prey = new Prey(this, c); }
-
-//	public Predator getPredator() { return this.predator; }
-//	public Prey getPrey() { return this.prey; }
-
 }

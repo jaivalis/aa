@@ -18,58 +18,50 @@ public class Environment {
 	public enum action { NORTH, SOUTH, EAST, WEST, WAIT };
 	
 	public Environment() {
-		this.stateSpace = new StateSpace();
-		
+		this.stateSpace = new StateSpace();		
 		this.predator = new Predator(new Coordinates(0,0), stateSpace);
 		this.prey = new Prey(new Coordinates(5,5), stateSpace);
-
-//		state.setPrey(this.prey.getCoordinates());
-//		state.setPredator(this.predator.getCoordinates());
 	}
 	
+	public void simulate(int episodeCount) {
+		int episodes = episodeCount;
+		do {
+			// initialize Episode
+			this.predator.setCoordinates(new Coordinates(0, 0));
+			this.prey.setCoordinates(new Coordinates(5, 5));
+			this.prey.setAlive(true);
+			State initialState = this.stateSpace.getState(this.prey.getCoordinates(), this.predator.getCoordinates());
+			
+			int rounds = 0;
+			while (!isEpisodeOver()) { // run episode
+				initialState = this.nextRound(initialState);
+				rounds++;
+			}
+			//REPORT
+			System.out.println("[simulate()] rounds: " + rounds);
+			episodes--;
+		} while (episodes > 0);
+	}
 
 	public boolean isEpisodeOver() { return !this.prey.getAlive(); }
 	
-//	public void nextRound() {
-//		for(Predator p : predators) { // move predator(s)
-//			Cell pState = this.state.getState(p.getCoordinates());
-//			action nextMoveDirection = p.getNextMoveDirection(pState);			
-//			Coordinates newCoordinates = this.state.nearbyCoordinates(p.getCoordinates(), nextMoveDirection);
-//
-//			this.state.moveActor(p, newCoordinates);
-//		} collisionDetection();
-//		
-//		// move prey.
-//		Coordinates newCoordinates = null;
-//		do { // find appropriate coordinates (not on predators).
-//			Cell preyState = this.state.getState(prey.getCoordinates());
-//			action nextMoveDirection = prey.getNextMoveDirection(preyState);		
-//			newCoordinates = this.state.nearbyCoordinates(prey.getCoordinates(), nextMoveDirection);
-//		} while ( !isPositionAvailable(newCoordinates) );
-//		
-//		this.state.moveActor(prey, newCoordinates);
-//		collisionDetection();
-//	}
+	public State nextRound(State s) {
+		State currentState = s;
+		this.predator.move(currentState);
+		
+		// update currentState.
+		currentState = this.stateSpace.getState(this.prey.getCoordinates(), this.predator.getCoordinates()); 
+		this.collisionDetection();
+		
+		this.prey.move(currentState);
+		this.collisionDetection();
+		return this.stateSpace.getState(this.prey.getCoordinates(), this.predator.getCoordinates());
+	}
 	
-//	/**
-//	 * used before the prey moves so that it does not move on predators.
-//	 */
-//	private boolean isPositionAvailable(Coordinates c) {
-//		for (Predator p : predators) {
-//			if (p.getCoordinates().equals(c)) { return false; }
-//		} return true;
-//	}
-//	
-	
-//	/**
-//	 * used for debugging
-//	 */
-//	public void printCoordinates() {
-//		for(Predator p : predators) { System.out.println("\t" + p); }
-//		System.out.println("\t" + prey);
-//		System.out.println("end of round");
-//	}
-	
+	private void collisionDetection() {
+		if (predator.getCoordinates().equals(prey.getCoordinates())) { prey.setAlive(false); }
+	}
+
 	/**
 	 * Task 1.2
 	 * For extensive explanation see : http://webdocs.cs.ualberta.ca/~sutton/book/ebook/node41.html
@@ -77,7 +69,7 @@ public class Environment {
 	 */
 	public void policyEvaluation(/*Policy policy, */) {
 		double delta = 0.0; // defines the maximum difference observed in the stateValue of all states
-		int debugRuns = 0;
+		int sweeps = 0;
 		
 		Policy policy = this.predator.getPolicy();
 		
@@ -103,10 +95,16 @@ public class Environment {
 				currState.setStateValue(V_s);				
 				delta = Math.max(Math.abs(V_s - v), delta);
 			}
-			debugRuns++;
+			sweeps++;
 		} while (delta > THETA);
-		System.out.println(this.stateSpace.getState(10, 10, 10, 10));
-		System.out.println("Runs: " + debugRuns);
+
+		// REPORT
+		Coordinates preyCoordinates = new Coordinates(0,0);
+		Coordinates predatorCoordinates = new Coordinates(0,0);
+		
+		System.out.println(this.stateSpace.getState(preyCoordinates, predatorCoordinates));
+		System.out.println("[policyEvaluation()] Sweeps: " + sweeps);
+		// /REPORT
 	}
 
 	public boolean policyImprovement(/*Policy policy*/) {
@@ -202,31 +200,17 @@ public class Environment {
 //			
 //		} catch (IOException e) { e.printStackTrace(); }
 //	}
-//
+
 	public void policyIteration(/*Policy policy*/) {
+		int debugIterations = 0;
 		Policy policy = this.predator.getPolicy();
 		this.stateSpace.initializeStateValues(0.0);
 		
 		do {
-			this.policyEvaluation();
-			
+			this.policyEvaluation();			
 			this.stateSpace.printActions(policy);
-			
+			debugIterations++;
 		} while (!this.policyImprovement());
+		System.out.println("[policyIteration()] Number of Iterations : " + debugIterations);	
 	}
-//	public void policyIteration() {
-//		this.state.initializeStateValues(0.0); // initialize R(s) = V(s) = 0, for all states.
-//		
-//		// initialize Reward for prey cell.
-//		this.state.getState(prey).setStateReward(state.PREYREWARD);
-//		int debugRuns = 0;
-//		
-//		do {
-//			this.policyEvaluation(true);
-//			
-//			debugRuns++;
-//			this.state.printActions(predators.get(0).getPolicy());
-//			System.out.println("Runs: " + debugRuns);
-//		} while(! this.policyImprovementFrancesco());
-//	}
 }

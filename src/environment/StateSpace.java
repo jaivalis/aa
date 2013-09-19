@@ -35,6 +35,13 @@ public class StateSpace implements Iterable<State>, Iterator<State> {
 		this.states[i][j][k][l].setStateValue(stateValue);
 	}
 	
+	/**
+	 * Returns the state the corresponds to the grid defined by the arguments.
+	 * @param i; Prey x coordinate.
+	 * @param j; Prey y coordinate.
+	 * @param k; Predator x coordinate.
+	 * @param l; Predator y coordinate.
+	 */
 	public State getState(int i, int j, int k, int l) { return this.states[i][j][k][l]; }
 	public State getState(Coordinates preyC, Coordinates predC) { return this.states[preyC.getX()][preyC.getY()][predC.getX()][predC.getY()]; }
 
