@@ -3,7 +3,7 @@ package policy;
 import action.PossibleActions;
 import action.PreyAction;
 import environment.Environment.action;
-import environment.State;
+import environment.environment.state.State;
 import statespace.CompleteStateSpace;
 
 import java.util.HashMap;
@@ -12,7 +12,7 @@ import java.util.Random;
 public class RandomPreyPolicy extends Policy {
 
 	public RandomPreyPolicy(CompleteStateSpace ss) {
-		this.stateActionMapping = new HashMap<State, PossibleActions>();		
+		this.stateActionMapping = new HashMap<State, PossibleActions>();
 		for (State s : ss) {
 			this.stateActionMapping.put(s, new PreyAction());
 		}

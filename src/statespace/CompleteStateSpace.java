@@ -1,9 +1,13 @@
 package statespace;
 
+import action.PreyAction;
 import environment.Coordinates;
+import environment.Environment;
 import environment.Environment.action;
-import environment.State;
+import environment.ProbableTransitions;
 import environment.Util;
+import environment.environment.state.CompleteState;
+import environment.environment.state.State;
 import policy.Policy;
 
 import java.util.ArrayList;
@@ -11,11 +15,11 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class CompleteStateSpace extends StateSpace implements Iterable<State>, Iterator<State> {
-	private State[/*preyX*/][/*preyY*/][/*predX*/][/*predY*/] states;
+	private CompleteState[/*preyX*/][/*preyY*/][/*predX*/][/*predY*/] states;
 	private int iter_pos = 0;
 	
 	public CompleteStateSpace() {
-		this.states = new State[Util.DIM][Util.DIM][Util.DIM][Util.DIM];
+		this.states = new CompleteState[Util.DIM][Util.DIM][Util.DIM][Util.DIM];
 		this.initStates(); 
 	}
 
@@ -25,7 +29,7 @@ public class CompleteStateSpace extends StateSpace implements Iterable<State>, I
 			for(int j = 0; j < Util.DIM; j++) {
 				for(int k = 0; k < Util.DIM; k++) {
 					for(int l = 0; l < Util.DIM; l++) {
-						states[i][j][k][l] = new State(i, j, k, l);
+						states[i][j][k][l] = new CompleteState(i, j, k, l);
 					}
 				}
 			}
@@ -33,16 +37,18 @@ public class CompleteStateSpace extends StateSpace implements Iterable<State>, I
 	}
 
     @Override
-	public State getState(Coordinates preyC, Coordinates predC) {
+	public CompleteState getState(Coordinates preyC, Coordinates predC) {
         return this.states[preyC.getX()][preyC.getY()][predC.getX()][predC.getY()];
     }
 
     @Override
-	public action getTransitionAction(State s, State s_prime) {
-		Coordinates c = s.getPredatorCoordinates();
-		Coordinates c_prime = s_prime.getPredatorCoordinates();
-		return c.getTransitionAction(c_prime);
-	}
+    public action getTransitionAction(State s, State s_prime) {
+        CompleteState cs = (CompleteState) s;
+        CompleteState cs_prime = (CompleteState) s_prime;
+        Coordinates c = cs.getPredatorCoordinates();
+        Coordinates c_prime = cs_prime.getPredatorCoordinates();
+        return c.getTransitionAction(c_prime);
+    }
 
 	/**
 	 * Returns all the possible adjacent states to state s.
@@ -65,10 +71,37 @@ public class CompleteStateSpace extends StateSpace implements Iterable<State>, I
 	public void printActions(Policy policy) {
 		//TODO
 	}
-	
-	/******************************* Iterator Related ************************************/
+
+    @Override
+    public State getNextState(State s, action a) {
+        CompleteState rs = (CompleteState) s;
+        Coordinates predNew = rs.getPredatorCoordinates();
+        predNew = predNew.getShifted(a);
+        return this.getState(s.getPreyCoordinates(), predNew);
+    }
+
+    @Override
+    public ProbableTransitions getProbableTransitions(State s, action a) {
+        CompleteState cs = (CompleteState) s;
+        ProbableTransitions ret = new ProbableTransitions();
+        // the first two index are for the predator
+        Coordinates predatorNewPos = cs.getPredatorCoordinates().getShifted(a);
+        // the last two indexes are for the prey
+        Coordinates preyCurrPos = s.getPreyCoordinates();
+
+        // where could the prey be going?
+        for(Environment.action act : Environment.action.values()) {
+            PreyAction tmp = new PreyAction();
+            double p = tmp.getActionProbability(act);
+            Coordinates preyPossiblePos = preyCurrPos.getShifted(act);
+            ret.add(this.getState(predatorNewPos, preyPossiblePos), p);
+        }
+        return ret;
+    }
+
+    /******************************* Iterator Related ************************************/
 	@Override
-	public Iterator<State> iterator() {
+	public Iterator iterator() {
 		this.resetIterator();
 		return this;
 	}
@@ -79,7 +112,7 @@ public class CompleteStateSpace extends StateSpace implements Iterable<State>, I
 	public boolean hasNext() { return this.iter_pos < (Math.pow(Util.DIM, 4)); }
 
 	@Override
-	public State next() {
+	public CompleteState next() {
 		if(this.hasNext()){
 			int tmp = this.iter_pos;
 			int l = tmp % Util.DIM;

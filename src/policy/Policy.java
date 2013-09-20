@@ -1,11 +1,11 @@
 package policy;
 
-import java.util.HashMap;
-
 import action.LearnedAction;
 import action.PossibleActions;
 import environment.Environment.action;
-import environment.State;
+import environment.environment.state.State;
+
+import java.util.HashMap;
 
 public abstract class Policy {
 	

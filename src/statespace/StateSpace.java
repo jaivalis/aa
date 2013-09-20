@@ -1,10 +1,9 @@
 package statespace;
 
-import action.PreyAction;
 import environment.Coordinates;
 import environment.Environment;
 import environment.ProbableTransitions;
-import environment.State;
+import environment.environment.state.State;
 import policy.Policy;
 
 public abstract class StateSpace {
@@ -40,11 +39,7 @@ public abstract class StateSpace {
     /**
      * returns the new State that occurs after predator takes action a.
      */
-    public State getNextState(State s, Environment.action a) {
-        Coordinates predNew = s.getPredatorCoordinates();
-        predNew = predNew.getShifted(a);
-        return this.getState(s.getPreyCoordinates(), predNew);
-    }
+    public abstract State getNextState(State s, Environment.action a);
 
     /**
      * Returns the Reward that would be acquired if action a was taken in State s.
@@ -63,20 +58,5 @@ public abstract class StateSpace {
      * @param a action that the predator might perform
      * @return ProbableTransition a structure containing possible states and probabilities
      */
-    public ProbableTransitions getProbableTransitions(State s, Environment.action a) {
-        ProbableTransitions ret = new ProbableTransitions();
-        // the first two index are for the predator
-        Coordinates predatorNewPos = s.getPredatorCoordinates().getShifted(a);
-        // the last two indexes are for the prey
-        Coordinates preyCurrPos = s.getPreyCoordinates();
-
-        // where could the prey be going?
-        for(Environment.action act : Environment.action.values()) {
-            PreyAction tmp = new PreyAction();
-            double p = tmp.getActionProbability(act);
-            Coordinates preyPossiblePos = preyCurrPos.getShifted(act);
-            ret.add(this.getState(predatorNewPos, preyPossiblePos), p);
-        }
-        return ret;
-    }
+    public abstract ProbableTransitions getProbableTransitions(State s, Environment.action a);
 }

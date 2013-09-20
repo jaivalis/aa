@@ -1,9 +1,10 @@
 package actor;
 
-import policy.Policy;
 import environment.Coordinates;
 import environment.Environment.action;
-import environment.State;
+import environment.environment.state.CompleteState;
+import environment.environment.state.State;
+import policy.Policy;
 
 public abstract class Actor {
 	protected Coordinates coordinates;
@@ -28,7 +29,7 @@ public abstract class Actor {
 	 * Move the Actor according to an action picked from the policy of the Actor.
 	 * @param s; The current state.
 	 */
-	public void move(State s) { 
+	public void move(CompleteState s) {
 		this.move(this.policy.getAction(s)); 
 	}
 	

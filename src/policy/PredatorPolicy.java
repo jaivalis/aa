@@ -2,7 +2,7 @@ package policy;
 
 import action.PossibleActions;
 import action.PredatorAction;
-import environment.State;
+import environment.environment.state.State;
 import statespace.CompleteStateSpace;
 
 import java.util.HashMap;

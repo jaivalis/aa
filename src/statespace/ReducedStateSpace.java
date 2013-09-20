@@ -2,8 +2,10 @@ package statespace;
 
 import environment.Coordinates;
 import environment.Environment;
-import environment.State;
+import environment.ProbableTransitions;
 import environment.Util;
+import environment.environment.state.ReducedState;
+import environment.environment.state.State;
 import policy.Policy;
 
 import java.util.Iterator;
@@ -15,10 +17,10 @@ import java.util.NoSuchElementException;
  */
 public class ReducedStateSpace extends StateSpace implements Iterable<State>, Iterator<State> {
     private int iter_pos;
-    private State[][] states;
+    private ReducedState[][] states;
 
     public ReducedStateSpace() {
-        this.states = new State[Util.DIM][Util.DIM];
+        this.states = new ReducedState[Util.DIM][Util.DIM];
         this.initStates();
     }
 
@@ -27,19 +29,21 @@ public class ReducedStateSpace extends StateSpace implements Iterable<State>, It
         for (int i = 0; i < Util.DIM; i++) {
             for (int j = 0; j < Util.DIM; j++) {
                 Coordinates preyC = new Coordinates(i, j);
-                this.states[i][j] = new State(preyC, new Coordinates(0, 0)); // predCoordinates fixed to (0,0)
+                this.states[i][j] = new ReducedState(preyC); // predCoordinates fixed to (0,0)
             }
         }
     }
 
     @Override
-    public State getState(Coordinates preyC, Coordinates predC) {
+    public ReducedState getState(Coordinates preyC, Coordinates predC) {
         return this.states[preyC.getX()][preyC.getY()];
     }
 
     @Override
     public Environment.action getTransitionAction(State s, State s_prime) {
-        return null;  // TODO
+        ReducedState rs = (ReducedState) s;
+        ReducedState rs_prime = (ReducedState) s_prime;
+        return rs.getTransitionAction(rs_prime);
     }
 
     @Override
@@ -52,9 +56,22 @@ public class ReducedStateSpace extends StateSpace implements Iterable<State>, It
         // TODO
     }
 
+    @Override
+    public State getNextState(State s, Environment.action a) {
+        // TODO
+        ReducedState rs = (ReducedState) s;
+        return null;
+    }
+
+    @Override
+    public ProbableTransitions getProbableTransitions(State s, Environment.action a) {
+        // TODO
+        return null;
+    }
+
     /******************************* Iterator Related ************************************/
     @Override
-    public Iterator<State> iterator() {
+    public Iterator iterator() {
         this.resetIterator();
         return this;
     }
@@ -65,7 +82,7 @@ public class ReducedStateSpace extends StateSpace implements Iterable<State>, It
     public boolean hasNext() { return this.iter_pos < (Math.pow(Util.DIM, 2)); }
 
     @Override
-    public State next() {
+    public ReducedState next() {
         if(this.hasNext()){
             int tmp = this.iter_pos;
             tmp = tmp / Util.DIM;
