@@ -62,7 +62,7 @@ public class ReducedStateSpace extends StateSpace implements Iterable<State>, It
     private void resetIterator() { this.iter_pos = 0; }
 
     @Override
-    public boolean hasNext() { return this.iter_pos < (Math.pow(Util.DIM, 4)); }
+    public boolean hasNext() { return this.iter_pos < (Math.pow(Util.DIM, 2)); }
 
     @Override
     public State next() {
