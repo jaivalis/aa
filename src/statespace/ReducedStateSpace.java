@@ -4,6 +4,7 @@ import environment.Coordinates;
 import environment.Environment;
 import environment.ProbableTransitions;
 import environment.Util;
+import environment.Environment.action;
 import policy.Policy;
 import state.CompleteState;
 import state.ReducedState;
@@ -127,7 +128,10 @@ public class ReducedStateSpace extends StateSpace implements Iterable<State>, It
 
 	@Override
 	public ArrayList<State> getNeighbors(State s) {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<State> ret = new ArrayList<State>();
+		for (action a : action.values()) {
+			ret.add(this.getNextState(s, a));
+		}
+		return ret;
 	}
 }
