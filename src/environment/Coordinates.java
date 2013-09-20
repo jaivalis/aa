@@ -48,6 +48,11 @@ public class Coordinates {
 		return null;
 	}
 	
+	/**
+	 * this is a simple function that calculates the opposite of an action
+	 * @param other the other pair of coordinates (besides 'this')
+	 * @return action
+	 */
 	public action getOppositeTransitionAction(Coordinates other) {
 		action ta = this.getTransitionAction(other);
 		switch(ta) {
