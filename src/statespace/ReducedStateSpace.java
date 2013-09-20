@@ -29,7 +29,7 @@ public class ReducedStateSpace extends StateSpace implements Iterable<State>, It
 
     @Override
     public State getState(Coordinates preyC, Coordinates predC) {
-        return null;  // TODO
+        return this.states[preyC.getX()][preyC.getY()];
     }
 
     @Override
