@@ -9,6 +9,10 @@ import policy.Policy;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+/**
+ * For this StateSpace we make the assumption that the predator stays in a fixed position and
+ * only the prey moves.
+ */
 public class ReducedStateSpace extends StateSpace implements Iterable<State>, Iterator<State> {
     private int iter_pos;
     private State[][] states;
@@ -29,7 +33,7 @@ public class ReducedStateSpace extends StateSpace implements Iterable<State>, It
 
     @Override
     public State getState(Coordinates preyC, Coordinates predC) {
-        return null;  // TODO
+        return null;
     }
 
     @Override
@@ -62,11 +66,18 @@ public class ReducedStateSpace extends StateSpace implements Iterable<State>, It
     private void resetIterator() { this.iter_pos = 0; }
 
     @Override
-    public boolean hasNext() { return this.iter_pos < (Math.pow(Util.DIM, 4)); }
+    public boolean hasNext() { return this.iter_pos < (Math.pow(Util.DIM, 2)); }
 
     @Override
     public State next() {
         if(this.hasNext()){
+            int tmp = this.iter_pos;
+            tmp = tmp / Util.DIM;
+            int j = tmp % Util.DIM;
+            tmp = tmp / Util.DIM;
+            int i = tmp % Util.DIM;
+            this.iter_pos++;
+            return this.states[i][j];
         }
         throw new NoSuchElementException();
     }
