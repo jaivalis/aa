@@ -103,7 +103,7 @@ public class CompleteStateSpace extends StateSpace implements Iterable<State>, I
 	public void remove() { }
 	/******************************* Iterator Related ************************************/
 	
-	public print2dSliceGivenPredator(Coordinates predC) // untested, please FIXME!!!
+	public void print2dSliceGivenPredator(Coordinates predC) // untested, please FIXME!!!
 	{
 		int k = predC.getX();
 		int l = predC.getY();
@@ -116,7 +116,7 @@ public class CompleteStateSpace extends StateSpace implements Iterable<State>, I
 		}
 	}
 
-	public print2dSliceGivenPrey(Coordinates preyC) // untested, please FIXME!!!
+	public void print2dSliceGivenPrey(Coordinates preyC) // untested, please FIXME!!!
 	{
 		int i = preyC.getX();
 		int j = preyC.getY();
