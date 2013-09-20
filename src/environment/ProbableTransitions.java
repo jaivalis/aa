@@ -1,6 +1,6 @@
 package environment;
 
-import environment.environment.state.State;
+import state.State;
 
 import java.util.HashMap;
 import java.util.Set;

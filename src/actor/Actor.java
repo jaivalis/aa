@@ -2,9 +2,9 @@ package actor;
 
 import environment.Coordinates;
 import environment.Environment.action;
-import environment.environment.state.CompleteState;
-import environment.environment.state.State;
 import policy.Policy;
+import state.CompleteState;
+import state.State;
 
 public abstract class Actor {
 	protected Coordinates coordinates;

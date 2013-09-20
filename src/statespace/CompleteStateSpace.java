@@ -6,9 +6,9 @@ import environment.Environment;
 import environment.Environment.action;
 import environment.ProbableTransitions;
 import environment.Util;
-import environment.environment.state.CompleteState;
-import environment.environment.state.State;
 import policy.Policy;
+import state.CompleteState;
+import state.State;
 
 import java.util.ArrayList;
 import java.util.Iterator;

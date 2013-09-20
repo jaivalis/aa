@@ -3,8 +3,8 @@ package statespace;
 import environment.Coordinates;
 import environment.Environment;
 import environment.ProbableTransitions;
-import environment.environment.state.State;
 import policy.Policy;
+import state.State;
 
 public abstract class StateSpace {
     /****************************** abstract functions ****************************/

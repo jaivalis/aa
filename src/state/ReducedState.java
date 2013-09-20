@@ -1,4 +1,4 @@
-package environment.environment.state;
+package state;
 
 import environment.Coordinates;
 import environment.Environment;

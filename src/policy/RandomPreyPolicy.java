@@ -3,7 +3,7 @@ package policy;
 import action.PossibleActions;
 import action.PreyAction;
 import environment.Environment.action;
-import environment.environment.state.State;
+import state.State;
 import statespace.CompleteStateSpace;
 
 import java.util.HashMap;

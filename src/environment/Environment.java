@@ -2,10 +2,10 @@ package environment;
 
 import actor.Predator;
 import actor.Prey;
-import environment.environment.state.CompleteState;
-import environment.environment.state.State;
 import policy.LearnedPolicy;
 import policy.Policy;
+import state.CompleteState;
+import state.State;
 import statespace.CompleteStateSpace;
 
 import java.io.BufferedWriter;

@@ -1,8 +1,8 @@
 package actor;
 
 import environment.Coordinates;
-import environment.environment.state.CompleteState;
 import policy.RandomPreyPolicy;
+import state.CompleteState;
 import statespace.CompleteStateSpace;
 
 

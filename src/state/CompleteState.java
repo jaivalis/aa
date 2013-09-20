@@ -1,4 +1,4 @@
-package environment.environment.state;
+package state;
 
 import actor.Actor;
 import actor.Predator;

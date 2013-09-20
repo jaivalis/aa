@@ -4,9 +4,9 @@ import environment.Coordinates;
 import environment.Environment;
 import environment.ProbableTransitions;
 import environment.Util;
-import environment.environment.state.ReducedState;
-import environment.environment.state.State;
 import policy.Policy;
+import state.ReducedState;
+import state.State;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
