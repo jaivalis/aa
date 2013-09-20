@@ -107,8 +107,8 @@ public class CompleteStateSpace extends StateSpace implements Iterable<State>, I
 	{
 		int k = predC.getX();
 		int l = predC.getY();
-		for(int k = 0; k < Util.DIM; k++) {
-			for(int l = 0; l < Util.DIM; l++) {
+		for(int i = 0; i < Util.DIM; i++) {
+			for(int j = 0; j < Util.DIM; j++) {
 				State currState = this.states[i][j][k][l];
 				System.out.println(currState.getStateValue()+" ");// please format me! FIXME
 			}
@@ -120,8 +120,8 @@ public class CompleteStateSpace extends StateSpace implements Iterable<State>, I
 	{
 		int i = preyC.getX();
 		int j = preyC.getY();
-		for(int i = 0; i < Util.DIM; i++) {
-			for(int j = 0; j < Util.DIM; j++) {
+		for(int k = 0; k < Util.DIM; k++) {
+			for(int l = 0; l < Util.DIM; l++) {
 				State currState = this.states[i][j][k][l];
 				System.out.println(currState.getStateValue()+" "); // please format me! FIXME
 			}
