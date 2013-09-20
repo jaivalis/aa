@@ -102,4 +102,31 @@ public class CompleteStateSpace extends StateSpace implements Iterable<State>, I
 	@Override
 	public void remove() { }
 	/******************************* Iterator Related ************************************/
+	
+	public print2dSliceGivenPredator(Coordinates predC) // untested, please FIXME!!!
+	{
+		int k = predC.getX();
+		int l = predC.getY();
+		for(int i = 0; i < Util.DIM; i++) {
+			for(int j = 0; j < Util.DIM; j++) {
+				State currState = this.states[i][j][k][l];
+				System.out.println(currState.getStateValue()+" ");// please format me! FIXME
+			}
+			System.out.println(); // just new line
+		}
+	}
+
+	public print2dSliceGivenPrey(Coordinates preyC) // untested, please FIXME!!!
+	{
+		int i = preyC.getX();
+		int j = preyC.getY();
+		for(int k = 0; k < Util.DIM; k++) {
+			for(int l = 0; l < Util.DIM; l++) {
+				State currState = this.states[i][j][k][l];
+				System.out.println(currState.getStateValue()+" "); // please format me! FIXME
+			}
+			System.out.println(); // just new line
+		}
+	}
+
 }
