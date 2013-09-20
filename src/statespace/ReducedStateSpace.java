@@ -43,7 +43,11 @@ public class ReducedStateSpace extends StateSpace implements Iterable<State>, It
 
     @Override
     public void initializeStateValues(double d) {
-        // TODO
+        ReducedStateSpace it = this.iterator();
+        while(it.hasNext()){
+            State s = it.next();
+            s.setStateValue(d);
+        }
     }
 
     @Override
