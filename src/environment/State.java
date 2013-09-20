@@ -10,7 +10,7 @@ public class State {
 	private double stateValue;	// Corresponds to value V (for the policy evaluation algorithm).
 	
 	public State() {}
-	
+
 	/**
 	 * Constructor method.
 	 * @param i; prey x coordinate.
@@ -22,6 +22,11 @@ public class State {
 		this.preyC = new Coordinates(i, j);
 		this.predC = new Coordinates(k, l);
 	}
+
+    public State(Coordinates preyC, Coordinates predC) {
+        this.preyC = preyC;
+        this.predC = predC;
+    }
 	
 	public State(Prey p, Predator pp) {
 		this.preyC = p.getCoordinates();
