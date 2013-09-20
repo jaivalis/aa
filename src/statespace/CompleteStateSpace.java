@@ -43,7 +43,7 @@ public class CompleteStateSpace extends StateSpace implements Iterable<State>, I
 		Coordinates c_prime = s_prime.getPredatorCoordinates();
 		return c.getTransitionAction(c_prime);
 	}
-	
+
 	/**
 	 * Returns all the possible adjacent states to state s.
 	 * @param s
@@ -56,11 +56,7 @@ public class CompleteStateSpace extends StateSpace implements Iterable<State>, I
 		}
 		return ret;
 	}
-    @Override
-	public double getActionReward(State s, action a) {
-		State newState = this.getNextState(s, a);
-		return newState.getStateReward();
-	}
+
     @Override
 	public void initializeStateValues(double d) {
 		for (State s : this) { s.setStateValue(0.0); }
@@ -103,8 +99,7 @@ public class CompleteStateSpace extends StateSpace implements Iterable<State>, I
 	public void remove() { }
 	/******************************* Iterator Related ************************************/
 	
-	public void print2dSliceGivenPredator(Coordinates predC) // untested, please FIXME!!!
-	{
+	public void print2dSliceGivenPredator(Coordinates predC) { // untested, please FIXME!!!
 		int k = predC.getX();
 		int l = predC.getY();
 		for(int i = 0; i < Util.DIM; i++) {
@@ -116,8 +111,7 @@ public class CompleteStateSpace extends StateSpace implements Iterable<State>, I
 		}
 	}
 
-	public void print2dSliceGivenPrey(Coordinates preyC) // untested, please FIXME!!!
-	{
+	public void print2dSliceGivenPrey(Coordinates preyC) { // untested, please FIXME!!!
 		int i = preyC.getX();
 		int j = preyC.getY();
 		for(int k = 0; k < Util.DIM; k++) {

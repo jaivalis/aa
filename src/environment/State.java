@@ -44,6 +44,7 @@ public class State {
 	}
 
 	public double getStateValue() {	return this.stateValue; }
+
 	public double getStateReward() {
 		if (this.predC.equals(this.preyC)) {
 			return Util.PREYREWARD;
