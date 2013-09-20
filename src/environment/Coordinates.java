@@ -55,19 +55,7 @@ public class Coordinates {
 	 */
 	public action getOppositeTransitionAction(Coordinates other) {
 		action ta = this.getTransitionAction(other);
-		switch(ta) {
-			case WAIT:
-				return action.WAIT;
-			case EAST:
-				return action.WEST;
-			case WEST:
-				return action.EAST;
-			case NORTH:
-				return action.SOUTH;
-			case SOUTH:
-				return action.NORTH;
-		}
-		return action.WAIT;
+		return ta.getOpposite();
 	}
 
 	// TODO : set to void.

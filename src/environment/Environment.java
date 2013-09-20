@@ -22,7 +22,30 @@ public class Environment {
 	private final double THETA = 0.00001; // threshold for the loop end condition
 	private final double GAMMA = 0.8;
 	
-	public enum action { NORTH, SOUTH, EAST, WEST, WAIT };
+	public enum action 
+	{ 
+		NORTH, 
+		SOUTH, 
+		EAST, 
+		WEST, 
+		WAIT;
+		
+		public action getOpposite() {
+			switch(this) {
+			case WAIT:
+				return action.WAIT;
+			case EAST:
+				return action.WEST;
+			case WEST:
+				return action.EAST;
+			case NORTH:
+				return action.SOUTH;
+			case SOUTH:
+				return action.NORTH;
+			}
+			return action.WAIT;
+		}
+	};
 	
 	public Environment(StateSpace givenStateSpace) {
 		this.stateSpace = givenStateSpace;

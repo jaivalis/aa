@@ -5,12 +5,15 @@ import environment.Environment;
 import environment.ProbableTransitions;
 import environment.Util;
 import policy.Policy;
+import state.CompleteState;
 import state.ReducedState;
 import state.State;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+
+import action.PreyAction;
 
 /**
  * For this StateSpace we make the assumption that the predator stays in a fixed position and
@@ -66,8 +69,19 @@ public class ReducedStateSpace extends StateSpace implements Iterable<State>, It
 
     @Override
     public ProbableTransitions getProbableTransitions(State s, Environment.action a) {
-        // TODO
-        return null;
+		return null;
+//        ProbableTransitions ret = new ProbableTransitions();
+//
+//        Coordinates preyNewPos = s.getPreyCoordinates();
+//
+//        // where could the prey be going?
+//        for(Environment.action act : Environment.action.values()) {
+//            PreyAction tmp = new PreyAction();
+//            double p = tmp.getActionProbability(act);
+//            Coordinates preyPossiblePos = preyCurrPos.getShifted(act);
+//            ret.add(this.getState(predatorNewPos, preyPossiblePos), p);
+//        }
+//        return ret;
     }
 
     /******************************* Iterator Related ************************************/
