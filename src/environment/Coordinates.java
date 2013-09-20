@@ -47,6 +47,23 @@ public class Coordinates {
 		if (y == yOther + 1 || (yOther == Util.DIM-1 && y == 0)) { return action.WEST; }
 		return null;
 	}
+	
+	public action getOppositeTransitionAction(Coordinates other) {
+		action ta = this.getTransitionAction(other);
+		switch(ta) {
+			case WAIT:
+				return action.WAIT;
+			case EAST:
+				return action.WEST;
+			case WEST:
+				return action.EAST;
+			case NORTH:
+				return action.SOUTH;
+			case SOUTH:
+				return action.NORTH;
+		}
+		return action.WAIT;
+	}
 
 	// TODO : set to void.
 	/**
