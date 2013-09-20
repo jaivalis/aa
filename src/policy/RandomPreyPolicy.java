@@ -1,17 +1,17 @@
 package policy;
 
-import java.util.HashMap;
-import java.util.Random;
-
 import action.PossibleActions;
 import action.PreyAction;
 import environment.Environment.action;
 import environment.State;
-import environment.StateSpace;
+import statespace.CompleteStateSpace;
+
+import java.util.HashMap;
+import java.util.Random;
 
 public class RandomPreyPolicy extends Policy {
 
-	public RandomPreyPolicy(StateSpace ss) {
+	public RandomPreyPolicy(CompleteStateSpace ss) {
 		this.stateActionMapping = new HashMap<State, PossibleActions>();		
 		for (State s : ss) {
 			this.stateActionMapping.put(s, new PreyAction());

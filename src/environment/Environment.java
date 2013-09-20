@@ -1,18 +1,19 @@
 package environment;
 
+import actor.Predator;
+import actor.Prey;
+import policy.LearnedPolicy;
+import policy.Policy;
+import statespace.CompleteStateSpace;
+
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Set;
 
-import actor.Predator;
-import actor.Prey;
-import policy.LearnedPolicy;
-import policy.Policy;
-
 public class Environment {	
-	private StateSpace stateSpace;
+	private CompleteStateSpace completeStateSpace;
 	private Prey prey;
 	private Predator predator;
 
@@ -23,9 +24,9 @@ public class Environment {
 	public enum action { NORTH, SOUTH, EAST, WEST, WAIT };
 	
 	public Environment() {
-		this.stateSpace = new StateSpace();		
-		this.predator = new Predator(new Coordinates(0,0), stateSpace);
-		this.prey = new Prey(new Coordinates(5,5), stateSpace);
+		this.completeStateSpace = new CompleteStateSpace();
+		this.predator = new Predator(new Coordinates(0,0), completeStateSpace);
+		this.prey = new Prey(new Coordinates(5,5), completeStateSpace);
 	}
 	
 	public void simulate(int episodeCount) {
@@ -35,7 +36,7 @@ public class Environment {
 			this.predator.setCoordinates(new Coordinates(0, 0));
 			this.prey.setCoordinates(new Coordinates(5, 5));
 			this.prey.setAlive(true);
-			State initialState = this.stateSpace.getState(this.prey.getCoordinates(), this.predator.getCoordinates());
+			State initialState = this.completeStateSpace.getState(this.prey.getCoordinates(), this.predator.getCoordinates());
 			
 			int rounds = 0;
 			while (!isEpisodeOver()) { // run episode
@@ -55,12 +56,12 @@ public class Environment {
 		this.predator.move(currentState);
 		
 		// update currentState.
-		currentState = this.stateSpace.getState(this.prey.getCoordinates(), this.predator.getCoordinates()); 
+		currentState = this.completeStateSpace.getState(this.prey.getCoordinates(), this.predator.getCoordinates());
 		this.collisionDetection();
 		
 		this.prey.move(currentState);
 		this.collisionDetection();
-		return this.stateSpace.getState(this.prey.getCoordinates(), this.predator.getCoordinates());
+		return this.completeStateSpace.getState(this.prey.getCoordinates(), this.predator.getCoordinates());
 	}
 	
 	private void collisionDetection() {
@@ -79,15 +80,15 @@ public class Environment {
 		
 		do { // Repeat
 			delta = 0.0;
-			Iterator<State> stateSpaceIt = this.stateSpace.iterator();
+			Iterator<State> stateSpaceIt = this.completeStateSpace.iterator();
 			while(stateSpaceIt.hasNext()) {
-				State currState = stateSpace.next(); // for s in S+
+				State currState = completeStateSpace.next(); // for s in S+
 				double V_s = 0.0;
 				double v = currState.getStateValue();
 
 				for (action ac : Environment.action.values()) { // summation over a
 					double pi = policy.getActionProbability(currState, ac);
-					ProbableTransitions probableTransitions = stateSpace.getProbableTransitions(currState, ac);
+					ProbableTransitions probableTransitions = completeStateSpace.getProbableTransitions(currState, ac);
 					Set<State> neighbours = probableTransitions.getStates();
 					double sum = 0.0;
 					for(State s_prime : neighbours){ // summation over s'
@@ -106,7 +107,7 @@ public class Environment {
 		Coordinates preyCoordinates = new Coordinates(0,0);
 		Coordinates predatorCoordinates = new Coordinates(0,0);
 		
-		System.out.println(this.stateSpace.getState(preyCoordinates, predatorCoordinates));
+		System.out.println(this.completeStateSpace.getState(preyCoordinates, predatorCoordinates));
 		System.out.println("[policyEvaluation()] Sweeps: " + sweeps);
 		// /REPORT
 	}
@@ -117,20 +118,20 @@ public class Environment {
 	public boolean policyImprovement(/*Policy policy*/) {
 		boolean policyStable = true;
 		Policy policy = this.predator.getPolicy();
-		for (State s : this.stateSpace) {
+		for (State s : this.completeStateSpace) {
 			action b = policy.getAction(s);
 			
 			double max = 0.0;
 			action argmax_a = null;
 			for (action a : Environment.action.values()) {
 				double sum = 0.0;
-				for (State s_prime : this.stateSpace.getNeighbors(s)) {
+				for (State s_prime : this.completeStateSpace.getNeighbors(s)) {
 					double p;
-					if (this.stateSpace.getTransitionAction(s, s_prime) == a) { p = 1.0; }
+					if (this.completeStateSpace.getTransitionAction(s, s_prime) == a) { p = 1.0; }
 					else { p = 0.0; }
 					// P^(pi(s))_ss' has only two possible values: 1 if the action will lead to s', 0 otherwise
 //					// ac: the action that would be required to move to state st
-					double r = stateSpace.getActionReward(s, a);
+					double r = completeStateSpace.getActionReward(s, a);
 					sum += p * (r + GAMMA * s_prime.getStateValue());
 				}
 				if(sum > max) {
@@ -150,11 +151,11 @@ public class Environment {
     public void policyIteration(/*Policy policy*/) {
         int debugIterations = 0;
         Policy policy = this.predator.getPolicy();
-        this.stateSpace.initializeStateValues(0.0);
+        this.completeStateSpace.initializeStateValues(0.0);
 
         do {
             this.policyEvaluation();
-            this.stateSpace.printActions(policy);
+            this.completeStateSpace.printActions(policy);
             debugIterations++;
         } while (!this.policyImprovement());
         System.out.println("[policyIteration()] Number of Iterations : " + debugIterations);
@@ -164,7 +165,7 @@ public class Environment {
 		double delta;
 		
 		// initialization
-		this.stateSpace.initializeStateValues(0.0);
+		this.completeStateSpace.initializeStateValues(0.0);
 		int numIterations = 0;
 		
 		// calculation of the V(s)
@@ -173,13 +174,13 @@ public class Environment {
 			delta = 0.0;
 			
 			// for each s in S
-			Iterator<State> stateSpaceIt = this.stateSpace.iterator();
+			Iterator<State> stateSpaceIt = this.completeStateSpace.iterator();
 			while(stateSpaceIt.hasNext()) {
 				State s = stateSpaceIt.next();
 				double v = s.getStateValue();
 				double max = 0.0;
 				for (action a: Environment.action.values()) { // max over a
-					ProbableTransitions probableTransitions = stateSpace.getProbableTransitions(s, a);
+					ProbableTransitions probableTransitions = completeStateSpace.getProbableTransitions(s, a);
 					Set<State> neighbours = probableTransitions.getStates();
 					double sum = 0.0;
 					for(State s_prime : neighbours){ // summation over s'
@@ -197,13 +198,13 @@ public class Environment {
 
 		// production of the policy
 		LearnedPolicy pi = new LearnedPolicy();
-		Iterator<State> stateSpaceIt = this.stateSpace.iterator();
+		Iterator<State> stateSpaceIt = this.completeStateSpace.iterator();
 		while(stateSpaceIt.hasNext()) {
 			State s = stateSpaceIt.next();
 			action argmax_a = action.WAIT;
 			double max = 0.0;
 			for (action a: Environment.action.values()) { // argmax over a
-				ProbableTransitions probableTransitions = stateSpace.getProbableTransitions(s, a);
+				ProbableTransitions probableTransitions = completeStateSpace.getProbableTransitions(s, a);
 				Set<State> neighbours = probableTransitions.getStates();
 				double sum = 0.0;
 				for(State s_prime : neighbours){ // summation over s'
