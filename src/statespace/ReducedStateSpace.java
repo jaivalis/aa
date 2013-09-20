@@ -10,14 +10,21 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class ReducedStateSpace extends StateSpace implements Iterable<State>, Iterator<State> {
+    private int iter_pos;
+    private State[][] states;
 
     public ReducedStateSpace() {
-
+        this.states = new State[Util.DIM][Util.DIM];
+        this.initStates();
     }
 
     @Override
     protected void initStates() {
-        // TODO
+        for (int i = 0; i < Util.DIM; i++) {
+            for (int j = 0; j < Util.DIM; j++) {
+                this.states[i][j] = new State();
+            }
+        }
     }
 
     @Override
@@ -60,16 +67,6 @@ public class ReducedStateSpace extends StateSpace implements Iterable<State>, It
     @Override
     public State next() {
         if(this.hasNext()){
-            int tmp = this.iter_pos;
-            int l = tmp % Util.DIM;
-            tmp = (int)(tmp / Util.DIM);
-            int k = tmp % Util.DIM;
-            tmp = (int)(tmp / Util.DIM);
-            int j = tmp % Util.DIM;
-            tmp = (int)(tmp / Util.DIM);
-            int i = tmp % Util.DIM;
-            this.iter_pos++;
-            return this.states[i][j][k][l];
         }
         throw new NoSuchElementException();
     }
