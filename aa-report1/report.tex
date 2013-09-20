@@ -31,6 +31,10 @@ $\bullet$ None of the actors stand on the (x,y) coordinate of the grid.\\
 $\bullet$ Only the prey is located on that (x,y) coordinate of the grid.\\
 $\bullet$ Only the predator is situated on the (x,y) coordinate of the grid.
 
+\subsection{Reduced State Representation}
+For the reduced state space the assumption was made that only the prey moves and the predator is considered static, i.e. he stays in a fixed position. Because of the grid beeing toroidal and the equivalence of the states that represent the same relative position between the predator and the prey, the state space can be reduced from O($n^4$) to O($n^2$). Whenever the predator moves, only the prey is considered to move into the opposite direction.\\
+Given that the prey is located in (5,5), the predator in (0,0) and the predator takes action SOUTH, for example, is represented in the reduced state space with the predator staying in (0,0) and the prey moving NORTH to (4,5).
+
 
 \subsection{Simulator}
 In the simulator the prey and predator move according to their policy until the prey is caught by the predator. The coordinates of both the agent and the prey are initialized in the beginning of each episode.
@@ -75,30 +79,33 @@ The algorithm took a total of 40 iterations to converge to the limit.\\
 
 \pagebreak
 \subsection{Policy Iteration}
-
-The values for the set of discount factors are shown in the Table~\ref{table:discFactors} below.
+The output of the values of all states in which the prey is located at (5,5), using Policy Iteration with a discount factor of $\gamma$=0.8, is displayed in Table ~\ref{table:outputPolIter}.
+The values for the set of discount factors are shown in the Table~\ref{table:discFactors} below. It can be seen that policy iteration takes more execution time, given the fact that policy iteration performs policy evaluation on every iteration this is to be expected.
 \begin{center}
 \begin{table*}[ht]
 {\small
 \hfill{}
-\begin{tabular}{c|c|c}
-\textbf{Discount Factor} & \textbf{Policy Iteration} & \textbf{Value Iteration}\\
+\begin{tabular}{c|c|c|c|c}
+ &  \textbf{Policy Iteration} &  & \textbf{Value Iteration} &\\
+\textbf{Discount Factor} &  \textbf{Iterations} & \textbf{Seconds} & \textbf{Iterations} & \textbf{Seconds}\\
 	\hline
-0.1 & 11 & 7\\
-0.5 & 14 & 19\\
-0.7 & 15 & 34\\
-0.9 & 22 & 110\\
+0.1 & 13 & 16.4 & 7 & 3.3\\
+0.5 & 15 & 44.4 & 19& 7\\
+0.7 & 18 & 54 & 34& 12.3\\
+0.9 & 11 & 80.9 & 110& 37.7\\
 \end{tabular}}
 \hfill{}
-\caption{Number of iterations for different discount factors.}
+\caption{Number of iterations and execution time for different discount factors.}
 \label{table:discFactors}
 \end{table*}
 \end{center}
 
 
 
-\subsection{Value Iteration}
 
+
+\subsection{Value Iteration}
+The output of the values of all states in which the prey is located at (5,5), using Value Iteration with a discount factor of $\gamma$=0.8, is displayed in Table ~\ref{table:outputValIter}.
 \begin{center}
 \begin{table*}[ht]
 {\small
@@ -121,7 +128,7 @@ The values for the set of discount factors are shown in the Table~\ref{table:dis
 \end{tabular}}
 \hfill{}
 \caption{Using Policy Iteration: Values of all states in which the prey is located at (5,5) with a discount factor of ($\gamma$=0.8), convergence after 16 iterations.}
-\label{table:gamma=0.8}
+\label{table:outputPolIter}
 \end{table*}
 \end{center}
 
@@ -148,10 +155,15 @@ The values for the set of discount factors are shown in the Table~\ref{table:dis
 \end{tabular}}
 \hfill{}
 \caption{Using Value Iteration: Values of all states in which the prey is located at (5,5) with a discount factor of ($\gamma$=0.8), convergence after 53 iterations.}
-\label{table:gamma=0.8}
+\label{table:outputValIter}
 \end{table*}
 \end{center}
 
+\section{Implementation}
+
+
+\section{Conclusion}
+In this assignment about Single Agent Planning in a fully observable Markov Decision Process, different algorithms were used to find an optimal policy for an agent to catch a prey. Policy evaluation is used to determine the value of states for the agents policy. In order to improve the policy, policy iteration and value iteration have been implemented, with the awareness that policy iteration needs less iteration steps, but value iteration finds the best policy faster.
 
 
 \begin{thebibliography}{3}
