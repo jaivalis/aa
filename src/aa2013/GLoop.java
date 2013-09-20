@@ -1,13 +1,14 @@
 package aa2013;
 
 import environment.Environment;
+import statespace.CompleteStateSpace;
 import statespace.ReducedStateSpace;
 
 
 public class GLoop {	
 	public static void main(String[] args) {
 		int time = 0;
-		Environment env = new Environment(new ReducedStateSpace());
+		Environment env = new Environment(new CompleteStateSpace());
 		
 		/* Task 1 */
 		env.simulate(10);
@@ -17,7 +18,7 @@ public class GLoop {
 		/* Task 3 */
 //		env.policyIteration();
 		/* Task 4 */
-//		env.valueIterationGammas();
+		env.valueIterationGammas();
 		long endTime = System.currentTimeMillis();
 		System.out.println("Execution time: " + (endTime - startTime) + "ms");
 		

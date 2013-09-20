@@ -67,9 +67,9 @@ public class ReducedStateSpace extends StateSpace implements Iterable<State>, It
 
     @Override
     public State getNextState(State s, Environment.action a) {
-        // TODO
-        ReducedState rs = (ReducedState) s;
-        return null;
+        Coordinates predNew = s.getPredatorCoordinates();
+        predNew = predNew.getShifted(a.getOpposite());
+        return this.getState(s.getPreyCoordinates(), predNew);
     }
 
     @Override
