@@ -2,9 +2,7 @@ package actor;
 
 import environment.Coordinates;
 import policy.RandomPreyPolicy;
-import state.CompleteState;
 import state.State;
-import statespace.CompleteStateSpace;
 import statespace.StateSpace;
 
 
@@ -34,7 +32,7 @@ public class Prey extends Actor {
 	/**
 	 * Moves prey with respect to the predator's position.
 	 */
-	public void move(CompleteState s) {
+	public void move(State s) {
 		Coordinates newC = this.coordinates;
 		do {
 			newC = newC.getShifted(this.policy.getAction(s));

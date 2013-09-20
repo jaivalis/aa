@@ -2,7 +2,6 @@ package actor;
 
 import environment.Coordinates;
 import policy.PredatorPolicy;
-import statespace.CompleteStateSpace;
 import statespace.StateSpace;
 
 public class Predator extends Actor {

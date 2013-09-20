@@ -1,13 +1,13 @@
 package statespace;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
 import environment.Coordinates;
 import environment.Environment;
 import environment.ProbableTransitions;
 import policy.Policy;
 import state.State;
+
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public abstract class StateSpace implements Iterable<State>, Iterator<State>  {
     /****************************** abstract functions ****************************/
@@ -36,7 +36,7 @@ public abstract class StateSpace implements Iterable<State>, Iterator<State>  {
     public abstract void initializeStateValues(double d);
 
     public abstract void printActions(Policy policy);
-    /****************************** \abstract functions ****************************/
+    /****************************** /abstract functions ****************************/
 
 
     /**

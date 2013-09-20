@@ -4,9 +4,7 @@ import actor.Predator;
 import actor.Prey;
 import policy.LearnedPolicy;
 import policy.Policy;
-import state.CompleteState;
 import state.State;
-import statespace.CompleteStateSpace;
 import statespace.StateSpace;
 
 import java.io.BufferedWriter;

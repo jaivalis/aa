@@ -35,7 +35,7 @@ public class Coordinates {
 	}
 	
 	/**
-	 * Returns the action required to move from this state to state other.
+	 * Returns the action required to move from this coordinates to coordinates other.
 	 * (requires this to be neighboring to other)
 	 */
 	public action getTransitionAction(Coordinates other) {

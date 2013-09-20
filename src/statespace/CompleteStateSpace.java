@@ -132,25 +132,25 @@ public class CompleteStateSpace extends StateSpace{
 	public void remove() { }
 	/******************************* Iterator Related ************************************/
 	
-	public void print2dSliceGivenPredator(Coordinates predC) { // untested, please FIXME!!!
+	public void print2dSliceGivenPredator(Coordinates predC) { // untested
 		int k = predC.getX();
 		int l = predC.getY();
 		for(int i = 0; i < Util.DIM; i++) {
 			for(int j = 0; j < Util.DIM; j++) {
 				State currState = this.states[i][j][k][l];
-				System.out.println(currState.getStateValue()+" ");// please format me! FIXME
+				System.out.println(currState.getStateValue()+" ");
 			}
 			System.out.println(); // just new line
 		}
 	}
 
-	public void print2dSliceGivenPrey(Coordinates preyC) { // untested, please FIXME!!!
+	public void print2dSliceGivenPrey(Coordinates preyC) { // untested
 		int i = preyC.getX();
 		int j = preyC.getY();
 		for(int k = 0; k < Util.DIM; k++) {
 			for(int l = 0; l < Util.DIM; l++) {
 				State currState = this.states[i][j][k][l];
-				System.out.println(currState.getStateValue()+" "); // please format me! FIXME
+				System.out.println(currState.getStateValue()+" ");
 			}
 			System.out.println(); // just new line
 		}

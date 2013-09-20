@@ -3,7 +3,6 @@ package actor;
 import environment.Coordinates;
 import environment.Environment.action;
 import policy.Policy;
-import state.CompleteState;
 import state.State;
 
 public abstract class Actor {
@@ -41,8 +40,7 @@ public abstract class Actor {
 		return this.policy.getAction(s);
 	}
 
-	public void move(CompleteState s) {
-		// TODO Auto-generated method stub
-		
-	}
+//	public void move(CompleteState s) {
+//		//  Auto-generated method stub
+//	}
 }

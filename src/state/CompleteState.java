@@ -48,12 +48,8 @@ public class CompleteState extends State {
     public void setActor(Actor a) {
         if (a instanceof Prey) {
             this.preyC = a.getCoordinates();
-//			this.prey = (Prey) a;
         } else if (a instanceof Predator) {
             this.predC = a.getCoordinates();
-//			this.predator = (Predator) a;
         }
     }
-
-    public Coordinates getPredatorCoordinates() { return this.predC; }
 }

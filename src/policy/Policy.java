@@ -16,7 +16,8 @@ public abstract class Policy {
 	}
 	
 	public action getAction(State s) {
-		return this.stateActionMapping.get(s).getAction();
+        PossibleActions ac = this.stateActionMapping.get(s);
+		return ac.getAction();
 	}
 	
 	public String getActionString(State s) {
