@@ -33,8 +33,6 @@ public abstract class StateSpace {
 
     public abstract void initializeStateValues(double d);
 
-    public abstract double getActionReward(State s, Environment.action a);
-
     public abstract void printActions(Policy policy);
     /****************************** \abstract functions ****************************/
 
@@ -46,6 +44,16 @@ public abstract class StateSpace {
         Coordinates predNew = s.getPredatorCoordinates();
         predNew = predNew.getShifted(a);
         return this.getState(s.getPreyCoordinates(), predNew);
+    }
+
+    /**
+     * Returns the Reward that would be acquired if action a was taken in State s.
+     * @param s; Current state.
+     * @param a; Action to be taken.
+     */
+    public double getActionReward(State s, Environment.action a) {
+        State newState = this.getNextState(s, a);
+        return newState.getStateReward();
     }
 
     /**

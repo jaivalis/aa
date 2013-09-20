@@ -24,12 +24,10 @@ public class ReducedStateSpace extends StateSpace implements Iterable<State>, It
 
     @Override
     protected void initStates() {
-        Coordinates preyC = null;
-        Coordinates predC =  new Coordinates(0, 0);
         for (int i = 0; i < Util.DIM; i++) {
             for (int j = 0; j < Util.DIM; j++) {
-                preyC = new Coordinates(i, j);
-                this.states[i][j] = new State(preyC, predC);
+                Coordinates preyC = new Coordinates(i, j);
+                this.states[i][j] = new State(preyC, new Coordinates(0, 0)); // predCoordinates fixed to (0,0)
             }
         }
     }
@@ -47,11 +45,6 @@ public class ReducedStateSpace extends StateSpace implements Iterable<State>, It
     @Override
     public void initializeStateValues(double d) {
         for (State s : this) { s.setStateValue(d); }
-    }
-
-    @Override
-    public double getActionReward(State s, Environment.action a) {
-        return 0;  // TODO
     }
 
     @Override
