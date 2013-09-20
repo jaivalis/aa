@@ -1,12 +1,15 @@
 package statespace;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import environment.Coordinates;
 import environment.Environment;
 import environment.ProbableTransitions;
 import policy.Policy;
 import state.State;
 
-public abstract class StateSpace {
+public abstract class StateSpace implements Iterable<State>, Iterator<State>  {
     /****************************** abstract functions ****************************/
     /**
      * Called from the constructor. Initializes the state Container
@@ -59,4 +62,6 @@ public abstract class StateSpace {
      * @return ProbableTransition a structure containing possible states and probabilities
      */
     public abstract ProbableTransitions getProbableTransitions(State s, Environment.action a);
+
+	public abstract ArrayList<State> getNeighbors(State s);
 }

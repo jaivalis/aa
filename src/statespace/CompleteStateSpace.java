@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class CompleteStateSpace extends StateSpace implements Iterable<State>, Iterator<State> {
+public class CompleteStateSpace extends StateSpace{
 	private CompleteState[/*preyX*/][/*preyY*/][/*predX*/][/*predY*/] states;
 	private int iter_pos = 0;
 	

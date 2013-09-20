@@ -7,6 +7,7 @@ import policy.Policy;
 import state.CompleteState;
 import state.State;
 import statespace.CompleteStateSpace;
+import statespace.StateSpace;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -15,7 +16,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 public class Environment {	
-	private CompleteStateSpace stateSpace;
+	private StateSpace stateSpace;
 	private Prey prey;
 	private Predator predator;
 
@@ -25,8 +26,8 @@ public class Environment {
 	
 	public enum action { NORTH, SOUTH, EAST, WEST, WAIT };
 	
-	public Environment() {
-		this.stateSpace = new CompleteStateSpace();
+	public Environment(StateSpace givenStateSpace) {
+		this.stateSpace = givenStateSpace;
 		this.predator = new Predator(new Coordinates(0,0), stateSpace);
 		this.prey = new Prey(new Coordinates(5,5), stateSpace);
 	}
@@ -38,7 +39,7 @@ public class Environment {
 			this.predator.setCoordinates(new Coordinates(0, 0));
 			this.prey.setCoordinates(new Coordinates(5, 5));
 			this.prey.setAlive(true);
-			CompleteState initialState = this.stateSpace.getState(this.prey.getCoordinates(), this.predator.getCoordinates());
+			State initialState = this.stateSpace.getState(this.prey.getCoordinates(), this.predator.getCoordinates());
 			
 			int rounds = 0;
 			while (!isEpisodeOver()) { // run episode
@@ -53,8 +54,8 @@ public class Environment {
 
 	public boolean isEpisodeOver() { return !this.prey.getAlive(); }
 	
-	public CompleteState nextRound(CompleteState s) {
-		CompleteState currentState = s;
+	public State nextRound(State s) {
+		State currentState = s;
 		this.predator.move(currentState);
 		
 		// update currentState.
@@ -84,7 +85,7 @@ public class Environment {
 			delta = 0.0;
 			Iterator<State> stateSpaceIt = this.stateSpace.iterator();
 			while(stateSpaceIt.hasNext()) {
-				CompleteState currState = stateSpace.next(); // for s in S+
+				State currState = stateSpace.next(); // for s in S+
 				double V_s = 0.0;
 				double v = currState.getStateValue();
 

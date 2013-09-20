@@ -8,6 +8,7 @@ import policy.Policy;
 import state.ReducedState;
 import state.State;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -98,4 +99,10 @@ public class ReducedStateSpace extends StateSpace implements Iterable<State>, It
     @Override
     public void remove() { }
     /******************************* Iterator Related ************************************/
+
+	@Override
+	public ArrayList<State> getNeighbors(State s) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

@@ -29,7 +29,7 @@ public abstract class Actor {
 	 * Move the Actor according to an action picked from the policy of the Actor.
 	 * @param s; The current state.
 	 */
-	public void move(CompleteState s) {
+	public void move(State s) {
 		this.move(this.policy.getAction(s)); 
 	}
 	
@@ -39,5 +39,10 @@ public abstract class Actor {
 	 */
 	public action getNextMoveDirection(State s) { 
 		return this.policy.getAction(s);
+	}
+
+	public void move(CompleteState s) {
+		// TODO Auto-generated method stub
+		
 	}
 }
