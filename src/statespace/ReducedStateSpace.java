@@ -40,6 +40,11 @@ public class ReducedStateSpace extends StateSpace implements Iterable<State>, It
 
     @Override
     public ReducedState getState(Coordinates preyC, Coordinates predC) {
+    	// FIXME: this function may be removed!!!!!
+        return this.states[preyC.getX()][preyC.getY()];
+    }
+
+    public ReducedState getState(Coordinates preyC) {
         return this.states[preyC.getX()][preyC.getY()];
     }
 
@@ -69,19 +74,25 @@ public class ReducedStateSpace extends StateSpace implements Iterable<State>, It
 
     @Override
     public ProbableTransitions getProbableTransitions(State s, Environment.action a) {
-		return null;
-//        ProbableTransitions ret = new ProbableTransitions();
-//
-//        Coordinates preyNewPos = s.getPreyCoordinates();
-//
-//        // where could the prey be going?
-//        for(Environment.action act : Environment.action.values()) {
-//            PreyAction tmp = new PreyAction();
-//            double p = tmp.getActionProbability(act);
-//            Coordinates preyPossiblePos = preyCurrPos.getShifted(act);
-//            ret.add(this.getState(predatorNewPos, preyPossiblePos), p);
-//        }
-//        return ret;
+        ProbableTransitions ret = new ProbableTransitions();
+
+        // if the action will be undertaken, then the predator
+        // will have a new position, BUT since we are in a system
+        // in which the relative position predator-prey is relevant
+        // and the predator is considered to stay always in (0,0)
+        // then we need to consider the prey as virtually moving, even if it's not.
+        // This virtual move is in the opposite direction of the actual predator move
+        Coordinates preyNewPos = s.getPreyCoordinates().getShifted(a.getOpposite());
+
+        // afterwards, there is the *actual* move of the prey
+        // where could the prey be going?
+        for(Environment.action act : Environment.action.values()) {
+            PreyAction tmp = new PreyAction();
+            double p = tmp.getActionProbability(act);
+            Coordinates preyPossiblePos = preyNewPos.getShifted(act);
+            ret.add(this.getState(preyPossiblePos), p);
+        }
+        return ret;
     }
 
     /******************************* Iterator Related ************************************/
