@@ -209,7 +209,7 @@ public class Environment {
 				double sum = 0.0;
 				for(State s_prime : neighbours){ // summation over s'
 					double p = probableTransitions.getProbability(s_prime);
-					sum += p * (s_prime.getStateReward() + GAMMA * s_prime.getStateValue());
+					sum += p * (s_prime.getStateReward() + local_gamma * s_prime.getStateValue());
 				}
 				if(sum > max) {
 					max = sum;
