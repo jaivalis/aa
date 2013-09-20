@@ -49,8 +49,8 @@ public abstract class Policy {
 	}
 
 	public void initializeStateValues(double d) {
-		for (State state : stateActionMapping.keySet()) {
+		for (State state : this.stateActionMapping.keySet()) {
 			state.setStateValue(d);
-		}		
+		}
 	}
 }

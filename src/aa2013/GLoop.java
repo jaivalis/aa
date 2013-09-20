@@ -8,7 +8,7 @@ import statespace.ReducedStateSpace;
 public class GLoop {	
 	public static void main(String[] args) {
 		int time = 0;
-		Environment env = new Environment(new CompleteStateSpace());
+		Environment env = new Environment(new ReducedStateSpace());
 		
 		/* Task 1 */
 		env.simulate(10);

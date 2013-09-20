@@ -112,7 +112,6 @@ public class ReducedStateSpace extends StateSpace implements Iterable<State>, It
     public ReducedState next() {
         if(this.hasNext()){
             int tmp = this.iter_pos;
-            tmp = tmp / Util.DIM;
             int j = tmp % Util.DIM;
             tmp = tmp / Util.DIM;
             int i = tmp % Util.DIM;
