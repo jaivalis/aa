@@ -5,15 +5,16 @@ import action.PreyAction;
 import environment.Environment.action;
 import state.State;
 import statespace.CompleteStateSpace;
+import statespace.StateSpace;
 
 import java.util.HashMap;
 import java.util.Random;
 
 public class RandomPreyPolicy extends Policy {
 
-	public RandomPreyPolicy(CompleteStateSpace ss) {
+	public RandomPreyPolicy(StateSpace stateSpace) {
 		this.stateActionMapping = new HashMap<State, PossibleActions>();
-		for (State s : ss) {
+		for (State s : stateSpace) {
 			this.stateActionMapping.put(s, new PreyAction());
 		}
 	}

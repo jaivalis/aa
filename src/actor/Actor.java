@@ -3,7 +3,6 @@ package actor;
 import environment.Coordinates;
 import environment.Environment.action;
 import policy.Policy;
-import state.CompleteState;
 import state.State;
 
 public abstract class Actor {
@@ -29,7 +28,7 @@ public abstract class Actor {
 	 * Move the Actor according to an action picked from the policy of the Actor.
 	 * @param s; The current state.
 	 */
-	public void move(CompleteState s) {
+	public void move(State s) {
 		this.move(this.policy.getAction(s)); 
 	}
 	
@@ -40,4 +39,8 @@ public abstract class Actor {
 	public action getNextMoveDirection(State s) { 
 		return this.policy.getAction(s);
 	}
+
+//	public void move(CompleteState s) {
+//		//  Auto-generated method stub
+//	}
 }

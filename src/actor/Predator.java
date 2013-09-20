@@ -2,11 +2,11 @@ package actor;
 
 import environment.Coordinates;
 import policy.PredatorPolicy;
-import statespace.CompleteStateSpace;
+import statespace.StateSpace;
 
 public class Predator extends Actor {
 	
-	public Predator(Coordinates c, CompleteStateSpace ss) {
+	public Predator(Coordinates c, StateSpace ss) {
 		this.coordinates = c;
 		this.policy = new PredatorPolicy(ss);
 	}

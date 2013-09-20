@@ -1,9 +1,9 @@
 package action;
 
+import environment.Environment.action;
+
 import java.util.HashMap;
 import java.util.Iterator;
-
-import environment.Environment.action;
 public abstract class PossibleActions {
 	
 	protected HashMap<action, Double> actionProbability;
@@ -20,7 +20,7 @@ public abstract class PossibleActions {
 		}
 	}
 
-	public String toString(){
+	public String toString() {
 		return this.actionProbability.toString();
 	}
 }

@@ -1,15 +1,17 @@
 package aa2013;
 
 import environment.Environment;
+import statespace.CompleteStateSpace;
+import statespace.ReducedStateSpace;
 
 
 public class GLoop {	
 	public static void main(String[] args) {
 		int time = 0;
-		Environment env = new Environment();
+		Environment env = new Environment(new CompleteStateSpace());
 		
 		/* Task 1 */
-//		env.simulate(10);
+		env.simulate(10);
 		long startTime = System.currentTimeMillis();
 		/* Task 2 */
 //		env.policyEvaluation();

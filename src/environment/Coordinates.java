@@ -35,7 +35,7 @@ public class Coordinates {
 	}
 	
 	/**
-	 * Returns the action required to move from this state to state other.
+	 * Returns the action required to move from this coordinates to coordinates other.
 	 * (requires this to be neighboring to other)
 	 */
 	public action getTransitionAction(Coordinates other) {
@@ -46,6 +46,16 @@ public class Coordinates {
 		if (y == yOther - 1 || (yOther == 0 && y == 10)) { return action.EAST; }
 		if (y == yOther + 1 || (yOther == Util.DIM-1 && y == 0)) { return action.WEST; }
 		return null;
+	}
+	
+	/**
+	 * this is a simple function that calculates the opposite of an action
+	 * @param other the other pair of coordinates (besides 'this')
+	 * @return action
+	 */
+	public action getOppositeTransitionAction(Coordinates other) {
+		action ta = this.getTransitionAction(other);
+		return ta.getOpposite();
 	}
 
 	// TODO : set to void.

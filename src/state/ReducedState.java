@@ -2,6 +2,7 @@ package state;
 
 import environment.Coordinates;
 import environment.Environment;
+import environment.Environment.action;
 
 public class ReducedState extends State {
     public ReducedState() {}
@@ -12,7 +13,7 @@ public class ReducedState extends State {
     }
 
     public Environment.action getTransitionAction(ReducedState rs_prime) {
-        // TODO important
-        return null;  //To change body of created methods use File | Settings | File Templates.
+    	Coordinates other_pos = rs_prime.getPreyCoordinates();
+    	return this.getPreyCoordinates().getOppositeTransitionAction(other_pos);
     }
 }

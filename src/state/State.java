@@ -18,11 +18,8 @@ public abstract class State {
 
     public void setStateValue(double stateValue) { this.stateValue = stateValue; }
 
-    public void setPrey(Coordinates c) { this.preyC = c; }
+//    public void setPrey(Coordinates c) { this.preyC = c; }
 
-    //	/**
-//	 * used for debugging
-//	 */
 //	public void printActions(Policy policy) {
 //		for(int i = 0; i < this.cells.length; i++){
 //			for(int j = 0; j < this.cells[i].length; j++){
@@ -32,7 +29,7 @@ public abstract class State {
 //			System.out.println();
 //		}
 //	}
-//
+
 	@Override
 	public String toString() {
 		String ret = "";
@@ -56,4 +53,5 @@ public abstract class State {
     }
 
     public Coordinates getPreyCoordinates() { return this.preyC; }
+    public Coordinates getPredatorCoordinates() { return this.predC; }
 }

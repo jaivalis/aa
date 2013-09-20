@@ -4,12 +4,17 @@ import environment.Coordinates;
 import environment.Environment;
 import environment.ProbableTransitions;
 import environment.Util;
+import environment.Environment.action;
 import policy.Policy;
+import state.CompleteState;
 import state.ReducedState;
 import state.State;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+
+import action.PreyAction;
 
 /**
  * For this StateSpace we make the assumption that the predator stays in a fixed position and
@@ -36,6 +41,11 @@ public class ReducedStateSpace extends StateSpace implements Iterable<State>, It
 
     @Override
     public ReducedState getState(Coordinates preyC, Coordinates predC) {
+    	// FIXME: this function may be removed!!!!!
+        return this.states[preyC.getX()][preyC.getY()];
+    }
+
+    public ReducedState getState(Coordinates preyC) {
         return this.states[preyC.getX()][preyC.getY()];
     }
 
@@ -58,15 +68,32 @@ public class ReducedStateSpace extends StateSpace implements Iterable<State>, It
 
     @Override
     public State getNextState(State s, Environment.action a) {
-        // TODO
-        ReducedState rs = (ReducedState) s;
-        return null;
+        Coordinates predNew = s.getPredatorCoordinates();
+        predNew = predNew.getShifted(a.getOpposite());
+        return this.getState(s.getPreyCoordinates(), predNew);
     }
 
     @Override
     public ProbableTransitions getProbableTransitions(State s, Environment.action a) {
-        // TODO
-        return null;
+        ProbableTransitions ret = new ProbableTransitions();
+
+        // if the action will be undertaken, then the predator
+        // will have a new position, BUT since we are in a system
+        // in which the relative position predator-prey is relevant
+        // and the predator is considered to stay always in (0,0)
+        // then we need to consider the prey as virtually moving, even if it's not.
+        // This virtual move is in the opposite direction of the actual predator move
+        Coordinates preyNewPos = s.getPreyCoordinates().getShifted(a.getOpposite());
+
+        // afterwards, there is the *actual* move of the prey
+        // where could the prey be going?
+        for(Environment.action act : Environment.action.values()) {
+            PreyAction tmp = new PreyAction();
+            double p = tmp.getActionProbability(act);
+            Coordinates preyPossiblePos = preyNewPos.getShifted(act);
+            ret.add(this.getState(preyPossiblePos), p);
+        }
+        return ret;
     }
 
     /******************************* Iterator Related ************************************/
@@ -85,7 +112,6 @@ public class ReducedStateSpace extends StateSpace implements Iterable<State>, It
     public ReducedState next() {
         if(this.hasNext()){
             int tmp = this.iter_pos;
-            tmp = tmp / Util.DIM;
             int j = tmp % Util.DIM;
             tmp = tmp / Util.DIM;
             int i = tmp % Util.DIM;
@@ -98,4 +124,13 @@ public class ReducedStateSpace extends StateSpace implements Iterable<State>, It
     @Override
     public void remove() { }
     /******************************* Iterator Related ************************************/
+
+	@Override
+	public ArrayList<State> getNeighbors(State s) {
+		ArrayList<State> ret = new ArrayList<State>();
+		for (action a : action.values()) {
+			ret.add(this.getNextState(s, a));
+		}
+		return ret;
+	}
 }
