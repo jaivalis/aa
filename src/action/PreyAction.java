@@ -21,16 +21,4 @@ public class PreyAction extends PossibleActions {
 		actionProbability.put(action.WEST, 0.05);
 		actionProbability.put(action.WAIT, 0.80);
 	}
-
-	@Override
-	public action getAction() {
-		Random rand = new Random();
-		float randfl = rand.nextFloat();
-		
-		if (randfl < 0.05) { return action.NORTH; } 
-		if (randfl < 0.10) { return action.SOUTH; } 
-		if (randfl < 0.15) { return action.EAST; }
-		if (randfl < 0.20) { return action.WEST; }
-		return action.WAIT;
-	}
 }
