@@ -21,35 +21,5 @@ public class PredatorAction extends PossibleActions {
 		actionProbability.put(action.WAIT, 0.2);
 	}
 
-	@Override
-	public action getAction() {
-		if (areEquiprobable()) { return getRandomAction(); }
-		
-		action maxProbAction = null;
-		double maxProb = 0.0;
-		for (action ac : this.actionProbability.keySet()) {
-			if ( maxProb <= this.actionProbability.get(ac)) {
-				maxProb = this.actionProbability.get(ac);
-				maxProbAction = ac;
-			}
-		}
-		return maxProbAction;
-	}
-	
-	private boolean areEquiprobable() {
-		double prob = 0.2;
-		for (action ac : this.actionProbability.keySet()) {
-			if (this.actionProbability.get(ac) != prob) { return false; }
-		} return true;
-	}
-	
-	/**
-	 * returns a random action from the keys of the HashMap.
-	 */
-	private action getRandomAction() {
-		Random r = new Random();
-		int randint = r.nextInt(actionProbability.size());
-		ArrayList<action> keys = new ArrayList<action>(actionProbability.keySet());
-		return keys.get(randint);
-	}
+
 }

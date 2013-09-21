@@ -56,7 +56,7 @@ public abstract class PossibleActions {
 	 * @return action
 	 * @throws Exception
 	 */
-	public action randomAction() throws Exception {
+	public action getRandomAction() {
 		Random rand = new Random();
 		float randfl = rand.nextFloat();
 		Iterator<action> itA = this.actionProbability.keySet().iterator();
@@ -64,11 +64,29 @@ public abstract class PossibleActions {
 		action a = null;
 		do {
 			if(!itA.hasNext()){
-				throw new Exception("problem with PossibleActions.actionProbability: probabilities do not seem to sum up to 1.0");
+				// Exception is not thrown, just printed with stacktrace and program is aborted
+				new Exception("problem with PossibleActions.actionProbability: probabilities do not seem to sum up to 1.0").printStackTrace();
+				System.exit(0);
 			}
 			a = itA.next();
 			sum += this.getActionProbability(a);
 		} while(randfl > sum);
 		return a;
+	}
+	
+	public action getMostProbableAction() {
+		if (this.areEquiprobable()) {
+			return this.getRandomAction();
+		}
+		
+		action maxProbAction = null;
+		double maxProb = 0.0;
+		for (action ac : this.actionProbability.keySet()) {
+			if ( maxProb <= this.actionProbability.get(ac)) {
+				maxProb = this.actionProbability.get(ac);
+				maxProbAction = ac;
+			}
+		}
+		return maxProbAction;
 	}
 }
