@@ -74,6 +74,11 @@ public abstract class PossibleActions {
 		return a;
 	}
 	
+	/**
+	 * following function can be used to implement a deterministic action choice.
+	 * (unless actions are equiprobable, in which case a random is drawn).
+	 * @return action
+	 */
 	public action getMostProbableAction() {
 		if (this.areEquiprobable()) {
 			return this.getRandomAction();

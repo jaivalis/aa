@@ -20,6 +20,4 @@ public class PredatorAction extends PossibleActions {
 		actionProbability.put(action.WEST, 0.2);
 		actionProbability.put(action.WAIT, 0.2);
 	}
-
-
 }
