@@ -29,7 +29,7 @@ public abstract class Actor {
 	 * @param s; The current state.
 	 */
 	public void move(State s) {
-		this.move(this.policy.getAction(s)); 
+		this.move(this.getNextMoveDirection(s)); 
 	}
 	
 	/**

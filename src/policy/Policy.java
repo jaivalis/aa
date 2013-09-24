@@ -17,11 +17,11 @@ public abstract class Policy {
 	
 	public action getAction(State s) {
         PossibleActions ac = this.stateActionMapping.get(s);
-		return ac.getAction();
+		return ac.getRandomAction();
 	}
 	
 	public String getActionString(State s) {
-		switch (this.stateActionMapping.get(s).getAction()) {
+		switch (this.stateActionMapping.get(s).getRandomAction()) {
 			case NORTH: return "^";
 			case SOUTH:	return "V";
 			case EAST:	return ">";
