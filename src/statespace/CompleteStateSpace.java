@@ -13,6 +13,7 @@ import state.State;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.Random;
 
 public class CompleteStateSpace extends StateSpace{
 	private CompleteState[/*preyX*/][/*preyY*/][/*predX*/][/*predY*/] states;
@@ -62,6 +63,24 @@ public class CompleteStateSpace extends StateSpace{
 		}
 		return ret;
 	}
+
+    @Override
+    public State getRandomState() {
+        Random r = new Random();
+        int randomInt = r.nextInt(getStateSpaceSize());
+        int tmp = randomInt;
+        int l = tmp % Util.DIM;
+        tmp = (int)(tmp / Util.DIM);
+        int k = tmp % Util.DIM;
+        tmp = (int)(tmp / Util.DIM);
+        int j = tmp % Util.DIM;
+        tmp = (int)(tmp / Util.DIM);
+        int i = tmp % Util.DIM;
+        this.iter_pos++;
+        return this.states[i][j][k][l];
+    }
+
+    protected int getStateSpaceSize() { return (int) Math.pow(Util.DIM, 4); }
 
     @Override
 	public void initializeStateValues(double d) {
@@ -131,7 +150,8 @@ public class CompleteStateSpace extends StateSpace{
 	@Override
 	public void remove() { }
 	/******************************* Iterator Related ************************************/
-	
+
+    // TODO : remove those if not necessary
 	public void print2dSliceGivenPredator(Coordinates predC) { // untested
 		int k = predC.getX();
 		int l = predC.getY();

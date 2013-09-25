@@ -5,7 +5,7 @@ import statespace.CompleteStateSpace;
 import statespace.ReducedStateSpace;
 
 
-public class Main {	
+public class MainA1 {
 	public static void main(String[] args) {
 		int time = 0;
 		Environment env = new Environment(new CompleteStateSpace());

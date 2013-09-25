@@ -64,4 +64,11 @@ public abstract class StateSpace implements Iterable<State>, Iterator<State>  {
     public abstract ProbableTransitions getProbableTransitions(State s, Environment.action a);
 
 	public abstract ArrayList<State> getNeighbors(State s);
+
+    /**
+     * Returns a random state from the StateSpace used for Q-Learing.
+     */
+    public abstract State getRandomState();
+
+    protected abstract int getStateSpaceSize();
 }

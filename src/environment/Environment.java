@@ -22,13 +22,7 @@ public class Environment {
 	private final double THETA = 0.00001; // threshold for the loop end condition
 	private final double GAMMA = 0.8;
 	
-	public enum action 
-	{ 
-		NORTH, 
-		SOUTH, 
-		EAST, 
-		WEST, 
-		WAIT;
+	public enum action { NORTH, SOUTH, EAST, WEST, WAIT;
 		
 		public action getOpposite() {
 			switch(this) {
@@ -242,9 +236,7 @@ public class Environment {
 			}
 			pi.setUniqueAction(s, argmax_a);
 		}
-		
 		// TODO: output State values somehow.
-//		this.state.printStateValues();
 		return new ValueIterationResult(numIterations,pi);
 	}
 	
@@ -269,4 +261,20 @@ public class Environment {
 			} br.close();
 		} catch (IOException e) { e.printStackTrace(); }
 	}
+
+
+    /***********************************************************************************/
+    public void Q_Learning(Policy p) {
+        // initialize Q(s,a) arbitrarily
+        do {
+            Episode ep = new Episode(this.stateSpace, null, null, true);
+
+            while (ep.hasNextTurn()) {
+                // Choose a from s using policy derived from Q (e-greedy)
+                // Take action a. observe r, s'
+
+
+            }
+        } while (true);
+    }
 }

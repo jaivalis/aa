@@ -13,6 +13,7 @@ import state.State;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.Random;
 
 import action.PreyAction;
 
@@ -133,4 +134,19 @@ public class ReducedStateSpace extends StateSpace implements Iterable<State>, It
 		}
 		return ret;
 	}
+
+    @Override
+    public State getRandomState() {
+        Random r = new Random();
+        int randomInt = r.nextInt(getStateSpaceSize());
+        int tmp = randomInt;
+        int j = tmp % Util.DIM;
+        tmp = tmp / Util.DIM;
+        int i = tmp % Util.DIM;
+        this.iter_pos++;
+        return this.states[i][j];
+    }
+
+    @Override
+    protected int getStateSpaceSize() { return (int)Math.pow(Util.DIM, 2); }
 }
