@@ -273,7 +273,7 @@ public class Environment {
 		Q q = new Q();
 		for(State s : this.stateSpace){
 			for(action a : Environment.action.values()){
-				q.put(new StateAction(s,a), value);
+				q.set(s,a, value);
 			}
 		}
 		return q;
@@ -284,7 +284,7 @@ public class Environment {
     public void Q_Learning(Policy p) {
         // initialize Q(s,a) arbitrarily
     	
-    	HashMap<StateAction,Double> q = this.initializeQ(15.0);
+    	Q q = this.initializeQ(15.0);
     	
         for(State s : this.stateSpace) { // repeat for each episode // initialize s
             do { // repeat for each step of episode
