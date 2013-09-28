@@ -67,7 +67,7 @@ public class CompleteStateSpace extends StateSpace{
     @Override
     public State getRandomState() {
         Random r = new Random();
-        int randomInt = r.nextInt(getStateSpaceSize());
+        int randomInt = r.nextInt(length());
         int tmp = randomInt;
         int l = tmp % Util.DIM;
         tmp = (int)(tmp / Util.DIM);
@@ -80,7 +80,7 @@ public class CompleteStateSpace extends StateSpace{
         return this.states[i][j][k][l];
     }
 
-    protected int getStateSpaceSize() { return (int) Math.pow(Util.DIM, 4); }
+    protected int length() { return (int) Math.pow(Util.DIM, 4); }
 
     @Override
 	public void initializeStateValues(double d) {

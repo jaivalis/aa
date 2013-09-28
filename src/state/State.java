@@ -20,16 +20,6 @@ public abstract class State {
 
 //    public void setPrey(Coordinates c) { this.preyC = c; }
 
-//	public void printActions(Policy policy) {
-//		for(int i = 0; i < this.cells.length; i++){
-//			for(int j = 0; j < this.cells[i].length; j++){
-//				System.out.print(policy.getActionString(this.cells[i][j]) + "\t");
-//				// System.out.print(this.board[i][j].getStateValue() + "\t");
-//			}
-//			System.out.println();
-//		}
-//	}
-
 	@Override
 	public String toString() {
 		String ret = "";
@@ -41,8 +31,8 @@ public abstract class State {
 	public boolean equals(Object other) {
 		if (other == null) return false;
 	    if (other == this) return true;
-	    if (!(other instanceof CompleteState)) { return false; }
-	    CompleteState otherState = (CompleteState) other;
+	    if (!(other instanceof State)) { return false; }
+	    State otherState = (State) other;
 		return this.predC == otherState.predC && this.preyC == otherState.preyC;
 	}
 
@@ -54,4 +44,6 @@ public abstract class State {
 
     public Coordinates getPreyCoordinates() { return this.preyC; }
     public Coordinates getPredatorCoordinates() { return this.predC; }
+    
+    public boolean isTerminal() { return this.predC.equals(this.preyC); }
 }

@@ -1,5 +1,6 @@
 package environment;
 
+import action.StateAction;
 import actor.Predator;
 import actor.Prey;
 import policy.LearnedPolicy;
@@ -10,6 +11,7 @@ import statespace.StateSpace;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -262,19 +264,37 @@ public class Environment {
 		} catch (IOException e) { e.printStackTrace(); }
 	}
 
+	/**
+	 * initializes all state-action pair value (Q) from a single value  
+	 * @param value
+	 * @return HashMap<StateAction,Double> q
+	 */
+	public Q initializeQ(double value) {
+		Q q = new HashMap<StateAction,Double>();
+		for(State s : this.stateSpace){
+			for(action a : Environment.action.values()){
+				q.put(new StateAction(s,a), value);
+			}
+		}
+		return q;
+	}
+	
 
     /***********************************************************************************/
     public void Q_Learning(Policy p) {
         // initialize Q(s,a) arbitrarily
-        do {
-            Episode ep = new Episode(this.stateSpace, null, null, true);
-
-            while (ep.hasNextTurn()) {
+    	
+    	HashMap<StateAction,Double> q = this.initializeQ(15.0);
+    	
+        for(State s : this.stateSpace) { // repeat for each episode // initialize s
+            do { // repeat for each step of episode
                 // Choose a from s using policy derived from Q (e-greedy)
+            	action a =  
+            	
                 // Take action a. observe r, s'
+            	
 
-
-            }
-        } while (true);
+            } while(!s.isTerminal()); // repeat until s is terminal
+        }
     }
 }

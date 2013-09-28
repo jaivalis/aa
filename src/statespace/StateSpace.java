@@ -70,5 +70,5 @@ public abstract class StateSpace implements Iterable<State>, Iterator<State>  {
      */
     public abstract State getRandomState();
 
-    protected abstract int getStateSpaceSize();
+    protected abstract int length();
 }

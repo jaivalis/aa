@@ -138,7 +138,7 @@ public class ReducedStateSpace extends StateSpace implements Iterable<State>, It
     @Override
     public State getRandomState() {
         Random r = new Random();
-        int randomInt = r.nextInt(getStateSpaceSize());
+        int randomInt = r.nextInt(length());
         int tmp = randomInt;
         int j = tmp % Util.DIM;
         tmp = tmp / Util.DIM;
@@ -148,5 +148,5 @@ public class ReducedStateSpace extends StateSpace implements Iterable<State>, It
     }
 
     @Override
-    protected int getStateSpaceSize() { return (int)Math.pow(Util.DIM, 2); }
+    protected int length() { return (int)Math.pow(Util.DIM, 2); }
 }

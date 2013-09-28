@@ -15,6 +15,11 @@ public abstract class Policy {
 		this.stateActionMapping = new HashMap<State, PossibleActions>();
 	}
 	
+	/**
+	 * Chooses an action stocasticly, according to the probabilities associated
+	 * @param s
+	 * @return
+	 */
 	public action getAction(State s) {
         PossibleActions ac = this.stateActionMapping.get(s);
 		return ac.getRandomAction();
