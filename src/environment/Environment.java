@@ -301,8 +301,8 @@ public class Environment {
                 s = this.stateSpace.getState(this.prey.getCoordinates(), this.predator.getCoordinates());
 
                 double reward = s.getStateReward();
-                double q_prime = q.get(currState, a) + a * ();
-                q.set(currState, a, reward);
+                double q_prime = q.get(s, a) + a * ();
+                q.set(s, a, reward);
             } while(!s.isTerminal()); // repeat until s is terminal
         }
     }
