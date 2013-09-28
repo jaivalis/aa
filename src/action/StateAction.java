@@ -36,6 +36,6 @@ public class StateAction {
     @Override
     public int hashCode() {
     	String hashString = "" + this.s.hashCode() + this.a.hashCode();
-        return Integer.parseInt(hashString);
+        return hashString.hashCode();
     }
 }
