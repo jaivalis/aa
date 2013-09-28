@@ -1,6 +1,5 @@
 package environment;
 
-import action.StateAction;
 import actor.Predator;
 import actor.Prey;
 import policy.LearnedPolicy;
@@ -11,7 +10,7 @@ import statespace.StateSpace;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -273,7 +272,7 @@ public class Environment {
 		Q q = new Q();
 		for(State s : this.stateSpace){
 			for(action a : Environment.action.values()){
-				q.set(s,a, value);
+				q.set(s, a, value);
 			}
 		}
 		return q;
@@ -283,17 +282,28 @@ public class Environment {
     /***********************************************************************************/
     public void Q_Learning(Policy p) {
         // initialize Q(s,a) arbitrarily
-    	
+    	double a = Util.alpha;
     	Q q = this.initializeQ(15.0);
     	
         for(State s : this.stateSpace) { // repeat for each episode // initialize s
-            do { // repeat for each step of episode
-                // Choose a from s using policy derived from Q (e-greedy)
-            	action a =  
-            	
-                // Take action a. observe r, s'
-            	
+            State currState = s;
 
+            do { // repeat for each step of episode
+                this.predator.setCoordinates(currState.getPredatorCoordinates());
+                this.prey.setCoordinates(currState.getPreyCoordinates());
+                // Choose a from s using policy derived from Q (e-greedy)
+            	action a = q.getArgmaxA(currState);
+
+
+                // Take action a. observe r, s'
+            	this.predator.move(a);
+                this.prey.move(currState);
+                // update currState.
+                currState = this.stateSpace.getState(this.prey.getCoordinates(), this.predator.getCoordinates());
+
+                double reward = currState.getStateReward();
+                double q_prime = q.get(currState, a) + a * ();
+                q.set(currState, a, reward);
             } while(!s.isTerminal()); // repeat until s is terminal
         }
     }
