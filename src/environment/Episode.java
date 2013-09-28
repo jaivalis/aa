@@ -49,6 +49,4 @@ public class Episode {
     }
 
     public boolean hasNextTurn() { return this.prey.getAlive(); }
-
-//    private State getRandomState() { return this.stateSpace.getRandomState(); }
 }
