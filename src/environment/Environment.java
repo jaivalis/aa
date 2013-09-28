@@ -303,7 +303,7 @@ public class Environment {
                 // update currState.
                 State s_prime = this.stateSpace.getState(this.prey.getCoordinates(), this.predator.getCoordinates());
 
-                double q_sa = s.getStateReward();
+                double q_sa = q.get(s, a);
                 double max_a_q = q.getMax(s_prime);
                 double r = s_prime.getStateReward();
                 double newQ_sa = q_sa + Util.alpha * (r + Util.gamma * max_a_q - q_sa);
