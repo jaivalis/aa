@@ -1,14 +1,17 @@
 package aa2013;
 
-import policy.EpsilonGreedyPolicy;
 import environment.Environment;
+import policy.EpsilonGreedyPolicy;
+import statespace.StateSpace;
 import statespace.CompleteStateSpace;
 
 public class MainA2 {
 
     public static void main(String[] args) {
-        Environment env = new Environment(new CompleteStateSpace());
-        EpsilonGreedyPolicy pi = new EpsilonGreedyPolicy();
+        StateSpace ss = new CompleteStateSpace();
+
+        Environment env = new Environment(ss);
+        EpsilonGreedyPolicy pi = new EpsilonGreedyPolicy(ss);
         env.Q_Learning(pi);
     }
 

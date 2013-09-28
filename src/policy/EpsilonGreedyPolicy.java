@@ -1,14 +1,26 @@
 package policy;
 
-import state.State;
 import action.PossibleActions;
+import action.PredatorAction;
 import environment.Environment;
 import environment.Environment.action;
 import environment.Q;
 import environment.Util;
+import state.State;
+import statespace.StateSpace;
+
+import java.util.HashMap;
 
 public class EpsilonGreedyPolicy extends Policy {
 	Q q = null;
+
+    public EpsilonGreedyPolicy(StateSpace ss) {
+        this.stateActionMapping = new HashMap<State, PossibleActions>();
+        for (State s : ss) {
+            this.stateActionMapping.put(s, new PredatorAction());
+        }
+    }
+
 	public void setQ(Q q) {
 		this.q = q;
 	}
