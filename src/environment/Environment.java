@@ -270,7 +270,7 @@ public class Environment {
 	 * @return HashMap<StateAction,Double> q
 	 */
 	public Q initializeQ(double value) {
-		Q q = new HashMap<StateAction,Double>();
+		Q q = new Q();
 		for(State s : this.stateSpace){
 			for(action a : Environment.action.values()){
 				q.put(new StateAction(s,a), value);
