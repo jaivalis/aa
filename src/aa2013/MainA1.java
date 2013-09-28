@@ -4,7 +4,6 @@ import environment.Environment;
 import statespace.CompleteStateSpace;
 import statespace.ReducedStateSpace;
 
-
 public class MainA1 {
 	public static void main(String[] args) {
 		int time = 0;
