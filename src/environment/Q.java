@@ -42,4 +42,17 @@ public class Q {
 		return -1;
 	}
 	
+	public action getArgmaxA(State s) {
+		ArrayList<StateAction> sa_list = this.getStateActions(s);
+		double max = Double.NEGATIVE_INFINITY;
+		action argmax_a = null;
+		for(StateAction sa : sa_list) {
+			Double val = this.sa_d.get(sa);
+			if(val > max) {
+				max = val;
+				argmax_a = sa.getA();
+			}
+		}
+		return argmax_a;
+	}
 }
