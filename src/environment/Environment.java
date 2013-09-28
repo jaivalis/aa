@@ -283,25 +283,24 @@ public class Environment {
     /***********************************************************************************/
     public void Q_Learning(EpsilonGreedyPolicy pi) {
         // initialize Q(s,a) arbitrarily
-    	double a = Util.alpha;
     	Q q = this.initializeQ(15.0);
     	
-        for(State s : this.stateSpace) { // repeat for each episode // initialize s
-            State currState = s;
-
+        for(State starting_s : this.stateSpace) { // repeat for each episode // initialize s
+        	State s = starting_s;
             do { // repeat for each step of episode
-                this.predator.setCoordinates(currState.getPredatorCoordinates());
-                this.prey.setCoordinates(currState.getPreyCoordinates());
+                this.predator.setCoordinates(s.getPredatorCoordinates());
+                this.prey.setCoordinates(s.getPreyCoordinates());
                 // Choose a from s using policy derived from Q (e-greedy)
             	action a =  pi.getAction(s);
 
                 // Take action a. observe r, s'
             	this.predator.move(a);
-                this.prey.move(currState);
+                this.prey.move(s);
+                
                 // update currState.
-                currState = this.stateSpace.getState(this.prey.getCoordinates(), this.predator.getCoordinates());
+                s = this.stateSpace.getState(this.prey.getCoordinates(), this.predator.getCoordinates());
 
-                double reward = currState.getStateReward();
+                double reward = s.getStateReward();
                 double q_prime = q.get(currState, a) + a * ();
                 q.set(currState, a, reward);
             } while(!s.isTerminal()); // repeat until s is terminal
