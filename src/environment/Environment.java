@@ -284,6 +284,7 @@ public class Environment {
     public void Q_Learning(EpsilonGreedyPolicy pi) {
         // initialize Q(s,a) arbitrarily
     	Q q = this.initializeQ(15.0);
+    	pi.setQ(q); // I know it's not the best thing, but for now, it works. Whatevs
 
         for(State starting_s : this.stateSpace) { // repeat for each episode // initialize s
         	State s = starting_s;

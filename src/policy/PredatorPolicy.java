@@ -9,7 +9,7 @@ import statespace.StateSpace;
 import java.util.HashMap;
 
 public class PredatorPolicy extends Policy {
-	
+
 	public PredatorPolicy(StateSpace ss) {
 		this.stateActionMapping = new HashMap<State, PossibleActions>();
 		for (State s : ss) {

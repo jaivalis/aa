@@ -11,7 +11,7 @@ public abstract class Policy {
 	
 	protected HashMap<State, PossibleActions> stateActionMapping;
 	
-	public Policy(){
+	protected Policy(){
 		this.stateActionMapping = new HashMap<State, PossibleActions>();
 	}
 	

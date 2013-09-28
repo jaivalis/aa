@@ -37,7 +37,7 @@ public class Q {
 			}
 		}
 		/// BUG BUG BUG
-		new Exception("unable to find required state-action").printStackTrace();
+		new Exception("unable to find required state-action "+s+" - "+a).printStackTrace();
 		System.exit(0);
 		return -1;
 	}

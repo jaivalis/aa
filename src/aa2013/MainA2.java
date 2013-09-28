@@ -1,6 +1,7 @@
 package aa2013;
 
 import environment.Environment;
+import environment.Q;
 import policy.EpsilonGreedyPolicy;
 import statespace.StateSpace;
 import statespace.CompleteStateSpace;

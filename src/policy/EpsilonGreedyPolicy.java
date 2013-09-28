@@ -17,12 +17,17 @@ public class EpsilonGreedyPolicy extends PredatorPolicy {
     public EpsilonGreedyPolicy(StateSpace ss) {
     	super(ss);
     }
+    
+    public void setQ(Q q) {
+    	this.q = q;
+    }
 
-	public void setQ(Q q) {
-		this.q = q;
-	}
-	
 	public action getAction(State s) {
+		
+		if(this.q == null) {
+			new Exception("EpsilonGreedyPolicy: this.q is not set. Please call setQ before!").printStackTrace();
+			System.exit(0);
+		}
 		
 		Double epsilon_frac = Util.epsilon/((double)Environment.action.values().length);
 		PossibleActions possibleActions = this.stateActionMapping.get(s);
@@ -35,7 +40,7 @@ public class EpsilonGreedyPolicy extends PredatorPolicy {
 		possibleActions.setAllActionProbabilitiesTo(epsilon_frac);
 		
 		// find maximum action and set it to the greedy probability value (1 - epsilon + epsilon/size(A))
-		action max_a = q.getArgmaxA(s);
+		action max_a = this.q.getArgmaxA(s);
 		double greedy_prob = 1 - Util.epsilon + epsilon_frac;
 		possibleActions.setActionProbability(max_a, greedy_prob);
 		
