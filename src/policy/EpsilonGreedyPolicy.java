@@ -17,6 +17,10 @@ public class EpsilonGreedyPolicy extends Policy {
 		
 		Double epsilon_frac = Util.epsilon/((double)Environment.action.values().length);
 		PossibleActions possibleActions = this.stateActionMapping.get(s);
+		if(possibleActions == null) {
+			new Exception("this.stateActionMapping.get(s)").printStackTrace();
+			System.exit(0);
+		}
 		
 		// set all probabilities to epsilon divided by number of actions
 		possibleActions.setAllActionProbabilitiesTo(epsilon_frac);
