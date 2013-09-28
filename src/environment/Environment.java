@@ -3,6 +3,7 @@ package environment;
 import action.StateAction;
 import actor.Predator;
 import actor.Prey;
+import policy.EpsilonGreedyPolicy;
 import policy.LearnedPolicy;
 import policy.Policy;
 import state.State;
@@ -281,7 +282,7 @@ public class Environment {
 	
 
     /***********************************************************************************/
-    public void Q_Learning(Policy p) {
+    public void Q_Learning(EpsilonGreedyPolicy pi) {
         // initialize Q(s,a) arbitrarily
     	
     	Q q = this.initializeQ(15.0);
@@ -289,9 +290,15 @@ public class Environment {
         for(State s : this.stateSpace) { // repeat for each episode // initialize s
             do { // repeat for each step of episode
                 // Choose a from s using policy derived from Q (e-greedy)
-            	action a =  
+            	action a =  pi.getAction(s);
             	
-                // Take action a. observe r, s'
+                // Take action a
+            	this.predator.move(a);
+            	
+            	// observe r
+            	
+            	// observe s'
+            	
             	
 
             } while(!s.isTerminal()); // repeat until s is terminal
