@@ -11,14 +11,11 @@ import statespace.StateSpace;
 
 import java.util.HashMap;
 
-public class EpsilonGreedyPolicy extends Policy {
+public class EpsilonGreedyPolicy extends PredatorPolicy {
 	Q q = null;
 
     public EpsilonGreedyPolicy(StateSpace ss) {
-        this.stateActionMapping = new HashMap<State, PossibleActions>();
-        for (State s : ss) {
-            this.stateActionMapping.put(s, new PredatorAction());
-        }
+    	super(ss);
     }
 
 	public void setQ(Q q) {
