@@ -1,6 +1,7 @@
 package actor;
 
 import environment.Coordinates;
+import policy.EpsilonGreedyPolicy;
 import policy.PredatorPolicy;
 import statespace.StateSpace;
 
@@ -8,7 +9,7 @@ public class Predator extends Actor {
 	
 	public Predator(Coordinates c, StateSpace ss) {
 		this.coordinates = c;
-		this.policy = new PredatorPolicy(ss);
+		this.policy = new EpsilonGreedyPolicy(ss);
 	}
 	
 	/** copy constructor */
