@@ -17,5 +17,6 @@ public class MainA2 {
         EpsilonGreedyPolicy pi = new EpsilonGreedyPolicy(ss);
         Q q = env.Q_Learning(pi);
         q.print();
+        q.printMaxActionsGrid();
     }
 }

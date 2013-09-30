@@ -104,4 +104,20 @@ public class Q {
 			}
 		}
 	}
+	
+	public void printMaxActionsGrid() {
+		State[][] states = new State[11][11];
+		for(State s : this.s_sa.keySet()){
+			Coordinates c = s.getPreyCoordinates();
+			states[c.getX()][c.getY()] = s;
+		}
+		for(int i = 0; i < states.length; i++){
+			for(int j = 0; j < states[i].length; j++){
+				action a = this.getArgmaxA(states[i][j]);
+				System.out.print(a.getArrow() + "\t");
+				// System.out.print(this.board[i][j].getStateValue() + "\t");
+			}
+			System.out.println();
+		}
+	}
 }

@@ -24,16 +24,21 @@ public class Algorithms {
 	private final double GAMMA = 0.8;
 	
 	public enum action { 
-		NORTH("N"),
-		SOUTH("S"),
-		EAST("E"),
-		WEST("W"),
-		WAIT("X");
+		NORTH("N","^"),
+		SOUTH("S","v"),
+		EAST("E",">"),
+		WEST("W","<"),
+		WAIT("X","-");
 		
 		private String shortName;
+		private String arrow;
 
 		public String getShortName() {
 			return this.shortName;
+		}
+		
+		public String getArrow() {
+			return this.arrow;
 		}
 		
 		public action getOpposite() {
@@ -52,8 +57,9 @@ public class Algorithms {
 			return action.WAIT;
 		}
 		
-		private action(String shortName){
+		private action(String shortName, String arrow){
 			this.shortName = shortName;
+			this.arrow = arrow;
 		}
 	};
 	
