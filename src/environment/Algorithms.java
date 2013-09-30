@@ -319,11 +319,7 @@ public class Algorithms {
                 s = this.stateSpace.getState(this.prey.getCoordinates(), this.predator.getCoordinates());
 
                 // Take action a. observe r, s'
-            	this.predator.move(a);
-                this.prey.move(s);
-                
-                // update currState.
-                s_prime = this.stateSpace.getState(this.prey.getCoordinates(), this.predator.getCoordinates());
+                s_prime = this.stateSpace.produceStochasticTransition(s,a);
 
                 double q_sa = q.get(s, a);
                 double max_a_q = q.getMax(s_prime);
