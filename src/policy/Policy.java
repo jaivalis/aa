@@ -25,6 +25,17 @@ public abstract class Policy {
 		return ac.getRandomAction();
 	}
 
+    public String getActionString(State s) {
+        switch (this.stateActionMapping.get(s).getRandomAction()) {
+            case NORTH: return "^";
+            case SOUTH:	return "V";
+            case EAST:	return ">";
+            case WEST:	return "<";
+            case WAIT:	return "-";
+            default:	return "?";
+        }
+    }
+
 	public double getActionProbability(State s, action a) {
 		return this.stateActionMapping.get(s).getActionProbability(a);
 	}
