@@ -19,8 +19,8 @@ public class Q {
 		ArrayList<StateAction> sa_list = this.s_sa.get(s);
 		if(sa_list == null){
 			sa_list = new ArrayList<StateAction>();
-			sa_list.add(sa);
 		}
+        sa_list.add(sa);
 		this.s_sa.put(s, sa_list);
 	}
 	
@@ -32,7 +32,7 @@ public class Q {
 	public double get(State s, action a) {
 		ArrayList<StateAction> sa_list = this.getStateActions(s);
 		for(StateAction sa : sa_list) {
-			if(sa.getA().equals(a)){
+			if(sa.getA().equals(a)) {
 				return this.sa_d.get(sa);
 			}
 		}
