@@ -4,7 +4,6 @@ import action.PossibleActions;
 import action.PreyAction;
 import environment.Environment.action;
 import state.State;
-import statespace.CompleteStateSpace;
 import statespace.StateSpace;
 
 import java.util.HashMap;

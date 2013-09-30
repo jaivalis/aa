@@ -1,15 +1,12 @@
 package policy;
 
 import action.PossibleActions;
-import action.PredatorAction;
 import environment.Environment;
 import environment.Environment.action;
 import environment.Q;
 import environment.Util;
 import state.State;
 import statespace.StateSpace;
-
-import java.util.HashMap;
 
 public class EpsilonGreedyPolicy extends PredatorPolicy {
 	Q q = null;
@@ -22,6 +19,7 @@ public class EpsilonGreedyPolicy extends PredatorPolicy {
     	this.q = q;
     }
 
+    @Override
 	public action getAction(State s) {
 		
 		if(this.q == null) {

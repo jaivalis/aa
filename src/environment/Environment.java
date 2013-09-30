@@ -264,23 +264,23 @@ public class Environment {
 		} catch (IOException e) { e.printStackTrace(); }
 	}
 
-	/**
-	 * initializes all state-action pair value (Q) from a single value  
-	 * @param value
-	 * @return HashMap<StateAction,Double> q
-	 */
-	public Q initializeQ(double value) {
-		Q q = new Q();
-		for(State s : this.stateSpace){
-			for(action a : Environment.action.values()){
-				q.set(s, a, value);
-			}
-		}
-		return q;
-	}
-	
-
     /***********************************************************************************/
+
+    /**
+     * initializes all state-action pair value (Q) from a single value
+     * @param value
+     * @return HashMap<StateAction,Double> q
+     */
+    public Q initializeQ(double value) {
+        Q q = new Q();
+        for(State s : this.stateSpace){
+            for(action a : Environment.action.values()){
+                q.set(s, a, value);
+            }
+        }
+        return q;
+    }
+
     public void Q_Learning(EpsilonGreedyPolicy pi) {
         // initialize Q(s,a) arbitrarily
     	Q q = this.initializeQ(15.0);

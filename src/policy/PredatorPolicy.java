@@ -3,7 +3,6 @@ package policy;
 import action.PossibleActions;
 import action.PredatorAction;
 import state.State;
-import statespace.CompleteStateSpace;
 import statespace.StateSpace;
 
 import java.util.HashMap;
