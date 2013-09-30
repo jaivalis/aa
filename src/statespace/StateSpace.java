@@ -20,10 +20,8 @@ public abstract class StateSpace implements Iterable<State>, Iterator<State>  {
 
     /**
      * Returns the state the corresponds to the grid defined by the arguments.
-     * @param i; Prey x coordinate.
-     * @param j; Prey y coordinate.
-     * @param k; Predator x coordinate.
-     * @param l; Predator y coordinate.
+     * @param preyC; Prey coordinates.
+     * @param predC; Prey coordinates.
      */
     public abstract State getState(Coordinates preyC, Coordinates predC);
 
