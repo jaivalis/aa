@@ -290,9 +290,9 @@ public class Environment {
     	Q q = this.initializeQ(15.0); // initialize Q(s,a) arbitrarily
     	pi.setQ(q); // I know it's not the best thing, but for now, it works.
 
-        int debugSimulations = 0;
         for(State starting_s : this.stateSpace) { // repeat for each episode // initialize s
         	State s = starting_s;
+            State s_prime;
             do { // repeat for each step of episode
                 this.predator.setCoordinates(s.getPredatorCoordinates());
                 this.prey.setCoordinates(s.getPreyCoordinates());
@@ -306,7 +306,7 @@ public class Environment {
                 this.prey.move(s);
                 
                 // update currState.
-                State s_prime = this.stateSpace.getState(this.prey.getCoordinates(), this.predator.getCoordinates());
+                s_prime = this.stateSpace.getState(this.prey.getCoordinates(), this.predator.getCoordinates());
 
                 double q_sa = q.get(s, a);
                 double max_a_q = q.getMax(s_prime);
@@ -314,8 +314,10 @@ public class Environment {
                 double newQ_sa = q_sa + Util.alpha * (r + Util.gamma * max_a_q - q_sa);
 
                 q.set(s, a, newQ_sa);
+
+                s = s_prime;
             } while (!s.isTerminal()); // repeat until s is terminal
-            System.out.println(++debugSimulations + " simulations complete.");
-        } return q;
+        }
+        return q;
     }
 }
