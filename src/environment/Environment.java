@@ -2,9 +2,9 @@ package environment;
 
 import actor.Predator;
 import actor.Prey;
-import policy.EpsilonGreedyPolicy;
 import policy.LearnedPolicy;
 import policy.Policy;
+import policy.SoftmaxPolicy;
 import state.State;
 import statespace.StateSpace;
 
@@ -300,7 +300,7 @@ public class Environment {
      *  @param pi; the epsilon-greedy policy that will be gradually updated within the algorithm according to the Q values
      *  @return q the Q values
      */
-    public Q Q_Learning(EpsilonGreedyPolicy pi) {
+    public Q Q_Learning(SoftmaxPolicy pi) {
     	Q q = this.initializeQ(15.0); // initialize Q(s,a) arbitrarily
     	pi.setQ(q); // I know it's not the best thing, but for now, it works.
 
@@ -330,6 +330,9 @@ public class Environment {
                 double newQ_sa = q_sa + Util.alpha * (r + Util.gamma * max_a_q - q_sa);
 
                 q.set(s, a, newQ_sa);
+                if (this.prey.getCoordinates() == new Coordinates(0,0)) {
+                    System.out.println("LALALA");
+                }
 
                 s = s_prime;
             } while (!s.isTerminal()); // repeat until s is terminal

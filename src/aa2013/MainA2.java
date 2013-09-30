@@ -3,9 +3,10 @@ package aa2013;
 import environment.Environment;
 import environment.Q;
 import policy.EpsilonGreedyPolicy;
+import policy.SoftmaxPolicy;
+import statespace.CompleteStateSpace;
 import statespace.ReducedStateSpace;
 import statespace.StateSpace;
-import statespace.CompleteStateSpace;
 
 public class MainA2 {
 
@@ -13,7 +14,7 @@ public class MainA2 {
         StateSpace ss = new ReducedStateSpace();
 
         Environment env = new Environment(ss);
-        EpsilonGreedyPolicy pi = new EpsilonGreedyPolicy(ss);
+        SoftmaxPolicy pi = new SoftmaxPolicy(ss);
         Q q = env.Q_Learning(pi);
         q.print();
     }
