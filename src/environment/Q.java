@@ -1,11 +1,11 @@
 package environment;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import state.State;
 import action.StateAction;
 import environment.Environment.action;
+import state.State;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Q {
 	HashMap<StateAction,Double> sa_d = new HashMap<StateAction,Double>();

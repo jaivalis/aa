@@ -16,5 +16,4 @@ public class MainA2 {
         EpsilonGreedyPolicy pi = new EpsilonGreedyPolicy(ss);
         env.Q_Learning(pi);
     }
-
 }

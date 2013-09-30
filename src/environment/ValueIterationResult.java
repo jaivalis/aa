@@ -1,7 +1,5 @@
 package environment;
 
-import com.sun.xml.internal.bind.v2.runtime.RuntimeUtil.ToStringAdapter;
-
 import policy.LearnedPolicy;
 
 public class ValueIterationResult {

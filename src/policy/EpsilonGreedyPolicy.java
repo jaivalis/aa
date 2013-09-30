@@ -42,7 +42,7 @@ public class EpsilonGreedyPolicy extends PredatorPolicy {
 		double greedy_prob = 1 - Util.epsilon + epsilon_frac;
 		possibleActions.setActionProbability(max_a, greedy_prob);
 		
-		// stocastic query to get action for state s
+		// stochastic query to get action for state s
 		return super.getAction(s);
 	}
 }
