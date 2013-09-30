@@ -16,7 +16,7 @@ public abstract class Policy {
 	}
 	
 	/**
-	 * Chooses an action stocasticly, according to the probabilities associated
+	 * Chooses an stochastic action, according to the probabilities associated.
 	 * @param s
 	 * @return
 	 */
@@ -24,18 +24,7 @@ public abstract class Policy {
         PossibleActions ac = this.stateActionMapping.get(s);
 		return ac.getRandomAction();
 	}
-	
-	public String getActionString(State s) {
-		switch (this.stateActionMapping.get(s).getRandomAction()) {
-			case NORTH: return "^";
-			case SOUTH:	return "V";
-			case EAST:	return ">";
-			case WEST:	return "<";
-			case WAIT:	return "-";
-			default:	return "?";			
-		}
-	}
-	
+
 	public double getActionProbability(State s, action a) {
 		return this.stateActionMapping.get(s).getActionProbability(a);
 	}

@@ -1,19 +1,22 @@
 package policy;
 
 import action.PossibleActions;
+import action.StateAction;
 import environment.Environment;
 import environment.Q;
 import environment.Util;
 import state.State;
 import statespace.StateSpace;
 
+import java.util.HashSet;
+
 /**
  * SoftMax policy tries to vary the action probabilities as a graded function of estimated value. The greedy action
  * is still given the highest selection probability, but all the others are ranked and weighted according to their
- * value estimates. These are called softmax action selection rules. The most common softmax method uses a Gibbs, or
+ * value estimates. These are called SoftMax action selection rules. The most common SoftMax method uses a Gibbs, or
  * Boltzmann, distribution. It chooses action 'a' the t-th play with probability:
- * exp(Q(a) / tau) / sum{ exp(Q(b) / tau) }
  *
+ * exp(Q_t(a) / tau) / sum{ exp(Q_t(b) / tau) }
  * tau = temperature
  */
 public class SoftmaxPolicy extends PredatorPolicy {
@@ -29,13 +32,23 @@ public class SoftmaxPolicy extends PredatorPolicy {
 
     @Override
     public Environment.action getAction(State s) {
+        HashSet<StateAction> stateActions = this.q.getStateActions(s);
+        PossibleActions possibleActions = this.stateActionMapping.get(s);
 
-        if(this.q == null) {
-            new Exception("SoftmaxPolicy: this.q is not set. Please call setQ before!").printStackTrace();
-            System.exit(0);
+        double numerator, denominator = 0, prob;
+
+        for (StateAction pa : stateActions) {
+            denominator += Math.exp(q.get(pa.getS(), pa.getA()) / Util.tau);
         }
-        // TODO
 
-        return null;
+        for (StateAction pa : stateActions) {
+            numerator = Math.exp(q.get(pa.getS(), pa.getA()) / Util.tau);
+            prob = numerator / denominator;
+
+            possibleActions.setActionProbability(pa.getA(), prob); // action probability to prob.
+        }
+
+        // stochastic query to get action for state s
+        return super.getAction(s);
     }
 }
