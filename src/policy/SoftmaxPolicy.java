@@ -37,11 +37,11 @@ public class SoftmaxPolicy extends PredatorPolicy {
 
         double numerator, denominator = 0, prob;
 
-        for (StateAction pa : stateActions) {
+        for (StateAction pa : stateActions) { // calculate denominator
             denominator += Math.exp(q.get(pa.getS(), pa.getA()) / Util.tau);
         }
 
-        for (StateAction pa : stateActions) {
+        for (StateAction pa : stateActions) { // calculate & update each probability
             numerator = Math.exp(q.get(pa.getS(), pa.getA()) / Util.tau);
             prob = numerator / denominator;
 

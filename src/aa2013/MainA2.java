@@ -3,9 +3,10 @@ package aa2013;
 import environment.Algorithms;
 import environment.Q;
 import policy.EpsilonGreedyPolicy;
+import policy.SoftmaxPolicy;
+import statespace.CompleteStateSpace;
 import statespace.ReducedStateSpace;
 import statespace.StateSpace;
-import statespace.CompleteStateSpace;
 
 public class MainA2 {
 
