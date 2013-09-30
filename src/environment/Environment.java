@@ -282,15 +282,15 @@ public class Environment {
     }
 
     /**
-     *  Implements the Q-Learning algorithm.
-     *  @param pi the epsilon-greedy policy that will be gradually updated within the algorithm according to the Q values
+     *  Implementation of the Q-Learning algorithm.
+     *  @param pi; the epsilon-greedy policy that will be gradually updated within the algorithm according to the Q values
      *  @return q the Q values
      */
     public Q Q_Learning(EpsilonGreedyPolicy pi) {
-        // initialize Q(s,a) arbitrarily
-    	Q q = this.initializeQ(15.0);
-    	pi.setQ(q); // I know it's not the best thing, but for now, it works. Whatevs
+    	Q q = this.initializeQ(15.0); // initialize Q(s,a) arbitrarily
+    	pi.setQ(q); // I know it's not the best thing, but for now, it works.
 
+        int debugSimulations = 0;
         for(State starting_s : this.stateSpace) { // repeat for each episode // initialize s
         	State s = starting_s;
             do { // repeat for each step of episode
@@ -300,7 +300,6 @@ public class Environment {
             	action a =  pi.getAction(s);
 
                 s = this.stateSpace.getState(this.prey.getCoordinates(), this.predator.getCoordinates());
-
 
                 // Take action a. observe r, s'
             	this.predator.move(a);
@@ -315,8 +314,8 @@ public class Environment {
                 double newQ_sa = q_sa + Util.alpha * (r + Util.gamma * max_a_q - q_sa);
 
                 q.set(s, a, newQ_sa);
-            } while(!s.isTerminal()); // repeat until s is terminal
-        }
-        return q;
+            } while (!s.isTerminal()); // repeat until s is terminal
+            System.out.println(++debugSimulations + " simulations complete.");
+        } return q;
     }
 }
