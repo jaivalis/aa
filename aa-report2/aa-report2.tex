@@ -41,11 +41,11 @@ The steps involved can be summarised into the following:\\\\
 Repeat(for each episode):\\
 \hspace*{10mm} Initialise s\\
 \hspace*{10mm} Repeat (for each step of episode):\\
-\hspace*{20mm} Choose $a$ from $s$ using policy derived from $Q$(e.g., $\epsilon$-greedy)\\
+\hspace*{20mm} Choose $a$ from $s$ using policy derived from $Q$ (e.g., $\epsilon$-greedy)\\
 \hspace*{20mm} Take action $a$, observe $r$, $s'$\\
 \hspace*{20mm} $Q(s,a) \leftarrow Q(s,a) + \alpha \lbrack r + \gamma max_{a'} Q(s',a') - Q(s,a)\rbrack$\\
-$s \leftarrow s';$
-until $s$ is terminal\\
+\hspace*{20mm} $s \leftarrow s';$\\
+\hspace*{10mm} until $s$ is terminal\\
 
 
 Where:
