@@ -1,6 +1,6 @@
 package action;
 
-import environment.Environment.action;
+import environment.Algorithms.action;
 
 import java.util.HashMap;
 import java.util.Iterator;

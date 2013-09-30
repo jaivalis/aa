@@ -1,6 +1,6 @@
 package aa2013;
 
-import environment.Environment;
+import environment.Algorithms;
 import environment.Q;
 import policy.EpsilonGreedyPolicy;
 import statespace.ReducedStateSpace;
@@ -12,7 +12,7 @@ public class MainA2 {
     public static void main(String[] args) {
         StateSpace ss = new ReducedStateSpace();
 
-        Environment env = new Environment(ss);
+        Algorithms env = new Algorithms(ss);
         EpsilonGreedyPolicy pi = new EpsilonGreedyPolicy(ss);
         Q q = env.Q_Learning(pi);
         q.print();

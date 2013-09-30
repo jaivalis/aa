@@ -1,8 +1,8 @@
 package policy;
 
 import action.PossibleActions;
-import environment.Environment;
-import environment.Environment.action;
+import environment.Algorithms;
+import environment.Algorithms.action;
 import environment.Q;
 import environment.Util;
 import state.State;
@@ -27,7 +27,7 @@ public class EpsilonGreedyPolicy extends PredatorPolicy {
 			System.exit(0);
 		}
 		
-		Double epsilon_frac = Util.epsilon/((double)Environment.action.values().length);
+		Double epsilon_frac = Util.epsilon/((double)Algorithms.action.values().length);
 		PossibleActions possibleActions = this.stateActionMapping.get(s);
 		if(possibleActions == null) {
 			new Exception("this.stateActionMapping.get(s)").printStackTrace();

@@ -2,7 +2,7 @@ package policy;
 
 import action.PossibleActions;
 import action.StateAction;
-import environment.Environment;
+import environment.Algorithms;
 import environment.Q;
 import environment.Util;
 import state.State;
@@ -31,7 +31,7 @@ public class SoftmaxPolicy extends PredatorPolicy {
     }
 
     @Override
-    public Environment.action getAction(State s) {
+    public Algorithms.action getAction(State s) {
         HashSet<StateAction> stateActions = this.q.getStateActions(s);
         PossibleActions possibleActions = this.stateActionMapping.get(s);
 

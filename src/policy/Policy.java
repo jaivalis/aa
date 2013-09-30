@@ -2,7 +2,7 @@ package policy;
 
 import action.LearnedAction;
 import action.PossibleActions;
-import environment.Environment.action;
+import environment.Algorithms.action;
 import state.State;
 
 import java.util.HashMap;

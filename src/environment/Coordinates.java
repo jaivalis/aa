@@ -1,6 +1,6 @@
 package environment;
 
-import environment.Environment.action;
+import environment.Algorithms.action;
 
 /**
  * represents a bi-dimensional coordinate.

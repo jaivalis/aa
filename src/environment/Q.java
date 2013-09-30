@@ -1,7 +1,7 @@
 package environment;
 
 import action.StateAction;
-import environment.Environment.action;
+import environment.Algorithms.action;
 import state.State;
 
 import java.util.ArrayList;

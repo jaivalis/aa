@@ -2,8 +2,8 @@ package statespace;
 
 import action.PreyAction;
 import environment.Coordinates;
-import environment.Environment;
-import environment.Environment.action;
+import environment.Algorithms;
+import environment.Algorithms.action;
 import environment.ProbableTransitions;
 import environment.Util;
 import policy.Policy;
@@ -109,7 +109,7 @@ public class CompleteStateSpace extends StateSpace{
         Coordinates preyCurrPos = s.getPreyCoordinates();
 
         // where could the prey be going?
-        for(Environment.action act : Environment.action.values()) {
+        for(Algorithms.action act : Algorithms.action.values()) {
             PreyAction tmp = new PreyAction();
             double p = tmp.getActionProbability(act);
             Coordinates preyPossiblePos = preyCurrPos.getShifted(act);

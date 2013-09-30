@@ -1,7 +1,7 @@
 package actor;
 
 import environment.Coordinates;
-import environment.Environment.action;
+import environment.Algorithms.action;
 import policy.Policy;
 import state.State;
 
