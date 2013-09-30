@@ -1,11 +1,14 @@
 package policy;
 
 import action.PossibleActions;
+import action.StateAction;
 import environment.Environment;
 import environment.Q;
 import environment.Util;
 import state.State;
 import statespace.StateSpace;
+
+import java.util.HashSet;
 
 /**
  * SoftMax policy tries to vary the action probabilities as a graded function of estimated value. The greedy action
@@ -29,25 +32,21 @@ public class SoftmaxPolicy extends PredatorPolicy {
 
     @Override
     public Environment.action getAction(State s) {
+        HashSet<StateAction> stateActions = this.q.getStateActions(s);
         PossibleActions possibleActions = this.stateActionMapping.get(s);
 
-        double numerator, denominator, prob;
-        for (PossibleActions pa : possibleActions) {
+        double numerator, denominator = 0, prob;
 
-            numerator = Math.exp();
-
-            denominator = 0;
-            prob = numerator / denominator;
-            pa.setActionProbability(prob);
+        for (StateAction pa : stateActions) {
+            denominator += Math.exp(q.get(pa.getS(), pa.getA()) / Util.tau);
         }
 
-        // set all probabilities to epsilon divided by number of actions
+        for (StateAction pa : stateActions) {
+            numerator = Math.exp(q.get(pa.getS(), pa.getA()) / Util.tau);
+            prob = numerator / denominator;
 
-
-        // find maximum action and set it to the greedy probability value (1 - epsilon + epsilon/size(A))
-        Environment.action max_a = this.q.getArgmaxA(s);
-        double greedy_prob = 1 - Util.epsilon + epsilon_frac;
-        possibleActions.setActionProbability(max_a, greedy_prob);
+            possibleActions.setActionProbability(pa.getA(), prob); // action probability to prob.
+        }
 
         // stochastic query to get action for state s
         return super.getAction(s);
