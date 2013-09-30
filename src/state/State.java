@@ -46,4 +46,8 @@ public abstract class State {
     public Coordinates getPredatorCoordinates() { return this.predC; }
     
     public boolean isTerminal() { return this.predC.equals(this.preyC); }
+
+	public String toStringShort() {
+		return ""+this.preyC.getX()+","+this.preyC.getY()+","+this.predC.getX()+","+this.predC.getY();
+	}
 }

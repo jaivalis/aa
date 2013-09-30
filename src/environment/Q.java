@@ -100,7 +100,7 @@ public class Q {
 			for(StateAction sa : sa_set) {
 				action a = sa.getA();
 				Double d = this.sa_d.get(sa);
-				System.out.println(s+":"+a+":"+d);
+				System.out.println(a.getShortName()+":"+d);
 			}
 		}
 	}

@@ -23,7 +23,18 @@ public class Environment {
 	private final double THETA = 0.00001; // threshold for the loop end condition
 	private final double GAMMA = 0.8;
 	
-	public enum action { NORTH, SOUTH, EAST, WEST, WAIT;
+	public enum action { 
+		NORTH("N"),
+		SOUTH("S"),
+		EAST("E"),
+		WEST("W"),
+		WAIT("X");
+		
+		private String shortName;
+
+		public String getShortName() {
+			return this.shortName;
+		}
 		
 		public action getOpposite() {
 			switch(this) {
@@ -39,6 +50,10 @@ public class Environment {
 				return action.NORTH;
 			}
 			return action.WAIT;
+		}
+		
+		private action(String shortName){
+			this.shortName = shortName;
 		}
 	};
 	
@@ -289,7 +304,9 @@ public class Environment {
     	Q q = this.initializeQ(15.0); // initialize Q(s,a) arbitrarily
     	pi.setQ(q); // I know it's not the best thing, but for now, it works.
 
+    	int i = 0;
         for(State starting_s : this.stateSpace) { // repeat for each episode // initialize s
+        	System.out.println(++i);
         	State s = starting_s;
             State s_prime;
             do { // repeat for each step of episode

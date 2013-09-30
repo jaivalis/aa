@@ -10,7 +10,7 @@ import statespace.CompleteStateSpace;
 public class MainA2 {
 
     public static void main(String[] args) {
-        StateSpace ss = new CompleteStateSpace();
+        StateSpace ss = new ReducedStateSpace();
 
         Environment env = new Environment(ss);
         EpsilonGreedyPolicy pi = new EpsilonGreedyPolicy(ss);
