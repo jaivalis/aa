@@ -281,7 +281,12 @@ public class Environment {
         return q;
     }
 
-    public void Q_Learning(EpsilonGreedyPolicy pi) {
+    /**
+     *  Implements the Q-Learning algorithm.
+     *  @param pi the epsilon-greedy policy that will be gradually updated within the algorithm according to the Q values
+     *  @return q the Q values
+     */
+    public Q Q_Learning(EpsilonGreedyPolicy pi) {
         // initialize Q(s,a) arbitrarily
     	Q q = this.initializeQ(15.0);
     	pi.setQ(q); // I know it's not the best thing, but for now, it works. Whatevs
@@ -312,5 +317,6 @@ public class Environment {
                 q.set(s, a, newQ_sa);
             } while(!s.isTerminal()); // repeat until s is terminal
         }
+        return q;
     }
 }
