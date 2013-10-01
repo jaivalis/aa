@@ -35,19 +35,24 @@ The initial exercise of this lab assignment is to implement Q-learning, a tempor
 Q-learning is an off-policy TD control algorithm. An off-policy TD algorithm is one in which the estimated value functions can be updated using hypothetical actions, without having actually executed the actions themselves. Using this approach the algorithm can separate exploration from control, meaning the agent could learn through the environment without necessarily having had the explicit experience.
 The steps involved can be summarised into the following:\\\\
 
-\pagebreak
 
-\subsection{Q-learning Algorithm}
-\noindent Initialise $Q(s,a)$ arbitrarily\\
-Repeat(for each episode):\\
-\hspace*{10mm} Initialise s\\
-\hspace*{10mm} Repeat (for each step of episode):\\
-\hspace*{20mm} Choose $a$ from $s$ using policy derived from $Q$ (e.g., $\epsilon$-greedy)\\
-\hspace*{20mm} Take action $a$, observe $r$, $s'$\\
-\hspace*{20mm} $Q(s,a) \leftarrow Q(s,a) + \alpha \lbrack r + \gamma max_{a'} Q(s',a') - Q(s,a)\rbrack$\\
-\hspace*{20mm} $s \leftarrow s';$\\
-\hspace*{10mm} until $s$ is terminal\\
 
+\begin{algorithm}
+\caption{Q-learning}
+\begin{algorithmic}
+\STATE Initialise $Q(s,a)$ arbitrarily
+\FORALL{Episodes}
+\STATE Initialise s
+\FORALL{Steps of episodes}
+\STATE Choose $a$ from $s$ using policy derived from $Q$ (e.g., $\epsilon$-greedy)
+\STATE Take action $a$, observe $r$, $s'$
+\STATE $Q(s,a) \leftarrow Q(s,a) + \alpha \lbrack r + \gamma max_{a'} Q(s',a') - Q(s,a)\rbrack$
+\STATE $s \leftarrow s';$\
+\ENDFOR
+\STATE Until s is terminal
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
 
 \noindent Where:
 \begin{itemize}
@@ -57,16 +62,6 @@ Repeat(for each episode):\\
 \end{itemize}
 \vspace*{10mm}
 
-
-\noindent Which can be translated into the following procedure:
-\begin{enumerate}
-	\item Initialise the values for \textbf{Q(s,a)}
-	\item Observe the current state, \textbf{s}.
-	\item Choose an action \textbf{a} for the state based on action selection policy.
-	\item Take action, and observe reward \textbf{r}, and new state \textbf{s'}.
-	\item Update Q-value for the state \textbf{s} using the observed reward and the maximum reward possible for the next state.
-	\item Set the state to the new state, and repeat the process until a state is reached.
-\end{enumerate}
 
 
 Based on the task at hand, the predator should directly learn a high reward policy without learning a model, since the agent is not supposed to know not know the transition probabilities, nor the reward structure of the environment. It is assumed that convergence should occur as long as all state action pair values continue to be updated using a certain policy (in this case $\epsilon$-greedy. 
