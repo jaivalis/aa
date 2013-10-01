@@ -258,7 +258,6 @@ public class Algorithms {
 			}
 			pi.setUniqueAction(s, argmax_a);
 		}
-		// TODO: output State values somehow.
 		return new ValueIterationResult(numIterations,pi);
 	}
 	
@@ -338,5 +337,15 @@ public class Algorithms {
             } while (!s.isTerminal()); // repeat until s is terminal
         }
         return q;
+    }
+
+    public void evaluateQLearning() {
+        int runs = 1000;
+        // Predator learn
+        Q newQ = this.Q_Learning((EpsilonGreedyPolicy) this.predator.getPolicy());
+        ((EpsilonGreedyPolicy) this.predator.getPolicy()).setQ(newQ);
+
+        // Simulate
+        this.simulate(runs);
     }
 }

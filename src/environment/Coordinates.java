@@ -58,7 +58,6 @@ public class Coordinates {
 		return ta.getOpposite();
 	}
 
-	// TODO : set to void.
 	/**
 	 * Returns the new coordinates after taking action a 
 	 */
