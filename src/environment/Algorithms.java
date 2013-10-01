@@ -369,12 +369,10 @@ public class Algorithms {
 
                 s = s_prime;
             } while (!s.isTerminal()); // repeat until s is terminal
-        }
-        return q;
+        } return q;
     }
 
     /**
-     * TODO
      * @param pi
      * @param initialQ
      * @param alpha
@@ -388,28 +386,29 @@ public class Algorithms {
         for(State starting_s : this.stateSpace) { // repeat for each episode // initialize s
             State s = starting_s;
             State s_prime;
+
+            action a =  pi.getAction(s);    // Choose a from s using policy derived from Q (e-greedy)
             do { // repeat for each step of episode
+                // Take action a. observe r, s'
+                s_prime = this.stateSpace.produceStochasticTransition(s, a);
+                double r = s_prime.getStateReward();
+
                 this.predator.setCoordinates(s.getPredatorCoordinates());
                 this.prey.setCoordinates(s.getPreyCoordinates());
 
-                action a =  pi.getAction(s);    // Choose a from s using policy derived from Q (e-greedy)
+                action a_prime =  pi.getAction(s_prime);    // Choose a from s using policy derived from Q (e-greedy)
 
                 s = this.stateSpace.getState(this.prey.getCoordinates(), this.predator.getCoordinates());
 
-                // Take action a. observe r, s'
-                s_prime = this.stateSpace.produceStochasticTransition(s,a);
-
                 double q_sa = q.get(s, a);
-                double max_a_q = q.getMax(s_prime);
-                double r = s_prime.getStateReward();
-                double newQ_sa = q_sa + alpha * (r + gamma * max_a_q - q_sa);
+                double q_sprime_aprime = q.get(s_prime, a_prime);
+                double newQ_sa = q_sa + alpha * (r + gamma * q_sprime_aprime - q_sa);
 
                 q.set(s, a, newQ_sa);
 
                 s = s_prime;
             } while (!s.isTerminal()); // repeat until s is terminal
-        }
-        return q;
+        } return q;
     }
 
     /**
