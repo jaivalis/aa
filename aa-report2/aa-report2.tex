@@ -20,18 +20,15 @@
 \maketitle
 
 
-
-
 \section{Introduction}
 This report is based on the implementation of an assignment exercise in which a predator is trying to catch a prey in a 2-dimensional environment, being unknown to the predator. This will be attempted  using Temporal Difference learning methods (TD), a combination of Monte Carlo and dynamic programming. TD learning methods can learn directly from experience, rather than having to rely on a model of the environment. TD methods can update action state values estimates based on other learned estimates, without having to wait for the final outcome. 
 
-
-\section{Q-Learning}
-The initial exercise of this lab assignment is to implement Q-learning, a temporal-difference (TD) learning algorithm. This algorithm is to be used by the predator agent to catch the prey.
-
+\section{Algorithms}
+In this part of the report the used algorithms are introduced on the basis of their Pseudocode description.
 
 
-\subsection{Summary}
+\subsection{Q-Learning}
+The initial exercise of this lab assignment is to implement Q-learning, a temporal-difference (TD) learning algorithm. This algorithm is to be used by the predator agent to catch the prey.\\
 Q-learning is an off-policy TD control algorithm. An off-policy TD algorithm is one in which the estimated value functions can be updated using hypothetical actions, without having actually executed the actions themselves. Using this approach the algorithm can separate exploration from control, meaning the agent could learn through the environment without necessarily having had the explicit experience.
 The steps involved can be summarised into the following Algorithm ~\ref{algQ}\\\\
 
@@ -68,16 +65,83 @@ The steps involved can be summarised into the following Algorithm ~\ref{algQ}\\\
 Based on the task at hand, the predator should directly learn a high reward policy without learning a model, since the agent is not supposed to know not know the transition probabilities, nor the reward structure of the environment. It is assumed that convergence should occur as long as all state action pair values continue to be updated using a certain policy (in this case $\epsilon$-greedy. 
 
 
-\section{Q-learning using $\epsilon$-greedy}
-
-When the Q-learning algorithm to selects an action, there needs to be some form of trade-off between selecting the action with the highest estimated reward so far, and the the rest of the actions available. Limiting the action selection policy to only the best action learnt so far, would mean potentially losing out  on a better action in the future, being in a given state. To satisfy this trade-off, $\epsilon$-greedy policy uses a (in this example small) probability of $\epsilon$ to select randomly between all  between all the actions available in a given state, excluding the most optimal one so far. In turn, (as in this scenario $\epsilon$ is small), the most optimal action is chosen with a much larger probability, $1-\epsilon$, most of the time, giving the policy a tendency to exploit the best action so far most of the time, but not lose out on potentially better actions, being in a given state. 
 
 
-\section{Softmax Action-Selection Policy}
 
-In this section, a different action selection policy will be used in Q-learning instead of $\epsilon$-greedy. $\epsilon$-greedy policy satisfies the exploration/exploitation variance which is desired to be used in the Q-learning algorithm, although to its disadvantage when the algorithm explores with a probability $\epsilon$, it does not do this by taking into consideration the performance of the individual non-greedy actions themselves. The probability distribution between which non-greedy action is selected, is uniformly distributed and therefore, each one is as likely to be chosen as the rest. To optimise the performance of the Q-learning algorithm, it could be more efficient to make the selection among the non-greedy actions by weighing them according to their action-value estimates, thus increasing probability of selection for the higher action-value estimates, and hence making a more guided (by efficiency) exploration.
+\subsection{Softmax Action-Selection Policy}
+
+In this section, a different action selection policy will be used in Q-learning instead of $\epsilon$-greedy. $\epsilon$-greedy policy satisfies the exploration/exploitation variance which is desired to be used in the Q-learning algorithm, although to its disadvantage when the algorithm explores with a probability $\epsilon$, it does not do this by taking into consideration the performance of the individual non-greedy actions themselves. The probability distribution between which non-greedy action is selected, is uniformly distributed and therefore, each one is as likely to be chosen as the rest. To optimise the performance of the Q-learning algorithm, it could be more efficient to make the selection among the non-greedy actions by weighing them according to their action-value estimates, thus increasing probability of selection for the higher action-value estimates, and hence making a more guided (by efficiency) exploration. Algorithm ~\ref{softmax} differs from $\epsilon$-greedy in Operation ~\ref{soft}.
+
+\begin{algorithm}
+\caption{Softmax}
+\begin{algorithmic}[1]
+\label{softmax}
+\STATE Initialise $Q(s,a)$ arbitrarily
+\FORALL{Episodes}
+\STATE Initialise s
+\FORALL{Steps of episodes}
+\STATE Choose Choose $a$ with probability $\frac{\exp^{Q_t(a)/r}}{\sum{\exp^{Q_t(b)/r}}}$ \label{soft}
+\STATE Take action $a$, observe $r$, $s'$
+\STATE $Q(s,a) \leftarrow Q(s,a) + \alpha \lbrack r + \gamma max_{a'} Q(s',a') - Q(s,a)\rbrack$
+\STATE $s \leftarrow s';$\
+\ENDFOR
+\STATE Until s is terminal
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
+\noindent Where:
+\begin{itemize}
+	\item $r$ is a positive parameter called \emph{temperature}. A high temperature leads the actions to be almost equiproble, low tempreature values cause a greater difference with $r$ $\rightarrow$ 0 beeing the same as greedy action selection.
+\end{itemize}
+\vspace*{10mm}
 
 
+\subsection{Sarsa}
+
+\begin{algorithm}
+\caption{Sarsa}
+\begin{algorithmic}
+\label{sarsa}
+\STATE Initialise $Q(s,a)$ arbitrarily
+\FORALL{Episodes}
+\STATE Initialise s
+\STATE Choose $a$ from $s$ using derived from $Q$ (e.g., $\epsilon$-greedy)
+\FORALL{Steps of episodes}
+\STATE Take action $a$, observe $r$, $s'$
+\STATE Choose $a'$ from $s'$ using policy derived from Q (e.g., $\epsilon$-greedy)
+\STATE $Q(s,a) \leftarrow Q(s,a) + \alpha \lbrack r + \gamma Q(s',a') - Q(s,a)\rbrack$
+\STATE $s \leftarrow s';$ $a \leftarrow a';$
+\ENDFOR
+\STATE Until s is terminal
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
+%--1) why? "in order to test..." (questions, and preferably hypotheses with explanation)
+\section{Hypotheses}
+
+
+\section{Experiment}
+This section describes the properties of the system the experiments were tested on and give an overview of the achieved results including plots to visualize them.
+
+%--2) is there anything to mention about the implementation/machinery the reader should know? (e.g. "these experiments were performed on a [insert machine specs]" when presenting runtimes)
+\subsection{System Properties}
+The experiments were performend on a \dots
+
+\subsection{Results}
+
+
+%--3) what does it show (and is that what you expected, and why)
+\subsection{Interpretation}
+
+
+%--4) take home message (what do you want the reader to remember, e.g. "Therefore, by reducing the state space, we have gained several orders of magnitude in runtime.")
+\section{Take Home Message}
+
+
+%redundance with take home message?
+\section{Conclusion}
 
 \begin{thebibliography}{9}
 
