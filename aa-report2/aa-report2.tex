@@ -80,7 +80,7 @@ In this section, a different action selection policy will be used in Q-learning 
 \FORALL{Episodes}
 \STATE Initialise s
 \FORALL{Steps of episodes}
-\STATE Choose Choose $a$ with probability $\frac{\exp^{Q_t(a)/r}}{\sum{\exp^{Q_t(b)/r}}}$ \label{soft}
+\STATE Choose Choose $a$ with probability $\frac{\exp^{Q_t(a)/\tau}}{\sum{\exp^{Q_t(b)/\tau}}}$ \label{soft}
 \STATE Take action $a$, observe $r$, $s'$
 \STATE $Q(s,a) \leftarrow Q(s,a) + \alpha \lbrack r + \gamma max_{a'} Q(s',a') - Q(s,a)\rbrack$
 \STATE $s \leftarrow s';$\
@@ -92,7 +92,7 @@ In this section, a different action selection policy will be used in Q-learning 
 
 \noindent Where:
 \begin{itemize}
-	\item $r$ is a positive parameter called \emph{temperature}. A high temperature leads the actions to be almost equiproble, low tempreature values cause a greater difference with $r$ $\rightarrow$ 0 beeing the same as greedy action selection.
+	\item $\tau$ is a positive parameter called \emph{temperature}. A high temperature leads the actions to be almost equiproble, low tempreature values cause a greater difference with $r$ $\rightarrow$ 0 beeing the same as greedy action selection.
 \end{itemize}
 \vspace*{10mm}
 
