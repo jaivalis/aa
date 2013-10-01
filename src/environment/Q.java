@@ -15,12 +15,11 @@ public class Q {
 	/**
 	 * mapping from a StateAction object, which represents a <state,action> tuple, to a number that represents the value of the state/action
 	 */
-	HashMap<StateAction,Double> sa_d = new HashMap<StateAction,Double>();
+	HashMap<StateAction, Double> sa_d = new HashMap<StateAction,Double>();
 	
 	/**
 	 * mapping from a state to a set of state/action tuples, that are all actions that can be performed from that state
-	 */
-	HashMap<State, HashSet<StateAction>> s_sa = new HashMap<State,HashSet<StateAction>>();
+	 */	HashMap<State, HashSet<StateAction>> s_sa = new HashMap<State,HashSet<StateAction>>();
 
     /**
      * Sets the Q value of <state, action> to a given value.
@@ -29,12 +28,12 @@ public class Q {
      * @param d; value to set Q(s,a) to.
      */
 	public void set(State s, action a, double d) {
-		StateAction sa = new StateAction(s,a);
+		StateAction sa = new StateAction(s, a);
 		this.sa_d.put(sa, d);
 		
 		// structure for cheap state-action retrieval
 		HashSet<StateAction> sa_set = this.s_sa.get(s);
-		if(sa_set == null){
+		if(sa_set == null) {
 			sa_set = new HashSet<StateAction>();
 		}
         sa_set.add(sa);
@@ -102,6 +101,7 @@ public class Q {
 		} return max;
 	}
 
+    @Override
 	public String toString() {
         String ret = "";
 		for(State s : this.s_sa.keySet()){

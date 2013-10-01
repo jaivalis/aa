@@ -345,15 +345,11 @@ public class Algorithms {
     public Q Q_Learning(EpsilonGreedyPolicy pi, double initialQ, double alpha, double gamma) {
     	Q q = this.initializeQ(initialQ); // initialize Q(s,a) arbitrarily
     	pi.setQ(q); // I know it's not the best thing, but for now, it works.
-
-        for(int i=0;i<100000;i++) for(State starting_s : this.stateSpace) { // repeat for each episode // initialize s
-        	//starting_s = this.stateSpace.getState(new Coordinates(5,5), new Coordinates(0,0)); //FIXME DEBUG
-        	//System.out.println(starting_s); //FIXME DEBUG
-        	State s = starting_s;
+        for (int i = 0; i < Util.EPISODE_COUNT; i++) {  // repeat for each episode
+            State s = this.stateSpace.getRandomState();   // initialize s randomly
             State s_prime;
             do { // repeat for each step of episode
-                // Choose a from s using policy derived from Q (e-greedy)
-            	action a =  pi.getAction(s);
+                action a =  pi.getAction(s);    // Choose a from s using policy derived from Q (e-greedy)
 
                 // Take action a. observe r, s'
                 s_prime = this.stateSpace.produceStochasticTransition(s,a);
@@ -364,7 +360,7 @@ public class Algorithms {
                 double discounted_max_a_q = gamma * max_a_q;
                 double newQ_sa = q_sa + alpha * (r + discounted_max_a_q - q_sa);
 
-                q.set(s, a, newQ_sa);
+                q.set(s, a, newQ_sa); // Q(s,a) = Q(s,a) + ...
 
                 s = s_prime;
                 //System.out.println("a:"+a+" s':"+s_prime); //FIXME DEBUG
@@ -388,8 +384,8 @@ public class Algorithms {
         Q q = this.initializeQ(initialQ); // initialize Q(s,a) arbitrarily
         pi.setQ(q); // I know it's not the best thing, but for now, it works.
 
-        for(State starting_s : this.stateSpace) { // repeat for each episode // initialize s
-            State s = starting_s;
+        for (int i = 0; i < Util.EPISODE_COUNT; i++) { // repeat for each episode
+            State s = this.stateSpace.getRandomState();// initialize s randomly
             State s_prime;
 
             action a =  pi.getAction(s);    // Choose a from s using policy derived from Q (e-greedy)
@@ -423,7 +419,7 @@ public class Algorithms {
         double simulations = 10000;  // many simulations ensure higher precision.
         EpsilonGreedyPolicy egp = new EpsilonGreedyPolicy(this.stateSpace); // Predator learn
 
-        for (float alpha = 0; alpha <= 1.0; alpha += 0.1) {
+        for (float alpha = 0.1f; alpha <= 1.0; alpha += 0.1) {
             for (float gamma = 0; gamma <= 0.9; gamma += 0.1) {
                 // 1. train
                 Q newQ = this.Q_Learning(egp, optimisticInitialQ, alpha, gamma);
