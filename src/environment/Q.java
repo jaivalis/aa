@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Q {
-	HashMap<StateAction,Double> sa_d = new HashMap<StateAction,Double>();
+	HashMap<StateAction, Double> sa_d = new HashMap<StateAction,Double>();
 	HashMap<State, HashSet<StateAction>> s_sa = new HashMap<State,HashSet<StateAction>>();
 
     /**
@@ -20,12 +20,12 @@ public class Q {
      * @param d; value to set Q(s,a) to.
      */
 	public void set(State s, action a, double d) {
-		StateAction sa = new StateAction(s,a);
+		StateAction sa = new StateAction(s, a);
 		this.sa_d.put(sa, d);
 		
 		// structure for cheap state-action retrieval
 		HashSet<StateAction> sa_set = this.s_sa.get(s);
-		if(sa_set == null){
+		if(sa_set == null) {
 			sa_set = new HashSet<StateAction>();
 		}
         sa_set.add(sa);
@@ -112,8 +112,8 @@ public class Q {
 			Coordinates c = s.getPreyCoordinates();
 			states[c.getX()][c.getY()] = s;
 		}
-		for(int i = 0; i < states.length; i++){
-			for(int j = 0; j < states[i].length; j++){
+		for(int i = 0; i < states.length; i++) {
+			for(int j = 0; j < states[i].length; j++) {
 				action a = this.getArgmaxA(states[i][j]);
 				System.out.print(a.getArrow() + "\t");
 				// System.out.print(this.board[i][j].getStateValue() + "\t");
