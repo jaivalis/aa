@@ -346,9 +346,8 @@ public class Algorithms {
     	Q q = this.initializeQ(initialQ); // initialize Q(s,a) arbitrarily
     	pi.setQ(q); // I know it's not the best thing, but for now, it works.
 
-        for (int i = 0; i < Util.EPISODE_COUNT; i++) {
-//            for(State starting_s : this.stateSpace) {   // repeat for each episode
-            State s = this.stateSpace.getRandomState();   // initialize s
+        for (int i = 0; i < Util.EPISODE_COUNT; i++) {  // repeat for each episode
+            State s = this.stateSpace.getRandomState();   // initialize s randomly
             State s_prime;
             do { // repeat for each step of episode
                 action a =  pi.getAction(s);    // Choose a from s using policy derived from Q (e-greedy)
@@ -365,7 +364,6 @@ public class Algorithms {
 
                 s = s_prime;
             } while (!s.isTerminal()); // repeat until s is terminal
-//            }
         }
         return q;
     }
@@ -381,8 +379,8 @@ public class Algorithms {
         Q q = this.initializeQ(initialQ); // initialize Q(s,a) arbitrarily
         pi.setQ(q); // I know it's not the best thing, but for now, it works.
 
-        for(State starting_s : this.stateSpace) { // repeat for each episode // initialize s
-            State s = starting_s;
+        for (int i = 0; i < Util.EPISODE_COUNT; i++) { // repeat for each episode
+            State s = this.stateSpace.getRandomState();// initialize s randomly
             State s_prime;
 
             action a =  pi.getAction(s);    // Choose a from s using policy derived from Q (e-greedy)
