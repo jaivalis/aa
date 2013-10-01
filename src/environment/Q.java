@@ -123,7 +123,7 @@ public class Q {
 		}
 		for(int i = 0; i < 11; i++){
 			for(int j = 0; j < 11; j++){
-				action a = this.getArgmaxA(states[j][i]);
+				action a = this.getArgmaxA(states[i][j]);
 				System.out.print(a.getArrow() + "\t");
 				// System.out.print(this.board[i][j].getStateValue() + "\t");
 			}
@@ -140,7 +140,7 @@ public class Q {
 		}
 		for(int i = 0; i < 11; i++){
 			for(int j = 0; j < 11; j++){
-				State s = states[j][i];
+				State s = states[i][j];
 				double action_value = this.get(s, a);
 				DecimalFormat df = new DecimalFormat("#.###");
 				System.out.print(df.format(action_value) + "\t");
@@ -148,6 +148,14 @@ public class Q {
 			}
 			System.out.println();
 		}
+	}
+
+	public void printStateQvals(State s) {
+        for(action a : Algorithms.action.values()){ 
+			double action_value = this.get(s, a);
+			DecimalFormat df = new DecimalFormat("#.###");
+			System.out.println(s+" "+a+" "+df.format(action_value));
+        }
 	}
 
 }

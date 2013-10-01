@@ -2,12 +2,13 @@ package policy;
 
 import action.PossibleActions;
 import action.PreyAction;
-import environment.Algorithms.action;
 import state.State;
 import statespace.StateSpace;
 
 import java.util.HashMap;
 import java.util.Random;
+
+import environment.Algorithms.action;
 
 public class RandomPreyPolicy extends Policy {
 

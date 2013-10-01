@@ -356,7 +356,11 @@ public class Algorithms {
 
                 double q_sa = q.get(s, a);
                 double max_a_q = q.getMax(s_prime);
+                
+                // the reward r that is consequence of action a, in our case (prey/predator system) is always set 
+                // as the reward associated with the destination state
                 double r = s_prime.getStateReward();
+                
                 double discounted_max_a_q = gamma * max_a_q;
                 double newQ_sa = q_sa + alpha * (r + discounted_max_a_q - q_sa);
 
@@ -438,10 +442,16 @@ public class Algorithms {
         double optimisticInitialQ = 15;
         double simulations = 20;  // many simulations ensure higher precision.
         EpsilonGreedyPolicy egp = new EpsilonGreedyPolicy(this.stateSpace); // Predator learn
-        double alpha = 0.2;
-        double gamma = 0.9;
+        double alpha = 0.1;
+        double gamma = 0.5;
 
-    	Q newQ = this.Q_Learning(egp, optimisticInitialQ, alpha, gamma);    	
+    	Q newQ = this.Q_Learning(egp, optimisticInitialQ, alpha, gamma);
+    	State s1 = this.stateSpace.getState(new Coordinates(1,0), new Coordinates(0,0));
+		newQ.printStateQvals(s1);
+		for(int i = 0; i < 10; i++){
+			State s2 = this.stateSpace.produceStochasticTransition(s1, action.SOUTH);
+			System.out.println(i+" "+s2);
+		}
     }
     /**
      * Experiment on the different epsilon values for ε-Greedy learning. Q is now the optimal Q as found from in the
