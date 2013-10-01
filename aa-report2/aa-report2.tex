@@ -4,7 +4,8 @@
 \usepackage{graphicx}
 \usepackage{algorithm}
 \usepackage{algorithmic}
-
+\input pgfplots.tex
+%\usemodule[pgfplots]
 
 \title{
 	\textbf{Autonomous Agents Assignment 2}
@@ -137,9 +138,11 @@ The experiments were performend on a \dots
 
 %--1) why? "in order to test..." (questions, and preferably hypotheses with explanation)
 \subsubsection{Hypotheses}
-
+The first experiment aims to measure the performance of the predator catching the predator with different learning rates $\alpha$ and different discount factors $\gamma$. Therefor the average performance of 10000 simulations for each $\alpha$ and $\gamma$ is  taken into account. This number is chosen, since a high number of simulations ensures higher precison.\\
+The expected outcome is that high learning rates tend to always replace the current value with the new estimates and converge quickly, while a small learning rate value leads to a slow convergence and seems to trust the current estimate.
 
 \subsubsection{Results}
+
 
 
 %--3) what does it show (and is that what you expected, and why)
@@ -206,6 +209,11 @@ The experiments were performend on a \dots
   Richard S. Sutton and Andrew G. Barto ,
   \emph{Reinforcement Learning: An Introduction}.
   The MIT Press, Cambridge, Massachusetts
+
+\bibitem{sutton}
+  Eyal Even-Dar and Yishay Mansour ,
+  \emph{Learning Rates for Q-learning}.
+  Journal of Machine Learning Research 5 (2003)
 
 \end{thebibliography}
 
