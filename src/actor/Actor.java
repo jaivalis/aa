@@ -39,8 +39,4 @@ public abstract class Actor {
 	public action getNextMoveDirection(State s) { 
 		return this.policy.getAction(s);
 	}
-
-//	public void move(CompleteState s) {
-//		//  Auto-generated method stub
-//	}
 }

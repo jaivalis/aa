@@ -10,7 +10,7 @@ public class MainA1 {
 		Algorithms env = new Algorithms(new CompleteStateSpace());
 		
 		/* Task 1 */
-		env.simulate(10);
+		env.simulate(10, "Task1Simulate");
 		long startTime = System.currentTimeMillis();
 		/* Task 2 */
 //		env.policyEvaluation();

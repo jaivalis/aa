@@ -3,6 +3,7 @@ package actor;
 import environment.Coordinates;
 import policy.EpsilonGreedyPolicy;
 import policy.PredatorPolicy;
+import policy.SoftmaxPolicy;
 import statespace.StateSpace;
 
 public class Predator extends Actor {

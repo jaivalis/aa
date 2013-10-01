@@ -5,6 +5,7 @@ import actor.Prey;
 import policy.EpsilonGreedyPolicy;
 import policy.LearnedPolicy;
 import policy.Policy;
+import policy.SoftmaxPolicy;
 import state.State;
 import statespace.StateSpace;
 
@@ -74,11 +75,12 @@ public class Algorithms {
      * on each simulation (less is better), in a .csv file. It is used for evaluating learning algorithms.
      * - New round when both prey and predator move.
      * @param episodeCount The number of episodes to be run.
+     * @param filePrefix The prefix of the .csv file to be created.
      */
-	public void simulate(int episodeCount) {
+	public void simulate(int episodeCount, String filePrefix) {
 		int episodes = episodeCount - 1;
         try {
-            BufferedWriter br = new BufferedWriter(new FileWriter("simulateResults.csv"));
+            BufferedWriter br = new BufferedWriter(new FileWriter(filePrefix + "simulate.csv"));
             do {
                 // initialize Episode
                 this.predator.setCoordinates(new Coordinates(0, 0));
@@ -351,13 +353,53 @@ public class Algorithms {
         return q;
     }
 
-    public void evaluateQLearning() {
-        int runs = 1000;
+    /**
+     *  Implementation of the Q-Learning algorithm.
+     *  @param pi; the epsilon-greedy policy that will be gradually updated within the algorithm according to the Q values
+     *  @return q the Q values
+     */
+    // TODO come up with a way to have both in one class
+    public Q Q_Learning(SoftmaxPolicy pi) {
+        Q q = this.initializeQ(15.0); // initialize Q(s,a) arbitrarily
+        pi.setQ(q); // I know it's not the best thing, but for now, it works.
+
+        for(State starting_s : this.stateSpace) { // repeat for each episode // initialize s
+            State s = starting_s;
+            State s_prime;
+            do { // repeat for each step of episode
+                this.predator.setCoordinates(s.getPredatorCoordinates());
+                this.prey.setCoordinates(s.getPreyCoordinates());
+                // Choose a from s using policy derived from Q (e-greedy)
+                action a =  pi.getAction(s);
+
+                s = this.stateSpace.getState(this.prey.getCoordinates(), this.predator.getCoordinates());
+
+                // Take action a. observe r, s'
+                s_prime = this.stateSpace.produceStochasticTransition(s,a);
+
+                double q_sa = q.get(s, a);
+                double max_a_q = q.getMax(s_prime);
+                double r = s_prime.getStateReward();
+                double newQ_sa = q_sa + Util.alpha * (r + Util.gamma * max_a_q - q_sa);
+
+                q.set(s, a, newQ_sa);
+
+                s = s_prime;
+            } while (!s.isTerminal()); // repeat until s is terminal
+        }
+        return q;
+    }
+
+    /**
+     * First trains the predator, then simulates the 'game' and outputs the csv file with the performance per round.
+     */
+    public void outputQLearningPerformance() {
+        int runs = 100;
         // Predator learn
         Q newQ = this.Q_Learning((EpsilonGreedyPolicy) this.predator.getPolicy());
         ((EpsilonGreedyPolicy) this.predator.getPolicy()).setQ(newQ);
 
         // Simulate
-        this.simulate(runs);
+        this.simulate(runs, "AfterQlearningEG");
     }
 }
