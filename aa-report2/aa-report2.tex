@@ -33,13 +33,14 @@ The initial exercise of this lab assignment is to implement Q-learning, a tempor
 
 \subsection{Summary}
 Q-learning is an off-policy TD control algorithm. An off-policy TD algorithm is one in which the estimated value functions can be updated using hypothetical actions, without having actually executed the actions themselves. Using this approach the algorithm can separate exploration from control, meaning the agent could learn through the environment without necessarily having had the explicit experience.
-The steps involved can be summarised into the following:\\\\
+The steps involved can be summarised into the following Algorithm ~\ref{algQ}\\\\
 
 
 
 \begin{algorithm}
 \caption{Q-learning}
 \begin{algorithmic}
+\label{algQ}
 \STATE Initialise $Q(s,a)$ arbitrarily
 \FORALL{Episodes}
 \STATE Initialise s
