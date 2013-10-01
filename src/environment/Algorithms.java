@@ -346,7 +346,9 @@ public class Algorithms {
     	Q q = this.initializeQ(initialQ); // initialize Q(s,a) arbitrarily
     	pi.setQ(q); // I know it's not the best thing, but for now, it works.
 
-        for(State starting_s : this.stateSpace) { // repeat for each episode // initialize s
+        for(int i=0;i<100000;i++) for(State starting_s : this.stateSpace) { // repeat for each episode // initialize s
+        	//starting_s = this.stateSpace.getState(new Coordinates(5,5), new Coordinates(0,0)); //FIXME DEBUG
+        	//System.out.println(starting_s); //FIXME DEBUG
         	State s = starting_s;
             State s_prime;
             do { // repeat for each step of episode
@@ -359,13 +361,20 @@ public class Algorithms {
                 double q_sa = q.get(s, a);
                 double max_a_q = q.getMax(s_prime);
                 double r = s_prime.getStateReward();
-                double newQ_sa = q_sa + alpha * (r + gamma * max_a_q - q_sa);
+                double discounted_max_a_q = gamma * max_a_q;
+                double newQ_sa = q_sa + alpha * (r + discounted_max_a_q - q_sa);
 
                 q.set(s, a, newQ_sa);
 
                 s = s_prime;
+                //System.out.println("a:"+a+" s':"+s_prime); //FIXME DEBUG
             } while (!s.isTerminal()); // repeat until s is terminal
-        } return q;
+        }
+        for(action a : Algorithms.action.values()){ 
+        	q.printActionValueGrid(a);
+        }
+        q.printMaxActionsGrid();
+        return q;
     }
 
     /**
@@ -389,12 +398,7 @@ public class Algorithms {
                 s_prime = this.stateSpace.produceStochasticTransition(s, a);
                 double r = s_prime.getStateReward();
 
-                this.predator.setCoordinates(s.getPredatorCoordinates());
-                this.prey.setCoordinates(s.getPreyCoordinates());
-
                 action a_prime =  pi.getAction(s_prime);    // Choose a from s using policy derived from Q (e-greedy)
-
-                s = this.stateSpace.getState(this.prey.getCoordinates(), this.predator.getCoordinates());
 
                 double q_sa = q.get(s, a);
                 double q_sprime_aprime = q.get(s_prime, a_prime);
@@ -402,7 +406,8 @@ public class Algorithms {
 
                 q.set(s, a, newQ_sa);
 
-                s = s_prime; a = a_prime;
+                s = s_prime;
+                a = a_prime;
             } while (!s.isTerminal()); // repeat until s is terminal
         } return q;
     }
@@ -415,7 +420,7 @@ public class Algorithms {
      */
     public void QLearningTask1() {
         double optimisticInitialQ = 15;
-        double simulations = 100000;  // many simulations ensure higher precision.
+        double simulations = 10000;  // many simulations ensure higher precision.
         EpsilonGreedyPolicy egp = new EpsilonGreedyPolicy(this.stateSpace); // Predator learn
 
         for (float alpha = 0; alpha <= 1.0; alpha += 0.1) {
@@ -423,6 +428,7 @@ public class Algorithms {
                 // 1. train
                 Q newQ = this.Q_Learning(egp, optimisticInitialQ, alpha, gamma);
                 ((EpsilonGreedyPolicy) this.predator.getPolicy()).setQ(newQ);
+                newQ.printMaxActionsGrid();
 
                 // 2. simulate & output results
                 double averageRounds = this.getSimulationAverageRounds(simulations);
@@ -432,6 +438,15 @@ public class Algorithms {
         }
     }
 
+    public void QLearningTask1DEBUG() {
+        double optimisticInitialQ = 15;
+        double simulations = 20;  // many simulations ensure higher precision.
+        EpsilonGreedyPolicy egp = new EpsilonGreedyPolicy(this.stateSpace); // Predator learn
+        double alpha = 0.2;
+        double gamma = 0.9;
+
+    	Q newQ = this.Q_Learning(egp, optimisticInitialQ, alpha, gamma);    	
+    }
     /**
      * Experiment on the different epsilon values for ε-Greedy learning. Q is now the optimal Q as found from in the
      * previous experiment.

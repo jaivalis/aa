@@ -4,13 +4,22 @@ import action.StateAction;
 import environment.Algorithms.action;
 import state.State;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
 public class Q {
+	
+	/**
+	 * mapping from a StateAction object, which represents a <state,action> tuple, to a number that represents the value of the state/action
+	 */
 	HashMap<StateAction,Double> sa_d = new HashMap<StateAction,Double>();
+	
+	/**
+	 * mapping from a state to a set of state/action tuples, that are all actions that can be performed from that state
+	 */
 	HashMap<State, HashSet<StateAction>> s_sa = new HashMap<State,HashSet<StateAction>>();
 
     /**
@@ -112,13 +121,33 @@ public class Q {
 			Coordinates c = s.getPreyCoordinates();
 			states[c.getX()][c.getY()] = s;
 		}
-		for(int i = 0; i < states.length; i++){
-			for(int j = 0; j < states[i].length; j++){
-				action a = this.getArgmaxA(states[i][j]);
+		for(int i = 0; i < 11; i++){
+			for(int j = 0; j < 11; j++){
+				action a = this.getArgmaxA(states[j][i]);
 				System.out.print(a.getArrow() + "\t");
 				// System.out.print(this.board[i][j].getStateValue() + "\t");
 			}
 			System.out.println();
 		}
 	}
+
+	public void printActionValueGrid(action a) {
+		System.out.println(a);
+		State[][] states = new State[11][11];
+		for(State s : this.s_sa.keySet()){
+			Coordinates c = s.getPreyCoordinates();
+			states[c.getX()][c.getY()] = s;
+		}
+		for(int i = 0; i < 11; i++){
+			for(int j = 0; j < 11; j++){
+				State s = states[j][i];
+				double action_value = this.get(s, a);
+				DecimalFormat df = new DecimalFormat("#.###");
+				System.out.print(df.format(action_value) + "\t");
+				// System.out.print(this.board[i][j].getStateValue() + "\t");
+			}
+			System.out.println();
+		}
+	}
+
 }
