@@ -13,10 +13,11 @@ public class MainA2 {
     public static void main(String[] args) {
         StateSpace ss = new ReducedStateSpace();
 
-        Algorithms env = new Algorithms(ss);
+        Algorithms algos = new Algorithms(ss);
         EpsilonGreedyPolicy pi = new EpsilonGreedyPolicy(ss);
-        Q q = env.Q_Learning(pi);
-        q.print();
-        q.printMaxActionsGrid();
+        Q q = algos.Q_Learning(pi);
+//        System.out.println(q);
+//        q.printMaxActionsGrid();
+        algos.evaluateQLearning();
     }
 }

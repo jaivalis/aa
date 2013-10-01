@@ -68,25 +68,40 @@ public class Algorithms {
 		this.predator = new Predator(new Coordinates(0,0), stateSpace);
 		this.prey = new Prey(new Coordinates(5,5), stateSpace);
 	}
-	
+
+    /**
+     * Runs many simulations of the 'game' and outputs the number of rounds it takes for the predator to catch the prey
+     * on each simulation (less is better), in a .csv file. It is used for evaluating learning algorithms.
+     * - New round when both prey and predator move.
+     * @param episodeCount The number of episodes to be run.
+     */
 	public void simulate(int episodeCount) {
-		int episodes = episodeCount;
-		do {
-			// initialize Episode
-			this.predator.setCoordinates(new Coordinates(0, 0));
-			this.prey.setCoordinates(new Coordinates(5, 5));
-			this.prey.setAlive(true);
-			State initialState = this.stateSpace.getState(this.prey.getCoordinates(), this.predator.getCoordinates());
-			
-			int rounds = 0;
-			while (!isEpisodeOver()) { // run episode
-				initialState = this.nextRound(initialState);
-				rounds++;
-			}
-			//REPORT
-			System.out.println("[simulate()] rounds: " + rounds);
-			episodes--;
-		} while (episodes > 0);
+		int episodes = episodeCount - 1;
+        try {
+            BufferedWriter br = new BufferedWriter(new FileWriter("simulateResults.csv"));
+            do {
+                // initialize Episode
+                this.predator.setCoordinates(new Coordinates(0, 0));
+                this.prey.setCoordinates(new Coordinates(5, 5));
+                this.prey.setAlive(true);
+                State initialState = this.stateSpace.getState(this.prey.getCoordinates(), this.predator.getCoordinates());
+
+                int rounds = 0;
+                while (!isEpisodeOver()) { // run episode
+                    initialState = this.nextRound(initialState);
+                    rounds++;
+                }
+                //REPORT
+
+                br.write("");
+
+                System.out.println((episodeCount-episodes) + ", " + rounds);
+                br.write( (episodeCount-episodes) + ", " + rounds + "\n");
+
+                episodes--;
+            } while (episodes > -1);
+            br.close();
+        } catch (IOException e) { e.printStackTrace(); }
 	}
 
 	public boolean isEpisodeOver() { return !this.prey.getAlive(); }
@@ -309,13 +324,10 @@ public class Algorithms {
     	Q q = this.initializeQ(15.0); // initialize Q(s,a) arbitrarily
     	pi.setQ(q); // I know it's not the best thing, but for now, it works.
 
-    	int i = 0;
         for(State starting_s : this.stateSpace) { // repeat for each episode // initialize s
-        	System.out.println(++i);
         	State s = starting_s;
             State s_prime;
             do { // repeat for each step of episode
-            	System.out.println("stuff"+s);
                 this.predator.setCoordinates(s.getPredatorCoordinates());
                 this.prey.setCoordinates(s.getPreyCoordinates());
                 // Choose a from s using policy derived from Q (e-greedy)

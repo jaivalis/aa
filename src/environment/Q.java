@@ -93,16 +93,17 @@ public class Q {
 		} return max;
 	}
 
-	public void print() {
+	public String toString() {
+        String ret = "";
 		for(State s : this.s_sa.keySet()){
-			System.out.println(s);
+			ret += s;
 			HashSet<StateAction> sa_set = this.s_sa.get(s);
 			for(StateAction sa : sa_set) {
 				action a = sa.getA();
 				Double d = this.sa_d.get(sa);
-				System.out.println(a.getShortName()+":"+d);
+				ret += a.getShortName()+":"+d;
 			}
-		}
+		} return ret;
 	}
 	
 	public void printMaxActionsGrid() {
