@@ -377,6 +377,7 @@ public class Algorithms {
      * ε-greedy with ε set to 0.1.
      * optimistic initial Q value set to 15.
      * Experiment on the different values for α and γ.
+     * Outputs to stdout an array with latex-type format to be included to the report.
      */
     public void QLearningTask1() {
         double optimisticInitialQ = 15;
@@ -391,9 +392,9 @@ public class Algorithms {
 
                 // 2. simulate & output results
                 double averageRounds = this.getSimulationAverageRounds(simulations);
-                System.out.print(averageRounds + " && ");
+                System.out.print(averageRounds + " & ");
             }
-            System.out.println();
+            System.out.println("\\\\");
         }
     }
 
