@@ -23,7 +23,7 @@
 
 
 \section{Introduction}
-This report is based on the implementation of an assignment exercise in which a predator is trying to catch a prey in a 2-dimensional environment, being unknown to the predator. This will be attempted  using Temporal Difference learning methods (TD). TD learning methods can learn directly from experience, rather than having to rely on a model of the environment. As in 
+This report is based on the implementation of an assignment exercise in which a predator is trying to catch a prey in a 2-dimensional environment, being unknown to the predator. This will be attempted  using Temporal Difference learning methods (TD), a combination of Monte Carlo and dynamic programming. TD learning methods can learn directly from experience, rather than having to rely on a model of the environment. TD methods can update action state values estimates based on other learned estimates, without having to wait for the final outcome. 
 
 
 \section{Q-Learning}
@@ -32,7 +32,7 @@ The initial exercise of this lab assignment is to implement Q-learning, a tempor
 
 
 \subsection{Summary}
-Q-learning is an off-policy TD control algorithm. An off-policy TD algorithm is one in which the estimated value functions can be updated using hypothetical actions, without having actually executed the actions themselves. Using this approach the algorithm can separate exploration from control, meaning the agent could learn through from the environment without necessarily having had the explicit experience.
+Q-learning is an off-policy TD control algorithm. An off-policy TD algorithm is one in which the estimated value functions can be updated using hypothetical actions, without having actually executed the actions themselves. Using this approach the algorithm can separate exploration from control, meaning the agent could learn through the environment without necessarily having had the explicit experience.
 The steps involved can be summarised into the following:\\\\
 
 \pagebreak
