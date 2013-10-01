@@ -72,6 +72,29 @@ Based on the task at hand, the predator should directly learn a high reward poli
 
 In this section, a different action selection policy will be used in Q-learning instead of $\epsilon$-greedy. $\epsilon$-greedy policy satisfies the exploration/exploitation variance which is desired to be used in the Q-learning algorithm, although to its disadvantage when the algorithm explores with a probability $\epsilon$, it does not do this by taking into consideration the performance of the individual non-greedy actions themselves. The probability distribution between which non-greedy action is selected, is uniformly distributed and therefore, each one is as likely to be chosen as the rest. To optimise the performance of the Q-learning algorithm, it could be more efficient to make the selection among the non-greedy actions by weighing them according to their action-value estimates, thus increasing probability of selection for the higher action-value estimates, and hence making a more guided (by efficiency) exploration.
 
+\begin{algorithm}
+\caption{Softmax}
+\begin{algorithmic}
+\label{softmax}
+\STATE Initialise $Q(s,a)$ arbitrarily
+\FORALL{Episodes}
+\STATE Initialise s
+\FORALL{Steps of episodes}
+\STATE Choose Choose $a$ with probability $\frac{\exp^{Q_t(a)/r}}{\sum{\exp^{Q_t(b)/r}}}$
+\STATE Take action $a$, observe $r$, $s'$
+\STATE $Q(s,a) \leftarrow Q(s,a) + \alpha \lbrack r + \gamma max_{a'} Q(s',a') - Q(s,a)\rbrack$
+\STATE $s \leftarrow s';$\
+\ENDFOR
+\STATE Until s is terminal
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
+\noindent Where:
+\begin{itemize}
+	\item $r$ is a positive parameter called \emph{temperature}. A high temperature leads the actions to be almost equiproble, low tempreature values cause a greater difference with $r$ \rightarrow 0 beeing the same as greedy action selection.
+\end{itemize}
+\vspace*{10mm}
 
 
 \subsection{Sarsa}
