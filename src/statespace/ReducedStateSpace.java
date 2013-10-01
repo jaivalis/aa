@@ -1,10 +1,10 @@
 package statespace;
 
 import environment.Coordinates;
-import environment.Environment;
+import environment.Algorithms;
 import environment.ProbableTransitions;
 import environment.Util;
-import environment.Environment.action;
+import environment.Algorithms.action;
 import policy.Policy;
 import state.CompleteState;
 import state.ReducedState;
@@ -13,6 +13,7 @@ import state.State;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.Random;
 
 import action.PreyAction;
 
@@ -50,7 +51,7 @@ public class ReducedStateSpace extends StateSpace implements Iterable<State>, It
     }
 
     @Override
-    public Environment.action getTransitionAction(State s, State s_prime) {
+    public Algorithms.action getTransitionAction(State s, State s_prime) {
         ReducedState rs = (ReducedState) s;
         ReducedState rs_prime = (ReducedState) s_prime;
         return rs.getTransitionAction(rs_prime);
@@ -67,14 +68,14 @@ public class ReducedStateSpace extends StateSpace implements Iterable<State>, It
     }
 
     @Override
-    public State getNextState(State s, Environment.action a) {
+    public State getNextState(State s, Algorithms.action a) {
         Coordinates predNew = s.getPredatorCoordinates();
         predNew = predNew.getShifted(a.getOpposite());
         return this.getState(s.getPreyCoordinates(), predNew);
     }
 
     @Override
-    public ProbableTransitions getProbableTransitions(State s, Environment.action a) {
+    public ProbableTransitions getProbableTransitions(State s, Algorithms.action a) {
         ProbableTransitions ret = new ProbableTransitions();
 
         // if the action will be undertaken, then the predator
@@ -87,7 +88,7 @@ public class ReducedStateSpace extends StateSpace implements Iterable<State>, It
 
         // afterwards, there is the *actual* move of the prey
         // where could the prey be going?
-        for(Environment.action act : Environment.action.values()) {
+        for(Algorithms.action act : Algorithms.action.values()) {
             PreyAction tmp = new PreyAction();
             double p = tmp.getActionProbability(act);
             Coordinates preyPossiblePos = preyNewPos.getShifted(act);
@@ -95,7 +96,7 @@ public class ReducedStateSpace extends StateSpace implements Iterable<State>, It
         }
         return ret;
     }
-
+    
     /******************************* Iterator Related ************************************/
     @Override
     public Iterator iterator() {
@@ -133,4 +134,19 @@ public class ReducedStateSpace extends StateSpace implements Iterable<State>, It
 		}
 		return ret;
 	}
+
+    @Override
+    public State getRandomState() {
+        Random r = new Random();
+        int randomInt = r.nextInt(length());
+        int tmp = randomInt;
+        int j = tmp % Util.DIM;
+        tmp = tmp / Util.DIM;
+        int i = tmp % Util.DIM;
+        this.iter_pos++;
+        return this.states[i][j];
+    }
+
+    @Override
+    protected int length() { return (int)Math.pow(Util.DIM, 2); }
 }

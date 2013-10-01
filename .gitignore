@@ -4,4 +4,9 @@
 *.jar
 *.war
 *.ear
+*.xml
+*.iml
+.classpath
+.project
+*.aux
 /bin

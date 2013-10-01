@@ -1,0 +1,74 @@
+\documentclass[11pt]{article}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{graphicx}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+
+
+\title{
+	\textbf{Autonomous Agents Assignment 2}
+}
+
+\author{Tobias Stahl \\ 10528199 \and Spyros Michaelides \\ 10523316 \and Ioannis Giounous Aivalis \\ 10524851 \and Francesco Stablum \\ 6200982}
+
+
+
+
+\begin{document}
+
+\maketitle
+
+
+
+
+\section{Introduction}
+This report is based on the implementation of an assignment exercise in which a predator is trying to catch a prey in a 2-dimensional environment, being unknown to the predator. This will be attempted  using Temporal Difference learning methods (TD), a combination of Monte Carlo and dynamic programming. TD learning methods can learn directly from experience, rather than having to rely on a model of the environment. TD methods can update action state values estimates based on other learned estimates, without having to wait for the final outcome. 
+
+
+\section{Q-Learning}
+The initial exercise of this lab assignment is to implement Q-learning, a temporal-difference (TD) learning algorithm. This algorithm is to be used by the predator agent to catch the prey.
+
+
+
+\subsection{Summary}
+Q-learning is an off-policy TD control algorithm. An off-policy TD algorithm is one in which the estimated value functions can be updated using hypothetical actions, without having actually executed the actions themselves. Using this approach the algorithm can separate exploration from control, meaning the agent could learn through the environment without necessarily having had the explicit experience.
+The steps involved can be summarised into the following:\\\\
+
+\pagebreak
+
+\subsection{Q-learning Algorithm}
+\noindent Initialise $Q(s,a)$ arbitrarily\\
+Repeat(for each episode):\\
+\hspace*{10mm} Initialise s\\
+\hspace*{10mm} Repeat (for each step of episode):\\
+\hspace*{20mm} Choose $a$ from $s$ using policy derived from $Q$ (e.g., $\epsilon$-greedy)\\
+\hspace*{20mm} Take action $a$, observe $r$, $s'$\\
+\hspace*{20mm} $Q(s,a) \leftarrow Q(s,a) + \alpha \lbrack r + \gamma max_{a'} Q(s',a') - Q(s,a)\rbrack$\\
+\hspace*{20mm} $s \leftarrow s';$\\
+\hspace*{10mm} until $s$ is terminal\\
+
+
+\noindent Where:
+\begin{itemize}
+	\item $\alpha$ is the learning rate. Setting it to a high value will force learning to occur faster, whereas for a low value it will occur slower.
+	\item $max_{a'}$ is the maximum reward reachable in the state $s'$
+	\item $\gamma$ is the value which gives future rewards less worth than immediate ones
+\end{itemize}
+\vspace*{10mm}
+
+
+\noindent Which can be translated into the following procedure:
+\begin{enumerate}
+	\item Initialise the values for \textbf{Q(s,a)}
+	\item Observe the current state, \textbf{s}.
+	\item Choose an action \textbf{a} for the state based on action selection policy.
+	\item Take action, and observe reward \textbf{r}, and new state \textbf{s'}.
+	\item Update Q-value for the state \textbf{s} using the observed reward and the maximum reward possible for the next state.
+	\item Set the state to the new state, and repeat the process until a state is reached.
+\end{enumerate}
+
+
+Based on the task at hand, the predator should directly learn a high reward policy without learning a model, since the agent is not supposed to know not know the transition probabilities, nor the reward structure of the environment. It is assumed that convergence should occur as long as all state action pair values continue to be updated using a certain policy (in this case $\epsilon$-greedy. 
+
+\end{document}

@@ -2,8 +2,8 @@ package statespace;
 
 import action.PreyAction;
 import environment.Coordinates;
-import environment.Environment;
-import environment.Environment.action;
+import environment.Algorithms;
+import environment.Algorithms.action;
 import environment.ProbableTransitions;
 import environment.Util;
 import policy.Policy;
@@ -13,6 +13,7 @@ import state.State;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.Random;
 
 public class CompleteStateSpace extends StateSpace{
 	private CompleteState[/*preyX*/][/*preyY*/][/*predX*/][/*predY*/] states;
@@ -64,6 +65,24 @@ public class CompleteStateSpace extends StateSpace{
 	}
 
     @Override
+    public State getRandomState() {
+        Random r = new Random();
+        int randomInt = r.nextInt(length());
+        int tmp = randomInt;
+        int l = tmp % Util.DIM;
+        tmp = (int)(tmp / Util.DIM);
+        int k = tmp % Util.DIM;
+        tmp = (int)(tmp / Util.DIM);
+        int j = tmp % Util.DIM;
+        tmp = (int)(tmp / Util.DIM);
+        int i = tmp % Util.DIM;
+        this.iter_pos++;
+        return this.states[i][j][k][l];
+    }
+
+    protected int length() { return (int) Math.pow(Util.DIM, 4); }
+
+    @Override
 	public void initializeStateValues(double d) {
 		for (State s : this) { s.setStateValue(0.0); }
 	}
@@ -90,7 +109,7 @@ public class CompleteStateSpace extends StateSpace{
         Coordinates preyCurrPos = s.getPreyCoordinates();
 
         // where could the prey be going?
-        for(Environment.action act : Environment.action.values()) {
+        for(Algorithms.action act : Algorithms.action.values()) {
             PreyAction tmp = new PreyAction();
             double p = tmp.getActionProbability(act);
             Coordinates preyPossiblePos = preyCurrPos.getShifted(act);
@@ -131,7 +150,8 @@ public class CompleteStateSpace extends StateSpace{
 	@Override
 	public void remove() { }
 	/******************************* Iterator Related ************************************/
-	
+
+    // TODO : remove those if not necessary
 	public void print2dSliceGivenPredator(Coordinates predC) { // untested
 		int k = predC.getX();
 		int l = predC.getY();

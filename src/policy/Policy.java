@@ -2,7 +2,7 @@ package policy;
 
 import action.LearnedAction;
 import action.PossibleActions;
-import environment.Environment.action;
+import environment.Algorithms.action;
 import state.State;
 
 import java.util.HashMap;
@@ -11,26 +11,31 @@ public abstract class Policy {
 	
 	protected HashMap<State, PossibleActions> stateActionMapping;
 	
-	public Policy(){
+	protected Policy(){
 		this.stateActionMapping = new HashMap<State, PossibleActions>();
 	}
 	
+	/**
+	 * Chooses an stochastic action, according to the probabilities associated.
+	 * @param s
+	 * @return
+	 */
 	public action getAction(State s) {
         PossibleActions ac = this.stateActionMapping.get(s);
 		return ac.getRandomAction();
 	}
-	
-	public String getActionString(State s) {
-		switch (this.stateActionMapping.get(s).getRandomAction()) {
-			case NORTH: return "^";
-			case SOUTH:	return "V";
-			case EAST:	return ">";
-			case WEST:	return "<";
-			case WAIT:	return "-";
-			default:	return "?";			
-		}
-	}
-	
+
+    public String getActionString(State s) {
+        switch (this.stateActionMapping.get(s).getRandomAction()) {
+            case NORTH: return "^";
+            case SOUTH:	return "V";
+            case EAST:	return ">";
+            case WEST:	return "<";
+            case WAIT:	return "-";
+            default:	return "?";
+        }
+    }
+
 	public double getActionProbability(State s, action a) {
 		return this.stateActionMapping.get(s).getActionProbability(a);
 	}

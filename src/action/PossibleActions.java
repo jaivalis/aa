@@ -1,6 +1,6 @@
 package action;
 
-import environment.Environment.action;
+import environment.Algorithms.action;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -24,7 +24,8 @@ public abstract class PossibleActions {
 	
 	public double getActionProbability(action a) {
 		return this.actionProbability.get(a);
-	}	
+	}
+
 	public void setActionProbability(action a, double p) {
 		this.actionProbability.put(a, p);
 	}

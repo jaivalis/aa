@@ -2,8 +2,8 @@ package action;
 
 import java.util.HashMap;
 
-import environment.Environment;
-import environment.Environment.action;
+import environment.Algorithms;
+import environment.Algorithms.action;
 
 public class LearnedAction extends PredatorAction {
 

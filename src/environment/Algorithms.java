@@ -2,6 +2,7 @@ package environment;
 
 import actor.Predator;
 import actor.Prey;
+import policy.EpsilonGreedyPolicy;
 import policy.LearnedPolicy;
 import policy.Policy;
 import state.State;
@@ -13,7 +14,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.Set;
 
-public class Environment {	
+public class Algorithms {	
 	private StateSpace stateSpace;
 	private Prey prey;
 	private Predator predator;
@@ -22,13 +23,23 @@ public class Environment {
 	private final double THETA = 0.00001; // threshold for the loop end condition
 	private final double GAMMA = 0.8;
 	
-	public enum action 
-	{ 
-		NORTH, 
-		SOUTH, 
-		EAST, 
-		WEST, 
-		WAIT;
+	public enum action { 
+		NORTH("N","^"),
+		SOUTH("S","v"),
+		EAST("E",">"),
+		WEST("W","<"),
+		WAIT("X","-");
+		
+		private String shortName;
+		private String arrow;
+
+		public String getShortName() {
+			return this.shortName;
+		}
+		
+		public String getArrow() {
+			return this.arrow;
+		}
 		
 		public action getOpposite() {
 			switch(this) {
@@ -45,9 +56,14 @@ public class Environment {
 			}
 			return action.WAIT;
 		}
+		
+		private action(String shortName, String arrow){
+			this.shortName = shortName;
+			this.arrow = arrow;
+		}
 	};
 	
-	public Environment(StateSpace givenStateSpace) {
+	public Algorithms(StateSpace givenStateSpace) {
 		this.stateSpace = givenStateSpace;
 		this.predator = new Predator(new Coordinates(0,0), stateSpace);
 		this.prey = new Prey(new Coordinates(5,5), stateSpace);
@@ -110,7 +126,7 @@ public class Environment {
 				double V_s = 0.0;
 				double v = currState.getStateValue();
 
-				for (action ac : Environment.action.values()) { // summation over a
+				for (action ac : Algorithms.action.values()) { // summation over a
 					double pi = policy.getActionProbability(currState, ac);
 					ProbableTransitions probableTransitions = stateSpace.getProbableTransitions(currState, ac);
 					Set<State> neighbours = probableTransitions.getStates();
@@ -147,7 +163,7 @@ public class Environment {
 			
 			double max = 0.0;
 			action argmax_a = null;
-			for (action a : Environment.action.values()) {
+			for (action a : Algorithms.action.values()) {
 				double sum = 0.0;
 				for (State s_prime : this.stateSpace.getNeighbors(s)) {
 					double p;
@@ -203,7 +219,7 @@ public class Environment {
                 State s = stateSpaceIt.next();
 				double v = s.getStateValue();
 				double max = 0.0;
-				for (action a: Environment.action.values()) { // max over a
+				for (action a: Algorithms.action.values()) { // max over a
 					ProbableTransitions probableTransitions = stateSpace.getProbableTransitions(s, a);
 					Set<State> neighbours = probableTransitions.getStates();
 					double sum = 0.0;
@@ -227,7 +243,7 @@ public class Environment {
             State s = stateSpaceIt.next();
 			action argmax_a = action.WAIT;
 			double max = 0.0;
-			for (action a: Environment.action.values()) { // argmax over a
+			for (action a: Algorithms.action.values()) { // argmax over a
 				ProbableTransitions probableTransitions = stateSpace.getProbableTransitions(s, a);
 				Set<State> neighbours = probableTransitions.getStates();
 				double sum = 0.0;
@@ -242,9 +258,7 @@ public class Environment {
 			}
 			pi.setUniqueAction(s, argmax_a);
 		}
-		
 		// TODO: output State values somehow.
-//		this.state.printStateValues();
 		return new ValueIterationResult(numIterations,pi);
 	}
 	
@@ -269,4 +283,60 @@ public class Environment {
 			} br.close();
 		} catch (IOException e) { e.printStackTrace(); }
 	}
+
+    /***********************************************************************************/
+
+    /**
+     * initializes all state-action pair value (Q) from a single value
+     * @param value
+     * @return HashMap<StateAction,Double> q
+     */
+    public Q initializeQ(double value) {
+        Q q = new Q();
+        for(State s : this.stateSpace){
+            for(action a : Algorithms.action.values()){
+                q.set(s, a, value);
+            }
+        }
+        return q;
+    }
+
+    /**
+     *  Implementation of the Q-Learning algorithm.
+     *  @param pi; the epsilon-greedy policy that will be gradually updated within the algorithm according to the Q values
+     *  @return q the Q values
+     */
+    public Q Q_Learning(EpsilonGreedyPolicy pi) {
+    	Q q = this.initializeQ(15.0); // initialize Q(s,a) arbitrarily
+    	pi.setQ(q); // I know it's not the best thing, but for now, it works.
+
+    	int i = 0;
+        for(State starting_s : this.stateSpace) { // repeat for each episode // initialize s
+        	System.out.println(++i);
+        	State s = starting_s;
+            State s_prime;
+            do { // repeat for each step of episode
+            	System.out.println("stuff"+s);
+                this.predator.setCoordinates(s.getPredatorCoordinates());
+                this.prey.setCoordinates(s.getPreyCoordinates());
+                // Choose a from s using policy derived from Q (e-greedy)
+            	action a =  pi.getAction(s);
+
+                s = this.stateSpace.getState(this.prey.getCoordinates(), this.predator.getCoordinates());
+
+                // Take action a. observe r, s'
+                s_prime = this.stateSpace.produceStochasticTransition(s,a);
+
+                double q_sa = q.get(s, a);
+                double max_a_q = q.getMax(s_prime);
+                double r = s_prime.getStateReward();
+                double newQ_sa = q_sa + Util.alpha * (r + Util.gamma * max_a_q - q_sa);
+
+                q.set(s, a, newQ_sa);
+
+                s = s_prime;
+            } while (!s.isTerminal()); // repeat until s is terminal
+        }
+        return q;
+    }
 }
