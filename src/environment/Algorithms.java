@@ -406,7 +406,7 @@ public class Algorithms {
 
                 q.set(s, a, newQ_sa);
 
-                s = s_prime;
+                s = s_prime; a = a_prime;
             } while (!s.isTerminal()); // repeat until s is terminal
         } return q;
     }
