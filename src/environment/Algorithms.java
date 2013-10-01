@@ -20,7 +20,7 @@ public class Algorithms {
 	private Prey prey;
 	private Predator predator;
 
-	private static final int MAX_ITERATIONS = 1000;
+	private final int MAX_ITERATIONS = 1000;
 	private final double THETA = 0.00001; // threshold for the loop end condition
 	private final double GAMMA = 0.8;
 	
@@ -71,40 +71,32 @@ public class Algorithms {
 	}
 
     /**
-     * Runs many simulations of the 'game' and outputs the number of rounds it takes for the predator to catch the prey
-     * on each simulation (less is better), in a .csv file. It is used for evaluating learning algorithms.
+     * Runs many simulations  and outputs the number of rounds it takes for the predator to catch the prey on each
+     * simulation (less is better), in a .csv file. It is used for evaluating learning algorithms.
      * - New round when both prey and predator move.
      * @param episodeCount The number of episodes to be run.
      * @param filePrefix The prefix of the .csv file to be created.
      */
-	public void simulate(int episodeCount, String filePrefix) {
-		int episodes = episodeCount - 1;
-        try {
-            BufferedWriter br = new BufferedWriter(new FileWriter(filePrefix + "simulate.csv"));
-            do {
-                // initialize Episode
-                this.predator.setCoordinates(new Coordinates(0, 0));
-                this.prey.setCoordinates(new Coordinates(5, 5));
-                this.prey.setAlive(true);
-                State initialState = this.stateSpace.getState(this.prey.getCoordinates(), this.predator.getCoordinates());
+	public void simulate(double episodeCount, String filePrefix) {
+		double episodes = episodeCount - 1;
+        double allRounds = 0;
+        do {
+            // initialize Episode
+            this.predator.setCoordinates(new Coordinates(0, 0));
+            this.prey.setCoordinates(new Coordinates(5, 5));
+            this.prey.setAlive(true);
+            State initialState = this.stateSpace.getState(this.prey.getCoordinates(), this.predator.getCoordinates());
 
-                int rounds = 0;
-                while (!isEpisodeOver()) { // run episode
-                    initialState = this.nextRound(initialState);
-                    rounds++;
-                }
-                //REPORT
-
-                br.write("");
-
-                System.out.println((episodeCount-episodes) + ", " + rounds);
-                br.write( (episodeCount-episodes) + ", " + rounds + "\n");
-
-                episodes--;
-            } while (episodes > -1);
-            br.close();
-        } catch (IOException e) { e.printStackTrace(); }
-	}
+            int rounds = 0;
+            while (!isEpisodeOver()) { // run episode
+                initialState = this.nextRound(initialState);
+                rounds++; allRounds++;
+            }
+            System.out.println((episodeCount-episodes) + ", " + rounds);
+            episodes--;
+        } while (episodes > -1);
+        System.out.println("Rounds on average: " + (allRounds / episodeCount));
+    }
 
 	public boolean isEpisodeOver() { return !this.prey.getAlive(); }
 	
@@ -305,7 +297,7 @@ public class Algorithms {
     /**
      * initializes all state-action pair value (Q) from a single value
      * @param value
-     * @return HashMap<StateAction,Double> q
+     * @return Q q
      */
     public Q initializeQ(double value) {
         Q q = new Q();
@@ -318,12 +310,40 @@ public class Algorithms {
     }
 
     /**
-     *  Implementation of the Q-Learning algorithm.
-     *  @param pi; the epsilon-greedy policy that will be gradually updated within the algorithm according to the Q values
-     *  @return q the Q values
+     * Runs many simulations and returns the number of rounds it takes for the predator to catch the prey on average
+     * for all simulations (less is better). It is used for evaluating learning algorithms.
+     * - New round when both prey and predator move.
+     * @param episodeCount The number of episodes to be run.
      */
-    public Q Q_Learning(EpsilonGreedyPolicy pi) {
-    	Q q = this.initializeQ(15.0); // initialize Q(s,a) arbitrarily
+    public double getSimulationAverageRounds(double episodeCount) {
+        double episodes = episodeCount - 1;
+        double allRounds = 0;
+        do {
+            // initialize Episode
+            this.predator.setCoordinates(new Coordinates(0, 0));
+            this.prey.setCoordinates(new Coordinates(5, 5));
+            this.prey.setAlive(true);
+            State initialState = this.stateSpace.getState(this.prey.getCoordinates(), this.predator.getCoordinates());
+
+            while (!isEpisodeOver()) { // run episode
+                initialState = this.nextRound(initialState);
+                allRounds++;
+            }
+            episodes--;
+        } while (episodes > -1);
+        return allRounds / episodeCount;
+    }
+
+    /**
+     * Implementation of the Q-Learning algorithm.
+     * @param pi The epsilon-greedy policy that will be gradually updated within the algorithm according to the Q values
+     * @param initialQ Initial value for Q.
+     * @param alpha Learning rate.
+     * @param gamma Decay factor.
+     * @return
+     */
+    public Q Q_Learning(EpsilonGreedyPolicy pi, double initialQ, double alpha, double gamma) {
+    	Q q = this.initializeQ(initialQ); // initialize Q(s,a) arbitrarily
     	pi.setQ(q); // I know it's not the best thing, but for now, it works.
 
         for(State starting_s : this.stateSpace) { // repeat for each episode // initialize s
@@ -343,7 +363,7 @@ public class Algorithms {
                 double q_sa = q.get(s, a);
                 double max_a_q = q.getMax(s_prime);
                 double r = s_prime.getStateReward();
-                double newQ_sa = q_sa + Util.alpha * (r + Util.gamma * max_a_q - q_sa);
+                double newQ_sa = q_sa + alpha * (r + gamma * max_a_q - q_sa);
 
                 q.set(s, a, newQ_sa);
 
@@ -354,52 +374,40 @@ public class Algorithms {
     }
 
     /**
-     *  Implementation of the Q-Learning algorithm.
-     *  @param pi; the epsilon-greedy policy that will be gradually updated within the algorithm according to the Q values
-     *  @return q the Q values
+     * ε-greedy with ε set to 0.1.
+     * optimistic initial Q value set to 15.
+     * Experiment on the different values for α and γ.
      */
-    // TODO come up with a way to have both in one class
-    public Q Q_Learning(SoftmaxPolicy pi) {
-        Q q = this.initializeQ(15.0); // initialize Q(s,a) arbitrarily
-        pi.setQ(q); // I know it's not the best thing, but for now, it works.
+    public void QLearningTask1() {
+        double optimisticInitialQ = 15;
+        double simulations = 10000;
+        EpsilonGreedyPolicy egp = new EpsilonGreedyPolicy(this.stateSpace); // Predator learn
 
-        for(State starting_s : this.stateSpace) { // repeat for each episode // initialize s
-            State s = starting_s;
-            State s_prime;
-            do { // repeat for each step of episode
-                this.predator.setCoordinates(s.getPredatorCoordinates());
-                this.prey.setCoordinates(s.getPreyCoordinates());
-                // Choose a from s using policy derived from Q (e-greedy)
-                action a =  pi.getAction(s);
+        for (float alpha = 0; alpha <= 1.0; alpha += 0.1) {
+            for (float gamma = 0; gamma <= 0.9; gamma += 0.5) {
+                // 1. train
+                Q newQ = this.Q_Learning(egp, optimisticInitialQ, alpha, gamma);
+                ((EpsilonGreedyPolicy) this.predator.getPolicy()).setQ(newQ);
 
-                s = this.stateSpace.getState(this.prey.getCoordinates(), this.predator.getCoordinates());
-
-                // Take action a. observe r, s'
-                s_prime = this.stateSpace.produceStochasticTransition(s,a);
-
-                double q_sa = q.get(s, a);
-                double max_a_q = q.getMax(s_prime);
-                double r = s_prime.getStateReward();
-                double newQ_sa = q_sa + Util.alpha * (r + Util.gamma * max_a_q - q_sa);
-
-                q.set(s, a, newQ_sa);
-
-                s = s_prime;
-            } while (!s.isTerminal()); // repeat until s is terminal
+                // 2. simulate & output results
+                double averageRounds = this.getSimulationAverageRounds(simulations);
+                System.out.print(averageRounds + " && ");
+            }
+            System.out.println();
         }
-        return q;
     }
 
     /**
-     * First trains the predator, then simulates the 'game' and outputs the csv file with the performance per round.
+     * Experiment on the different epsilon values for ε-Greedy learning. Q is now the optimal Q as found from in the
+     * previous experiment.
      */
-    public void outputQLearningPerformance() {
-        int runs = 100;
-        // Predator learn
-        Q newQ = this.Q_Learning((EpsilonGreedyPolicy) this.predator.getPolicy());
-        ((EpsilonGreedyPolicy) this.predator.getPolicy()).setQ(newQ);
+    public void QLearningTask2() {
+        int optimisticInitialQ = 15;
+        for (float epsilon = 0; epsilon <= 1.0; epsilon += 0.1) {
+            for (float initialQValue = 30; initialQValue >= -15; initialQValue -= 5) {
 
-        // Simulate
-        this.simulate(runs, "AfterQlearningEG");
+            // Run Qlearning
+            }
+        }
     }
 }

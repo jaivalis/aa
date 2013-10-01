@@ -1,6 +1,7 @@
 package aa2013;
 
 import environment.Algorithms;
+import statespace.CompleteStateSpace;
 import statespace.ReducedStateSpace;
 import statespace.StateSpace;
 
@@ -14,6 +15,7 @@ public class MainA2 {
 //        Q q = algos.Q_Learning(pi);
 //        System.out.println(q);
 //        q.printMaxActionsGrid();
-        algos.outputQLearningPerformance();
+        algos.QLearningTask1();
+//        algos.QLearningTask2();
     }
 }
