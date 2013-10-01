@@ -350,12 +350,8 @@ public class Algorithms {
         	State s = starting_s;
             State s_prime;
             do { // repeat for each step of episode
-                this.predator.setCoordinates(s.getPredatorCoordinates());
-                this.prey.setCoordinates(s.getPreyCoordinates());
                 // Choose a from s using policy derived from Q (e-greedy)
             	action a =  pi.getAction(s);
-
-                s = this.stateSpace.getState(this.prey.getCoordinates(), this.predator.getCoordinates());
 
                 // Take action a. observe r, s'
                 s_prime = this.stateSpace.produceStochasticTransition(s,a);
