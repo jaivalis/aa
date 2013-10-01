@@ -93,6 +93,7 @@ public class Q {
 		} return max;
 	}
 
+    @Override
 	public String toString() {
         String ret = "";
 		for(State s : this.s_sa.keySet()){

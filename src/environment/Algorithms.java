@@ -346,11 +346,12 @@ public class Algorithms {
     	Q q = this.initializeQ(initialQ); // initialize Q(s,a) arbitrarily
     	pi.setQ(q); // I know it's not the best thing, but for now, it works.
 
-        for(State starting_s : this.stateSpace) {   // repeat for each episode
-        	State s = starting_s;   // initialize s
+        for (int i = 0; i < Util.EPISODE_COUNT; i++) {
+//            for(State starting_s : this.stateSpace) {   // repeat for each episode
+            State s = this.stateSpace.getRandomState();   // initialize s
             State s_prime;
             do { // repeat for each step of episode
-            	action a =  pi.getAction(s);    // Choose a from s using policy derived from Q (e-greedy)
+                action a =  pi.getAction(s);    // Choose a from s using policy derived from Q (e-greedy)
 
                 // Take action a. observe r, s'
                 s_prime = this.stateSpace.produceStochasticTransition(s,a);
@@ -364,7 +365,9 @@ public class Algorithms {
 
                 s = s_prime;
             } while (!s.isTerminal()); // repeat until s is terminal
-        } return q;
+//            }
+        }
+        return q;
     }
 
     /**
@@ -414,7 +417,7 @@ public class Algorithms {
      */
     public void QLearningTask1() {
         double optimisticInitialQ = 15;
-        double simulations = 1000;  // many simulations ensure higher precision.
+        double simulations = 10000;  // many simulations ensure higher precision.
         EpsilonGreedyPolicy egp = new EpsilonGreedyPolicy(this.stateSpace); // Predator learn
 
         for (float alpha = 0.1f; alpha <= 1.0; alpha += 0.1) {
