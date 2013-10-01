@@ -20,18 +20,15 @@
 \maketitle
 
 
-
-
 \section{Introduction}
 This report is based on the implementation of an assignment exercise in which a predator is trying to catch a prey in a 2-dimensional environment, being unknown to the predator. This will be attempted  using Temporal Difference learning methods (TD), a combination of Monte Carlo and dynamic programming. TD learning methods can learn directly from experience, rather than having to rely on a model of the environment. TD methods can update action state values estimates based on other learned estimates, without having to wait for the final outcome. 
 
-
-\section{Q-Learning}
-The initial exercise of this lab assignment is to implement Q-learning, a temporal-difference (TD) learning algorithm. This algorithm is to be used by the predator agent to catch the prey.
-
+\section{Algorithms}
+In this part of the report the used algorithms are introduced on the basis of their Pseudocode description.
 
 
-\subsection{Summary}
+\subsection{Q-Learning}
+The initial exercise of this lab assignment is to implement Q-learning, a temporal-difference (TD) learning algorithm. This algorithm is to be used by the predator agent to catch the prey.\\
 Q-learning is an off-policy TD control algorithm. An off-policy TD algorithm is one in which the estimated value functions can be updated using hypothetical actions, without having actually executed the actions themselves. Using this approach the algorithm can separate exploration from control, meaning the agent could learn through the environment without necessarily having had the explicit experience.
 The steps involved can be summarised into the following Algorithm ~\ref{algQ}\\\\
 
@@ -71,11 +68,38 @@ Based on the task at hand, the predator should directly learn a high reward poli
 
 
 
-\section{Softmax Action-Selection Policy}
+\subsection{Softmax Action-Selection Policy}
 
 In this section, a different action selection policy will be used in Q-learning instead of $\epsilon$-greedy. $\epsilon$-greedy policy satisfies the exploration/exploitation variance which is desired to be used in the Q-learning algorithm, although to its disadvantage when the algorithm explores with a probability $\epsilon$, it does not do this by taking into consideration the performance of the individual non-greedy actions themselves. The probability distribution between which non-greedy action is selected, is uniformly distributed and therefore, each one is as likely to be chosen as the rest. To optimise the performance of the Q-learning algorithm, it could be more efficient to make the selection among the non-greedy actions by weighing them according to their action-value estimates, thus increasing probability of selection for the higher action-value estimates, and hence making a more guided (by efficiency) exploration.
 
 
+\subsection{Sarsa}
+
+
+%--1) why? "in order to test..." (questions, and preferably hypotheses with explanation)
+\section{Hypotheses}
+
+
+\section{Experiment}
+This section describes the properties of the system the experiments were tested on and give an overview of the achieved results including plots to visualize them.
+
+%--2) is there anything to mention about the implementation/machinery the reader should know? (e.g. "these experiments were performed on a [insert machine specs]" when presenting runtimes)
+\subsection{System Properties}
+The experiments were performend on a \dots
+
+\subsection{Results}
+
+
+%--3) what does it show (and is that what you expected, and why)
+\subsection{Interpretation}
+
+
+%--4) take home message (what do you want the reader to remember, e.g. "Therefore, by reducing the state space, we have gained several orders of magnitude in runtime.")
+\section{Take Home Message}
+
+
+%redundance with take home message?
+\section{Conclusion}
 
 \begin{thebibliography}{9}
 
