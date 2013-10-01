@@ -65,9 +65,7 @@ The steps involved can be summarised into the following Algorithm ~\ref{algQ}\\\
 Based on the task at hand, the predator should directly learn a high reward policy without learning a model, since the agent is not supposed to know not know the transition probabilities, nor the reward structure of the environment. It is assumed that convergence should occur as long as all state action pair values continue to be updated using a certain policy (in this case $\epsilon$-greedy. 
 
 
-\section{Q-learning using $\epsilon$-greedy}
 
-When the Q-learning algorithm to selects an action, there needs to be some form of trade-off between selecting the action with the highest estimated reward so far, and the the rest of the actions available. Limiting the action selection policy to only the best action learnt so far, would mean potentially losing out  on a better action in the future, being in a given state. To satisfy this trade-off, $\epsilon$-greedy policy uses a (in this example small) probability of $\epsilon$ to select randomly between all  between all the actions available in a given state, excluding the most optimal one so far. In turn, (as in this scenario $\epsilon$ is small), the most optimal action is chosen with a much larger probability, $1-\epsilon$, most of the time, giving the policy a tendency to exploit the best action so far most of the time, but not lose out on potentially better actions, being in a given state. 
 
 
 \subsection{Softmax Action-Selection Policy}
@@ -75,8 +73,27 @@ When the Q-learning algorithm to selects an action, there needs to be some form 
 In this section, a different action selection policy will be used in Q-learning instead of $\epsilon$-greedy. $\epsilon$-greedy policy satisfies the exploration/exploitation variance which is desired to be used in the Q-learning algorithm, although to its disadvantage when the algorithm explores with a probability $\epsilon$, it does not do this by taking into consideration the performance of the individual non-greedy actions themselves. The probability distribution between which non-greedy action is selected, is uniformly distributed and therefore, each one is as likely to be chosen as the rest. To optimise the performance of the Q-learning algorithm, it could be more efficient to make the selection among the non-greedy actions by weighing them according to their action-value estimates, thus increasing probability of selection for the higher action-value estimates, and hence making a more guided (by efficiency) exploration.
 
 
+
 \subsection{Sarsa}
 
+\begin{algorithm}
+\caption{Sarsa}
+\begin{algorithmic}
+\label{sarsa}
+\STATE Initialise $Q(s,a)$ arbitrarily
+\FORALL{Episodes}
+\STATE Initialise s
+\STATE Choose $a$ from $s$ using derived from $Q$ (e.g., $\epsilon$-greedy)
+\FORALL{Steps of episodes}
+\STATE Take action $a$, observe $r$, $s'$
+\STATE Choose $a'$ from $s'$ using policy derived from Q (e.g., $\epsilon$-greedy)
+\STATE $Q(s,a) \leftarrow Q(s,a) + \alpha \lbrack r + \gamma Q(s',a') - Q(s,a)\rbrack$
+\STATE $s \leftarrow s';$;$a \leftarrow a';$
+\ENDFOR
+\STATE Until s is terminal
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
 
 %--1) why? "in order to test..." (questions, and preferably hypotheses with explanation)
 \section{Hypotheses}
