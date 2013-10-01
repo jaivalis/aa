@@ -381,11 +381,11 @@ public class Algorithms {
      */
     public void QLearningTask1() {
         double optimisticInitialQ = 15;
-        double simulations = 10000;
+        double simulations = 10000;  // many simulations ensure higher precision.
         EpsilonGreedyPolicy egp = new EpsilonGreedyPolicy(this.stateSpace); // Predator learn
 
         for (float alpha = 0; alpha <= 1.0; alpha += 0.1) {
-            for (float gamma = 0; gamma <= 0.9; gamma += 0.5) {
+            for (float gamma = 0; gamma <= 0.9; gamma += 0.1) {
                 // 1. train
                 Q newQ = this.Q_Learning(egp, optimisticInitialQ, alpha, gamma);
                 ((EpsilonGreedyPolicy) this.predator.getPolicy()).setQ(newQ);
