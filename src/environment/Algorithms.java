@@ -329,7 +329,7 @@ public class Algorithms {
             this.prey.setAlive(true);
             State initialState = this.stateSpace.getState(this.prey.getCoordinates(), this.predator.getCoordinates());
 
-            int i = 0;
+            int i = 0; // sometimes a terminal state is never reached.
             while (!isEpisodeOver() && i<10000) { // run episode
                 initialState = this.nextRound(initialState);
                 allRounds++;
@@ -352,11 +352,9 @@ public class Algorithms {
     	Q q = this.initializeQ(initialQ); // initialize Q(s,a) arbitrarily
     	pi.setQ(q); // I know it's not the best thing, but for now, it works.
         for (int i = 0; i < Util.EPISODE_COUNT; i++) {  // repeat for each episode
-            State s = this.stateSpace.getRandomState();   // initialize s randomly
+            State s = this.stateSpace.getRandomState(); // initialize s randomly
             State s_prime;
-            int z = 0;
             do { // repeat for each step of episode
-            	z++;
             	action a =  pi.getAction(s);    // Choose a from s using policy derived from Q (e-greedy)
 
                 // Take action a. observe r, s'
@@ -372,16 +370,12 @@ public class Algorithms {
                 double discounted_max_a_q = gamma * max_a_q;
                 double newQ_sa = q_sa + alpha * (r + discounted_max_a_q - q_sa);
 
-                q.set(s, a, newQ_sa); // Q(s,a) = Q(s,a) + ...
+                q.set(s, a, newQ_sa); // Q(s,a) = Q(s,a) + α[r + γmax_aQ() - Q(s,a)]
 
                 s = s_prime;
                 //System.out.println("a:"+a+" s':"+s_prime); //FIXME DEBUG
             } while (!s.isTerminal()); // repeat until s is terminal
         }
-//        for(action a : Algorithms.action.values()){ 
-//        	q.printActionValueGrid(a);
-//        }
-//        q.printMaxActionsGrid();
         return q;
     }
 
@@ -421,9 +415,12 @@ public class Algorithms {
     }
 
     /**
-     * ε-greedy with ε set to 0.1.
-     * optimistic initial Q value set to 15.
-     * Experiment on the different values for α and γ.
+     * Experiment on Q-Learning:
+     *      + different α learning rates.
+     *      + different γ discount factors.
+     *  - epsilon is set to 0.1
+     *  - initialQValue is optimistically set to 15.0
+     *
      * Outputs to stdout an array with latex-type format to be included to the report.
      */
     public void QLearningTask1() {
@@ -431,50 +428,67 @@ public class Algorithms {
         double simulations = 100;  // many simulations ensure higher precision.
         EpsilonGreedyPolicy egp = new EpsilonGreedyPolicy(this.stateSpace); // Predator learn
 
-        double saveEpsilon = Util.epsilon; // FIXME: dirty hack!
+        double savedEpsilon = Util.epsilon; // FIXME: dirty hack!
         for (float alpha = 0.1f; alpha <= 1.0; alpha += 0.1) {
             for (float gamma = 0; gamma <= 0.9; gamma += 0.1) {
                 // 1. train
-            	Util.epsilon = saveEpsilon; // we need a stochastic epsilon policy for the learning, for exploration
+            	Util.epsilon = savedEpsilon; // we need a stochastic epsilon policy for the learning, for exploration
                 Q newQ = this.Q_Learning(egp, optimisticInitialQ, alpha, gamma);
                 Util.epsilon = 0.0; // now it has already learned, so we can use a stochastic policy
                 ((EpsilonGreedyPolicy) this.predator.getPolicy()).setQ(newQ);
-                //newQ.printMaxActionsGrid();
 
                 // 2. simulate & output results
                 double averageRounds = this.getSimulationAverageRounds(simulations);
                 System.out.print(averageRounds + " & ");
-            }
-            System.out.println("\\\\");
+            } System.out.println("\\\\");
         }
     }
 
-    public void QLearningTask1DEBUG() {
-        double optimisticInitialQ = 15;
-        double simulations = 20;  // many simulations ensure higher precision.
-        EpsilonGreedyPolicy egp = new EpsilonGreedyPolicy(this.stateSpace); // Predator learn
-        double alpha = 0.1;
-        double gamma = 0.5;
-
-    	Q newQ = this.Q_Learning(egp, optimisticInitialQ, alpha, gamma);
-    	State s1 = this.stateSpace.getState(new Coordinates(1,0), new Coordinates(0,0));
-		newQ.printStateQvals(s1);
-		for(int i = 0; i < 10; i++){
-			State s2 = this.stateSpace.produceStochasticTransition(s1, action.SOUTH);
-			System.out.println(i+" "+s2);
-		}
-    }
+//    public void QLearningTask1DEBUG() {
+//        double optimisticInitialQ = 15;
+//        double simulations = 20;  // many simulations ensure higher precision.
+//        EpsilonGreedyPolicy egp = new EpsilonGreedyPolicy(this.stateSpace); // Predator learn
+//        double alpha = 0.1;
+//        double gamma = 0.5;
+//
+//    	Q newQ = this.Q_Learning(egp, optimisticInitialQ, alpha, gamma);
+//    	State s1 = this.stateSpace.getState(new Coordinates(1,0), new Coordinates(0,0));
+//		newQ.printStateQvals(s1);
+//		for(int i = 0; i < 10; i++){
+//			State s2 = this.stateSpace.produceStochasticTransition(s1, action.SOUTH);
+//			System.out.println(i+" "+s2);
+//		}
+//    }
     /**
-     * Experiment on the different epsilon values for ε-Greedy learning. Q is now the optimal Q as found from in the
-     * previous experiment.
+     * Experiment on Q-Learning:
+     *      + different epsilon values for ε-Greedy learning.
+     *      + different initial Q values.
+     *  - alpha is set to 'TODO'
+     *  - gamma is set to 'TODO'
+     * which are the the optimal values obtained from the previous experiment.
+     *
+     * Outputs to stdout an array with latex-type format to be included to the report.
      */
     public void QLearningTask2() {
-        int optimisticInitialQ = 15;
-        for (float epsilon = 0; epsilon <= 1.0; epsilon += 0.1) {
-            for (float initialQValue = 30; initialQValue >= -15; initialQValue -= 5) {
+        double simulations = 100;  // many simulations ensure higher precision.
+        double savedEpsilon = Util.epsilon; // FIXME: dirty hack!
 
-            // Run Qlearning
-            }
+        float alpha = 0.8f; // as found to be optimal in previous task.
+        float gamma = 0.9f; // as found to be optimal in previous task.
+        for (float epsilon = 0; epsilon <= 1.0; epsilon += 0.1) {
+            Util.epsilon = epsilon;
+            EpsilonGreedyPolicy egp = new EpsilonGreedyPolicy(this.stateSpace); // Predator learn with variant ε.
+            for (float initialQValue = 30; initialQValue >= -15; initialQValue -= 5) {
+                // 1. train
+                Util.epsilon = savedEpsilon; // we need a stochastic epsilon policy for the learning, for exploration
+                Q newQ = this.Q_Learning(egp, initialQValue, alpha, gamma);
+                Util.epsilon = 0.0; // now it has already learned, so we can use a stochastic policy
+                ((EpsilonGreedyPolicy) this.predator.getPolicy()).setQ(newQ);
+
+                // 2. simulate & output results
+                double averageRounds = this.getSimulationAverageRounds(simulations);
+                System.out.print(averageRounds + " & ");
+            } System.out.println("\\\\");
         }
     }
 }
