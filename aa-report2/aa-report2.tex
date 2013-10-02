@@ -176,7 +176,7 @@ The experiments were performend on a \dots
 
 %--1) why? "in order to test..." (questions, and preferably hypotheses with explanation)
 \subsubsection{Hypotheses}
-The first experiment aims to measure the performance of the predator catching the predator with different learning rates $\alpha$ and different discount factors $\gamma$. Therefor the average performance of 100000 simulations for each $\alpha$ and $\gamma$ is  taken into account. This number is chosen, since a high number of simulations ensures higher precison. The reduced state space  with 11x11 states is chosen, in order to save computational time. The predator learns for an episode count of 10000, before the simulations are executed.\\
+The first experiment aims to measure the performance of the predator catching the predator with different learning rates $\alpha$ and different discount factors $\gamma$ over time. Therefor the average performance of 100 simulations with different $\alpha$ and $\gamma$ for learning with an episode count from 1 to 1000 is  taken into account. The reduced state space  with 11x11 states is chosen, in order to save computational time.\\
 The expected outcome is that high learning rates tend to always replace the current value with the new estimates and converge quickly, while a small learning rate value leads to a slow convergence and seems to trust the current estimate. ~\cite{dar}
 
 \subsubsection{Results}
@@ -207,39 +207,112 @@ The expected outcome is that high learning rates tend to always replace the curr
 \end{table*}
 \end{center}
 
+Gamma = 0.1\\
+
 \resizebox{450pt}{!}{
 \begin{tikzpicture}
-\begin{axis}[xlabel={$\alpha$},ylabel={Average Length}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
+\begin{axis}[xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
 
 
-\addplot table[x index=0,y index=2,col sep=comma] {discountvsalpha.dat};
-\addlegendentry{$\gamma$=0.1}
+\addplot table[x index=0,y index=1,col sep=comma] {epsGreedGamma1.dat};
+\addlegendentry{$\alpha$=0.1}
 
-\addplot table[x index=0,y index=3,col sep=comma] {discountvsalpha.dat};
-\addlegendentry{$\gamma$=0.2}
+\addplot table[x index=0,y index=2,col sep=comma] {epsGreedGamma1.dat};
+\addlegendentry{$\alpha$=0.2}
 
-\addplot table[x index=0,y index=4,col sep=comma] {discountvsalpha.dat};
-\addlegendentry{$\gamma$=0.3}
+\addplot table[x index=0,y index=3,col sep=comma] {epsGreedGamma1.dat};
+\addlegendentry{$\alpha$=0.3}
 
-\addplot table[x index=0,y index=5,col sep=comma] {discountvsalpha.dat};
-\addlegendentry{$\gamma$=0.4}
+\addplot table[x index=0,y index=4,col sep=comma] {epsGreedGamma1.dat};
+\addlegendentry{$\alpha$=0.4}
 
-\addplot table[x index=0,y index=6,col sep=comma] {discountvsalpha.dat};
-\addlegendentry{$\gamma$=0.5}
+\addplot table[x index=0,y index=5,col sep=comma] {epsGreedGamma1.dat};
+\addlegendentry{$\alpha$=0.5}
 
-\addplot table[x index=0,y index=7,col sep=comma] {discountvsalpha.dat};
-\addlegendentry{$\gamma$=0.6}
-
-\addplot table[x index=0,y index=8,col sep=comma] {discountvsalpha.dat};
-\addlegendentry{$\gamma$=0.7}
-
-\addplot table[x index=0,y index=9,col sep=comma] {discountvsalpha.dat};
-\addlegendentry{$\gamma$=0.8}
 
 \end{axis}
 \end{tikzpicture}
+}
+
+Gamma = 0.5\\
+
+\resizebox{450pt}{!}{
+\begin{tikzpicture}
+\begin{axis}[xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
 
 
+\addplot table[x index=0,y index=1,col sep=comma] {epsGreedGamma5.dat};
+\addlegendentry{$\alpha$=0.1}
+
+\addplot table[x index=0,y index=2,col sep=comma] {epsGreedGamma5.dat};
+\addlegendentry{$\alpha$=0.2}
+
+\addplot table[x index=0,y index=3,col sep=comma] {epsGreedGamma5.dat};
+\addlegendentry{$\alpha$=0.3}
+
+\addplot table[x index=0,y index=4,col sep=comma] {epsGreedGamma5.dat};
+\addlegendentry{$\alpha$=0.4}
+
+\addplot table[x index=0,y index=5,col sep=comma] {epsGreedGamma5.dat};
+\addlegendentry{$\alpha$=0.5}
+
+
+\end{axis}
+\end{tikzpicture}
+}
+
+Gamma = 0.7\\\
+
+\resizebox{450pt}{!}{
+\begin{tikzpicture}
+\begin{axis}[xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
+
+
+\addplot table[x index=0,y index=1,col sep=comma] {epsGreedGamma7.dat};
+\addlegendentry{$\alpha$=0.1}
+
+\addplot table[x index=0,y index=2,col sep=comma] {epsGreedGamma7.dat};
+\addlegendentry{$\alpha$=0.2}
+
+\addplot table[x index=0,y index=3,col sep=comma] {epsGreedGamma7.dat};
+\addlegendentry{$\alpha$=0.3}
+
+\addplot table[x index=0,y index=4,col sep=comma] {epsGreedGamma7.dat};
+\addlegendentry{$\alpha$=0.4}
+
+\addplot table[x index=0,y index=5,col sep=comma] {epsGreedGamma7.dat};
+\addlegendentry{$\alpha$=0.5}
+
+
+\end{axis}
+\end{tikzpicture}
+}
+
+Gamma = 0.9\\
+
+\resizebox{450pt}{!}{
+\begin{tikzpicture}
+\begin{axis}[xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
+
+
+\addplot table[x index=0,y index=1,col sep=comma] {epsGreedGamma9.dat};
+\addlegendentry{$\alpha$=0.1}
+
+\addplot table[x index=0,y index=2,col sep=comma] {epsGreedGamma9.dat};
+\addlegendentry{$\alpha$=0.2}
+
+\addplot table[x index=0,y index=3,col sep=comma] {epsGreedGamma9.dat};
+\addlegendentry{$\alpha$=0.3}
+
+\addplot table[x index=0,y index=4,col sep=comma] {epsGreedGamma9.dat};
+\addlegendentry{$\alpha$=0.4}
+
+\addplot table[x index=0,y index=5,col sep=comma] {epsGreedGamma9.dat};
+\addlegendentry{$\alpha$=0.5}
+
+
+\end{axis}
+\end{tikzpicture}
 }
 
 %--3) what does it show (and is that what you expected, and why)
@@ -340,6 +413,7 @@ In the previous experiment the Q-Table was initialized optimistically, with valu
 %--1) why? "in order to test..." (questions, and preferably hypotheses with explanation)
 \subsubsection{Hypotheses}
 In this experiment the difference between the $\epsilon$-greedy and the softmax action selection policy is researched. The $\epsilon$-greedy action selection chooses all actions, except the action with the highest estimated reward so far, with the same probability, while the softmax approach weights the other actions and chooses actions with more pay-off with a higher probability.\\
+The experiment setup is the same as in Experiment 1, except that the softmax action selection policy is used instead.\\
 Assuming that 
 \subsubsection{Results}
 \begin{center}
