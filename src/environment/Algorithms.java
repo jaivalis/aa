@@ -423,7 +423,7 @@ public class Algorithms {
      *
      * Outputs to stdout an array with latex-type format to be included to the report.
      */
-    public void QLearningTask1() {
+    public void task1QLearning() {
         double optimisticInitialQ = 15;
         double simulations = 100;  // many simulations ensure higher precision.
         EpsilonGreedyPolicy egp = new EpsilonGreedyPolicy(this.stateSpace); // Predator learn
@@ -444,37 +444,22 @@ public class Algorithms {
         }
     }
 
-//    public void QLearningTask1DEBUG() {
-//        double optimisticInitialQ = 15;
-//        double simulations = 20;  // many simulations ensure higher precision.
-//        EpsilonGreedyPolicy egp = new EpsilonGreedyPolicy(this.stateSpace); // Predator learn
-//        double alpha = 0.1;
-//        double gamma = 0.5;
-//
-//    	Q newQ = this.Q_Learning(egp, optimisticInitialQ, alpha, gamma);
-//    	State s1 = this.stateSpace.getState(new Coordinates(1,0), new Coordinates(0,0));
-//		newQ.printStateQvals(s1);
-//		for(int i = 0; i < 10; i++){
-//			State s2 = this.stateSpace.produceStochasticTransition(s1, action.SOUTH);
-//			System.out.println(i+" "+s2);
-//		}
-//    }
     /**
      * Experiment on Q-Learning:
      *      + different epsilon values for ε-Greedy learning.
      *      + different initial Q values.
-     *  - alpha is set to 'TODO'
-     *  - gamma is set to 'TODO'
+     *  - alpha is set to 0.8
+     *  - gamma is set to 0.8
      * which are the the optimal values obtained from the previous experiment.
      *
      * Outputs to stdout an array with latex-type format to be included to the report.
      */
-    public void QLearningTask2() {
+    public void task2QLearning() {
         double simulations = 100;  // many simulations ensure higher precision.
         double savedEpsilon = Util.epsilon; // FIXME: dirty hack!
 
-        float alpha = 0.8f; // as found to be optimal in previous task.
-        float gamma = 0.9f; // as found to be optimal in previous task.
+        double alpha = 0.8; // as found to be optimal in previous task.
+        double gamma = 0.8; // as found to be optimal in previous task.
         for (float epsilon = 0; epsilon <= 1.0; epsilon += 0.1) {
             Util.epsilon = epsilon;
             EpsilonGreedyPolicy egp = new EpsilonGreedyPolicy(this.stateSpace); // Predator learn with variant ε.
@@ -490,5 +475,9 @@ public class Algorithms {
                 System.out.print(averageRounds + " & ");
             } System.out.println("\\\\");
         }
+    }
+
+    public void task3Sarsa() {
+
     }
 }
