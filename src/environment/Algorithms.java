@@ -34,28 +34,18 @@ public class Algorithms {
 		private String shortName;
 		private String arrow;
 
-		public String getShortName() {
-			return this.shortName;
-		}
+		public String getShortName() { return this.shortName; }
 		
-		public String getArrow() {
-			return this.arrow;
-		}
+		public String getArrow() { return this.arrow; }
 		
 		public action getOpposite() {
 			switch(this) {
-			case WAIT:
-				return action.WAIT;
-			case EAST:
-				return action.WEST;
-			case WEST:
-				return action.EAST;
-			case NORTH:
-				return action.SOUTH;
-			case SOUTH:
-				return action.NORTH;
-			}
-			return action.WAIT;
+			case WAIT:	return action.WAIT;
+			case EAST:	return action.WEST;
+			case WEST:	return action.EAST;
+			case NORTH:	return action.SOUTH;
+			case SOUTH: return action.NORTH;
+			} return action.WAIT;
 		}
 		
 		private action(String shortName, String arrow){
