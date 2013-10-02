@@ -186,8 +186,6 @@ The expected outcome is that high learning rates tend to always replace the curr
 \begin{tikzpicture}
 \begin{axis}[xlabel={$\alpha$},ylabel={Average Length}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
 
-\addplot table[x index=0,y index=1,col sep=comma] {discountvsalpha.dat};
-\addlegendentry{$\gamma$=0.0}% y index+1 since humans count from 1
 
 \addplot table[x index=0,y index=2,col sep=comma] {discountvsalpha.dat};
 \addlegendentry{$\gamma$=0.1}
