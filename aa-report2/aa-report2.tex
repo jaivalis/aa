@@ -137,7 +137,7 @@ The experiments were performend on a \dots
 %--1) why? "in order to test..." (questions, and preferably hypotheses with explanation)
 \subsubsection{Hypotheses}
 The first experiment aims to measure the performance of the predator catching the predator with different learning rates $\alpha$ and different discount factors $\gamma$. Therefor the average performance of 10000 simulations for each $\alpha$ and $\gamma$ is  taken into account. This number is chosen, since a high number of simulations ensures higher precison. The reduced state space  with 11x11 states is chosen, in order to save computational time. The predator learns for an episode count of 1000, before the simulations are executed.\\
-The expected outcome is that high learning rates tend to always replace the current value with the new estimates and converge quickly, while a small learning rate value leads to a slow convergence and seems to trust the current estimate.
+The expected outcome is that high learning rates tend to always replace the current value with the new estimates and converge quickly, while a small learning rate value leads to a slow convergence and seems to trust the current estimate. ~\cite{dar}
 
 \subsubsection{Results}
 
@@ -145,8 +145,11 @@ The expected outcome is that high learning rates tend to always replace the curr
 \begin{table*}[ht]
 {\small
 \hfill{}
-\begin{tabular}{c|c|c|c|c|c|c|c|c|c|c|c}
-\textbf{} & \textbf{0} & \textbf{0.1} & \textbf{0.2} & \textbf{0.3} & \textbf{0.4} & \textbf{0.5} & \textbf{0.6} & \textbf{0.7} & \textbf{0.8}\\
+\begin{center}
+\textbf{Discount factor}\\
+\end{center}
+\begin{tabular}{c|c|c|c|c|c|c|c|c|c|c}
+\textbf{$\alpha$} & \textbf{0} & \textbf{0.1} & \textbf{0.2} & \textbf{0.3} & \textbf{0.4} & \textbf{0.5} & \textbf{0.6} & \textbf{0.7} & \textbf{0.8}\\
 	\hline
 \textbf{0.1} & 128.0169 & 82.3094 & 142.6086 & 58.6978 & 97.1353 & 73.4194 & 61.7706 & 42.4856 & 60.8453 & \\
 \textbf{0.2} & 350.9369 & 43.3417 & 45.8161 & 24.9713 & 31.0176 & 27.8658 & 53.8418 & 31.0789 & 12.5948 & \\
@@ -159,7 +162,7 @@ The expected outcome is that high learning rates tend to always replace the curr
 \textbf{0.9} & 204.3642 & 15.7251 & 10.4158 & 11.5867 & 11.1238 & 18.2433 & 20.532 & 11.292 & 10.4699 & \\
 \end{tabular}}
 \hfill{}
-\caption{Average length of episode, the predator needs to catch the prey with different learning rates and discount factors}
+\caption{Average length of episode, the predator needs to catch the prey with different learning rates $\alpha$ and discount factors}
 \label{table:task1}
 \end{table*}
 \end{center}
@@ -230,7 +233,7 @@ The expected outcome is that high learning rates tend to always replace the curr
   \emph{Reinforcement Learning: An Introduction}.
   The MIT Press, Cambridge, Massachusetts
 
-\bibitem{sutton}
+\bibitem{dar}
   Eyal Even-Dar and Yishay Mansour ,
   \emph{Learning Rates for Q-learning}.
   Journal of Machine Learning Research 5 (2003)
