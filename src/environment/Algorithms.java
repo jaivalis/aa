@@ -81,7 +81,6 @@ public class Algorithms {
 
             int rounds = 0;
             while (!isEpisodeOver()) { // run episode
-            	
                 initialState = this.nextRound(initialState);
                 rounds++; allRounds++;
             }
@@ -284,7 +283,7 @@ public class Algorithms {
 		} catch (IOException e) { e.printStackTrace(); }
 	}
 
-    /********************************** Assignment2 *************************************************/
+    /************************************************* Assignment2 *************************************************/
 
     /**
      * initializes all state-action pair value (Q) from a single value
@@ -440,5 +439,15 @@ public class Algorithms {
                 a = a_prime;
             } while (!s.isTerminal()); // repeat until s is terminal
         } return q;
+    }
+
+    public Q monteCarloOffPolicy(EpsilonGreedyPolicy pi, double initialQ, double gamma) {
+        Q q = this.initializeQ(initialQ); // initialize Q(s,a) arbitrarily
+            // initialize pi(s) using ε-soft policy
+
+        pi.setQ(q); // I know it's not the best thing, but for now, it works.
+
+
+        return q;
     }
 }

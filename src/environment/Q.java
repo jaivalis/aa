@@ -116,7 +116,11 @@ public class Q {
 			}
 		} return ret;
 	}
-	
+
+    public void initializePi() {
+        // TODO implement or delete. check github discussion.
+    }
+
 	public void printMaxActionsGrid() {
 		State[][] states = new State[11][11];
 		for(State s : this.s_sa.keySet()){
@@ -159,5 +163,4 @@ public class Q {
 			System.out.println(s+" "+a+" "+df.format(action_value));
         }
 	}
-
 }
