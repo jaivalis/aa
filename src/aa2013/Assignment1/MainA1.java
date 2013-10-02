@@ -1,4 +1,4 @@
-package aa2013;
+package aa2013.Assignment1;
 
 import environment.Algorithms;
 import statespace.CompleteStateSpace;
