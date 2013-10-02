@@ -7,7 +7,7 @@ import statespace.ReducedStateSpace;
 public class MainA1 {
 	public static void main(String[] args) {
 		int time = 0;
-		Algorithms env = new Algorithms(new CompleteStateSpace());
+		Algorithms env = new Algorithms(new ReducedStateSpace());
 		
 		/* Task 1 */
 		env.simulate(10, "Task1Simulate");

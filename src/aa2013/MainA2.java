@@ -15,8 +15,8 @@ public class MainA2 {
 //        Q q = algos.Q_Learning(pi);
 //        System.out.println(q);
 //        q.printMaxActionsGrid();
-//        algos.QLearningTask1();
-          algos.QLearningTask1DEBUG();
+          algos.QLearningTask1();
+//          algos.QLearningTask1DEBUG();
 
 //        algos.QLearningTask2();
     }

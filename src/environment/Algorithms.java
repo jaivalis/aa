@@ -89,6 +89,7 @@ public class Algorithms {
 
             int rounds = 0;
             while (!isEpisodeOver()) { // run episode
+            	
                 initialState = this.nextRound(initialState);
                 rounds++; allRounds++;
             }
@@ -101,16 +102,19 @@ public class Algorithms {
 	public boolean isEpisodeOver() { return !this.prey.getAlive(); }
 	
 	public State nextRound(State s) {
-		State currentState = s;
-		this.predator.move(currentState);
+
+		// ask predator for action
+		action a = this.predator.getPolicy().getAction(s);
 		
-		// update currentState.
-		currentState = this.stateSpace.getState(this.prey.getCoordinates(), this.predator.getCoordinates());
-		this.collisionDetection();
+		// get next state.
+		s = this.stateSpace.produceStochasticTransition(s, a);
 		
-		this.prey.move(currentState);
-		this.collisionDetection();
-		return this.stateSpace.getState(this.prey.getCoordinates(), this.predator.getCoordinates());
+		// collision detection?
+		if(s.getPreyCoordinates().equals(new Coordinates(0,0))){ 
+			prey.setAlive(false);
+		}
+		
+		return s;
 	}
 	
 	private void collisionDetection() {
@@ -325,9 +329,11 @@ public class Algorithms {
             this.prey.setAlive(true);
             State initialState = this.stateSpace.getState(this.prey.getCoordinates(), this.predator.getCoordinates());
 
-            while (!isEpisodeOver()) { // run episode
+            int i = 0;
+            while (!isEpisodeOver() && i<10000) { // run episode
                 initialState = this.nextRound(initialState);
                 allRounds++;
+                i++;
             }
             episodes--;
         } while (episodes > -1);
@@ -348,8 +354,10 @@ public class Algorithms {
         for (int i = 0; i < Util.EPISODE_COUNT; i++) {  // repeat for each episode
             State s = this.stateSpace.getRandomState();   // initialize s randomly
             State s_prime;
+            int z = 0;
             do { // repeat for each step of episode
-                action a =  pi.getAction(s);    // Choose a from s using policy derived from Q (e-greedy)
+            	z++;
+            	action a =  pi.getAction(s);    // Choose a from s using policy derived from Q (e-greedy)
 
                 // Take action a. observe r, s'
                 s_prime = this.stateSpace.produceStochasticTransition(s,a);
@@ -370,10 +378,10 @@ public class Algorithms {
                 //System.out.println("a:"+a+" s':"+s_prime); //FIXME DEBUG
             } while (!s.isTerminal()); // repeat until s is terminal
         }
-        for(action a : Algorithms.action.values()){ 
-        	q.printActionValueGrid(a);
-        }
-        q.printMaxActionsGrid();
+//        for(action a : Algorithms.action.values()){ 
+//        	q.printActionValueGrid(a);
+//        }
+//        q.printMaxActionsGrid();
         return q;
     }
 
@@ -420,15 +428,18 @@ public class Algorithms {
      */
     public void QLearningTask1() {
         double optimisticInitialQ = 15;
-        double simulations = 10000;  // many simulations ensure higher precision.
+        double simulations = 100;  // many simulations ensure higher precision.
         EpsilonGreedyPolicy egp = new EpsilonGreedyPolicy(this.stateSpace); // Predator learn
 
+        double saveEpsilon = Util.epsilon; // FIXME: dirty hack!
         for (float alpha = 0.1f; alpha <= 1.0; alpha += 0.1) {
             for (float gamma = 0; gamma <= 0.9; gamma += 0.1) {
                 // 1. train
+            	Util.epsilon = saveEpsilon; // we need a stochastic epsilon policy for the learning, for exploration
                 Q newQ = this.Q_Learning(egp, optimisticInitialQ, alpha, gamma);
+                Util.epsilon = 0.0; // now it has already learned, so we can use a stochastic policy
                 ((EpsilonGreedyPolicy) this.predator.getPolicy()).setQ(newQ);
-                newQ.printMaxActionsGrid();
+                //newQ.printMaxActionsGrid();
 
                 // 2. simulate & output results
                 double averageRounds = this.getSimulationAverageRounds(simulations);
