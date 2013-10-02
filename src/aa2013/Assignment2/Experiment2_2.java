@@ -37,7 +37,7 @@ public class Experiment2_2 {
             for (float initialQValue = 30; initialQValue >= -15; initialQValue -= 5) {
                 // 1. train
                 Util.epsilon = savedEpsilon; // we need a stochastic epsilon policy for the learning, for exploration
-                Q newQ = algos.Q_Learning(egp, initialQValue, alpha, gamma);
+                Q newQ = algos.Q_Learning(egp, initialQValue, alpha, gamma, Util.EPISODE_COUNT);
                 Util.epsilon = 0.0; // now it has already learned, so we can use a stochastic policy
                 ((EpsilonGreedyPolicy) algos.getPredator().getPolicy()).setQ(newQ);
 

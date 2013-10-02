@@ -335,10 +335,10 @@ public class Algorithms {
      * @param gamma Decay factor.
      * @return
      */
-    public Q Q_Learning(EpsilonGreedyPolicy pi, double initialQ, double alpha, double gamma) {
+    public Q Q_Learning(EpsilonGreedyPolicy pi, double initialQ, double alpha, double gamma, int episodeCount) {
     	Q q = this.initializeQ(initialQ); // initialize Q(s,a) arbitrarily
     	pi.setQ(q); // I know it's not the best thing, but for now, it works.
-        for (int i = 0; i < Util.EPISODE_COUNT; i++) {  // repeat for each episode
+        for (int i = 0; i < episodeCount; i++) {  // repeat for each episode
             State s = this.stateSpace.getRandomState(); // initialize s randomly
             State s_prime;
             do { // repeat for each step of episode

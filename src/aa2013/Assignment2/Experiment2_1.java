@@ -1,5 +1,11 @@
 package aa2013.Assignment2;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Date;
+
 import environment.Algorithms;
 import environment.Q;
 import environment.Util;
@@ -30,18 +36,32 @@ public class Experiment2_1 {
         EpsilonGreedyPolicy egp = new EpsilonGreedyPolicy(algos.getStateSpace()); // Predator learn
 
         double savedEpsilon = Util.epsilon; // FIXME: dirty hack!
-        for (float alpha = 0.1f; alpha <= 1.0; alpha += 0.1) {
-            for (float gamma = 0; gamma <= 0.9; gamma += 0.1) {
-                // 1. train
-                Util.epsilon = savedEpsilon; // we need a stochastic epsilon policy for the learning, for exploration
-                Q newQ = algos.Q_Learning(egp, optimisticInitialQ, alpha, gamma);
-                Util.epsilon = 0.0; // now it has already learned, so we can use a stochastic policy
-                ((EpsilonGreedyPolicy) algos.getPredator().getPolicy()).setQ(newQ);
-
-                // 2. simulate & output results
-                double averageRounds = algos.getSimulationAverageRounds(simulations);
-                System.out.print(averageRounds + " & ");
-            } System.out.println("\\\\");
+        long timestamp = (new Date()).getTime(); 
+        PrintWriter out = null;
+        try {
+			out = new PrintWriter(new BufferedWriter(new FileWriter("experiment2_1_results_"+timestamp+".csv", true)));
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+        out.println("gamma,alpha,episodeCount,averageRounds");
+        for (float gamma = 0; gamma <= 0.9; gamma += 0.1) {
+        	for (float alpha = 0.1f; alpha <= 1.0; alpha += 0.1) {
+        		for(int episodeCount = 0; episodeCount < Util.EPISODE_COUNT; episodeCount++) {
+	                // 1. train
+	                Util.epsilon = savedEpsilon; // we need a stochastic epsilon policy for the learning, for exploration
+	                Q newQ = algos.Q_Learning(egp, optimisticInitialQ, alpha, gamma, episodeCount);
+	                Util.epsilon = 0.0; // now it has already learned, so we can use a stochastic policy
+	                ((EpsilonGreedyPolicy) algos.getPredator().getPolicy()).setQ(newQ);
+	
+	                // 2. simulate & output results
+	                double averageRounds = algos.getSimulationAverageRounds(simulations);
+	                String str = gamma+","+alpha+","+episodeCount+","+averageRounds;
+	                System.out.println(str);
+	                out.println(str);
+	                out.flush();
+        		}
+            }
         }
     }
 }
