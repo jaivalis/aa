@@ -13,13 +13,15 @@ import java.util.Set;
 public class Q {
 	
 	/**
-	 * mapping from a StateAction object, which represents a <state,action> tuple, to a number that represents the value of the state/action
+	 * mapping from a StateAction object, which represents a <state,action> tuple, to a number that represents the Q value
+     * of the state/action.
 	 */
 	HashMap<StateAction, Double> sa_d = new HashMap<StateAction,Double>();
 	
 	/**
-	 * mapping from a state to a set of state/action tuples, that are all actions that can be performed from that state
-	 */	HashMap<State, HashSet<StateAction>> s_sa = new HashMap<State,HashSet<StateAction>>();
+	 * mapping from a state to a set of state/action tuples, that are all actions that can be performed from that state.
+	 */
+    HashMap<State, HashSet<StateAction>> s_sa = new HashMap<State,HashSet<StateAction>>();
 
     /**
      * Sets the Q value of <state, action> to a given value.
