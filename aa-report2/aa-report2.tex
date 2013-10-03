@@ -151,15 +151,16 @@ On-Policy Monte-Carlo Control methods evaluate or improve the making of decision
 \FORALL{$s \in S, a \in A(s)$}
 \STATE Initialise:
 \STATE $Q(s,a) \leftarrow$ empty list
+\STATE $Returns(s,a) \leftarrow$ empty list
 \STATE $\pi \leftarrow$ an arbitrary $\epsilon$-soft policy
 \LOOP
 \STATE Generate and episode using $\pi$ 
-\FORALL{pairs $s$,$a$ appearing in the episode}
+\FOR{each pair $s$,$a$ appearing in the episode}
 \STATE $R \leftarrow$ return following the first occurrence of $s$,$a$
 \STATE Append $R$ to $Returns(s,a)$
 \STATE $Q(s,a) \leftarrow$ average($Returns(s,a)$)
 \ENDFOR
-\FORALL{$s$ in the episode}
+\FOR{each $s$ in the episode}
 \STATE $a* \leftarrow$ $arg max_aQ(s,a)$
 \FORALL{$a \in A(s)$}
 \STATE 
@@ -180,7 +181,34 @@ On-Policy Monte-Carlo Control methods evaluate or improve the making of decision
 \subsubsection{Off-policy Monte-Carlo Control}
 As in Q-learning, in Off-Policy Monte Carlo Control the estimate of the value of a policy is separated from the policy used for control. This algorithm is off-policy in the same sense as Q-learning, meaning that it can separate exploration from control, and and similar to On-policy Monte-Carlo Control in that it can learn from the the experience it gains only through each complete episode.
 
-
+\begin{algorithm}
+\caption{Off-policy Monte-Carlo Control}
+\begin{algorithmic}[1]
+\label{offpmc}
+\FORALL{$s \in S, a \in A(s)$:}
+\STATE Initialise:
+\STATE $(s,a) \leftarrow$ arbitrary
+\STATE $N(s,a) \leftarrow 0$ \hspace{20mm} ; Numerator and
+\STATE $D(s,a) \leftarrow 0$ \hspace{20mm} ; Denominator of $Q(s,a)$
+\STATE $\pi \leftarrow$ an arbitrary deterministic policy
+\LOOP
+\STATE Select a policy $\pi'$ and us it to generate an episode:
+\STATE \hspace{20mm} $s_0,a_0,r_1,s_1,a_1,r_2,...,s_{T-1},a_{T-1},r_T,s_T$
+\STATE $\tau \leftarrow $ latest time at which $a_r \neq \pi(s_{\tau}$
+\FOR{each pair $s,a$ appearing in the episode at time $\tau$ or later}
+\STATE $t \leftarrow$ the time of the first occurrence of $s,a$ such that $t \ge \tau$
+\STATE $w \leftarrow \prod_{k=t+1}^{T-1} \frac{1}{\pi'(s_k,a_k)}$
+\STATE $N(s,a) \leftarrow N(s,a) + wR_t$
+\STATE $D(s,a) \leftarrow D(s,a) + w$
+\STATE $Q(s,a) \leftarrow \frac{N(s,a)}{D(s,a)}$
+\ENDFOR
+\FOR{each $s \in S$}
+\STATE $\pi \leftarrow argmax_aQ(s,a)$
+\ENDFOR
+\ENDLOOP
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
 
 \section{Experiments}
 This section describes the properties of the system the experiments were tested on and give an overview of the achieved results including plots to visualize them.
