@@ -3,6 +3,9 @@ package action;
 import environment.Algorithms.action;
 import state.State;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class StateAction {
 	private State s;
 	private action a;

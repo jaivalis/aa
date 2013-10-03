@@ -2,6 +2,7 @@ package environment;
 
 import actor.Predator;
 import actor.Prey;
+import action.StateAction;
 import policy.EpsilonGreedyPolicy;
 import policy.LearnedPolicy;
 import policy.Policy;
@@ -12,8 +13,7 @@ import statespace.StateSpace;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 public class Algorithms {	
 	private StateSpace stateSpace;
@@ -441,16 +441,70 @@ public class Algorithms {
         } return q;
     }
 
+    /**
+     * Loops over all actions and creates a list with all possible StateAction instances, which it returns in a List.
+     * @param s
+     * @return
+     */
+    public List<StateAction> getAllStateActions(State s) {
+        ArrayList<StateAction> al = new ArrayList<>();
+        for (action a : action.values()) {
+            StateAction sa = new StateAction(s, a);
+            al.add(sa);
+        } return al;
+    }
+
     public Q monteCarloOffPolicy(EpsilonGreedyPolicy pi, double initialQ, double gamma, int episodeCount) {
-        Q q = this.initializeQ(initialQ); // initialize Q(s,a) arbitrarily
-            // initialize pi(s) using ε-soft policy
+        Q q = this.initializeQ(initialQ);               // for all s∈S: Q(s,a) = arbitrary
+        pi.initializeActionsArbitrarily(action.SOUTH);  // for all s∈S: π(s) = arbitrary
+        pi.setQ(q);
 
-        pi.setQ(q); // I know it's not the best thing, but for now, it works.
-
-
-        for (int i = 0; i < episodeCount; i++) {
-
+        HashMap<StateAction, List<Double>> stateReturns = new HashMap<>();
+        for (State s : this.stateSpace) {               // for all s∈S: Returns(s,a) = empty list
+            for (StateAction sa : this.getAllStateActions(s)) {
+                stateReturns.put(sa, new ArrayList<Double>());
+            }
         }
-        return q;
+
+        for (int i = 0; i < episodeCount; i++) {        // Repeat forever:
+
+            // (a) generate an episode using exploring starts and π.
+            State initialState = this.stateSpace.getRandomState();
+            State s = initialState;
+
+            List<State> episode = new ArrayList<>();
+            episode.add(s);
+            while (!s.isTerminal()) {                   // (b) for each pair s,a in the episode.
+                action a =  pi.getAction(s);            // Derive a π.
+
+                double r = s.getStateReward();
+
+                List<Double> returns = stateReturns.get(new StateAction(s, a));
+                returns.add(r);
+                stateReturns.put(new StateAction(s, a), returns);
+
+                q.set(s, a, this.averageReturns(returns));
+
+                // Take action a. observe r, s'
+                s = this.stateSpace.getNextState(s, a);
+                episode.add(s);
+            }
+
+            for (State state : episode) { // (c) for each s in the episode
+                pi.setUniqueAction(state, q.getArgmaxA(s));
+            }
+        } return q;
+    }
+
+    /**
+     * Used by Monte Carlo Off policy.
+     * @param l List of Doubles to find double of.
+     * @return double average of contents of list.
+     */
+    private double averageReturns(List<Double> l) {
+        double ret = 0.0;
+        if (l.size() == 0) { return ret; }
+        for (double d : l) { ret += d; }
+        return ret / l.size();
     }
 }
