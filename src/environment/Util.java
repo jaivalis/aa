@@ -14,4 +14,5 @@ public class Util {
 
     public final static double[] alphas = {0.1, 0.2, 0.3, 0.4, 0.5};    /* Q-Learning learning rates Task 2.1. */
     public final static double[] gammas = {0.1, 0.5, 0.7, 0.9};         /* Q-Learning discount factors Task 2.1. */
+    public final static double MAX_ROUNDS = 10000;
 }

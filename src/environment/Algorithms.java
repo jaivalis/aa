@@ -317,10 +317,14 @@ public class Algorithms {
             State initialState = this.stateSpace.getState(this.prey.getCoordinates(), this.predator.getCoordinates());
 
             int i = 0; // sometimes a terminal state is never reached.
-            while (!isEpisodeOver() && i<10000) { // run episode
+            double thisRound = 0;
+            while (!isEpisodeOver() && i<Util.MAX_ROUNDS) { // run episode
                 initialState = this.nextRound(initialState);
-                allRounds++;
+                thisRound++;
                 i++;
+            }
+            if(i!=Util.MAX_ROUNDS) {
+            	allRounds += thisRound;
             }
             episodes--;
         } while (episodes > -1);
