@@ -268,50 +268,92 @@ $\gamma$ = 0.7 & $\gamma$ = 0.9\\
 %--1) why? "in order to test..." (questions, and preferably hypotheses with explanation)
 \subsubsection{Hypotheses}
 The second experiment observes the impact of $\epsilon$ in the $\epsilon$-greedy action selection policy and the initialization of the Q-table. $\epsilon$ determines the exploration rate, with values close to zero favouring exploitation and values close to 1 prefering exploration.\\
-In order to test this, the constant learning rate = 0.8 and the constant discount factor = 0.9 are chosen, since these values had the best performance in the previous experiment. The learning episode count is 1000 episodes and the number of simulations is 100.\\
-In the previous experiment the Q-Table was initialized optimistically, with values higher than the actual reward to receive, which encourages an early exploration, since any actual reward is less than the actual reward. Changing this value to a pessimistical initalization on the other hand inspires exploitation.
+In order to test this, the constant learning rate $\alpha$ = 0.5 and the constant discount factor $\gamma$ = 0.9 are chosen, since these values had the best performance in the previous experiment.\\
+In the previous experiment the Q-Table was initialized optimistically, with values higher than the actual reward to receive, which encourages an early exploration, since any actual reward is less than the actual reward. Changing this value to a pessimistical initalization on the other hand inspires exploitation.\\
+The performance over time is measured again, in order to show how these variables influence the learning speed.
 
 \subsubsection{Results}
-
-
-
-\resizebox{450pt}{!}{
+\begin{table}
+\begin{tabular}{cc}
+$Q_0$ = 15 & $Q_0$ = 0\\
+\resizebox{200pt}{!}{
 \begin{tikzpicture}
-\begin{axis}[xlabel={$\epsilon$},ylabel={Average Length}, legend style={at={(1.3,1)},anchor=north,legend cell align=left}]
+\begin{axis}[xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
 
-\addplot table[x index=0,y index=1,col sep=comma] {epsilonvsqvalue.dat};
-\addlegendentry{$Q_0$=30}
 
-\addplot table[x index=0,y index=2,col sep=comma] {epsilonvsqvalue.dat};
-\addlegendentry{$Q_0$=25}
+\addplot table[x index=0,y index=1,col sep=comma] {Q0.dat};
+\addlegendentry{$\epsilon$=0.1}
 
-\addplot table[x index=0,y index=3,col sep=comma] {epsilonvsqvalue.dat};
-\addlegendentry{$Q_0$=20}
+\addplot table[x index=0,y index=2,col sep=comma] {Q0.dat};
+\addlegendentry{$\epsilon$=0.2}
 
-\addplot table[x index=0,y index=4,col sep=comma] {epsilonvsqvalue.dat};
-\addlegendentry{$Q_0$=15}
+\addplot table[x index=0,y index=3,col sep=comma] {Q0.dat};
+\addlegendentry{$\epsilon$=0.3}
 
-\addplot table[x index=0,y index=5,col sep=comma] {epsilonvsqvalue.dat};
-\addlegendentry{$Q_0$=10}
+\addplot table[x index=0,y index=4,col sep=comma] {Q0.dat};
+\addlegendentry{$\epsilon$=0.4}
 
-\addplot table[x index=0,y index=6,col sep=comma] {epsilonvsqvalue.dat};
-\addlegendentry{$Q_0$=5}
+\addplot table[x index=0,y index=5,col sep=comma] {Q0.dat};
+\addlegendentry{$\epsilon$=0.5}
 
-\addplot table[x index=0,y index=7,col sep=comma] {epsilonvsqvalue.dat};
-\addlegendentry{$Q_0$=0}
+\addplot table[x index=0,y index=6,col sep=comma] {Q0.dat};
+\addlegendentry{$\epsilon$=0.6}
 
-\addplot table[x index=0,y index=8,col sep=comma] {epsilonvsqvalue.dat};
-\addlegendentry{$Q_0$=-5}
+\addplot table[x index=0,y index=7,col sep=comma] {Q0.dat};
+\addlegendentry{$\epsilon$=0.7}
 
-\addplot table[x index=0,y index=9,col sep=comma] {epsilonvsqvalue.dat};
-\addlegendentry{$Q_0$=-10}
+\addplot table[x index=0,y index=8,col sep=comma] {Q0.dat};
+\addlegendentry{$\epsilon$=0.8}
 
-\addplot table[x index=0,y index=10,col sep=comma] {epsilonvsqvalue.dat};
-\addlegendentry{$Q_0$=-15}
+\addplot table[x index=0,y index=9,col sep=comma] {Q0.dat};
+\addlegendentry{$\epsilon$=0.9}
+
 
 \end{axis}
 \end{tikzpicture}
 }
+&
+\resizebox{200pt}{!}{
+\begin{tikzpicture}
+\begin{axis}[xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
+
+
+\addplot table[x index=0,y index=1,col sep=comma] {Q15.dat};
+\addlegendentry{$\epsilon$=0.1}
+
+\addplot table[x index=0,y index=2,col sep=comma] {Q15.dat};
+\addlegendentry{$\epsilon$=0.2}
+
+\addplot table[x index=0,y index=3,col sep=comma] {Q15.dat};
+\addlegendentry{$\epsilon$=0.3}
+
+\addplot table[x index=0,y index=4,col sep=comma] {Q15.dat};
+\addlegendentry{$\epsilon$=0.4}
+
+\addplot table[x index=0,y index=5,col sep=comma] {Q15.dat};
+\addlegendentry{$\epsilon$=0.5}
+
+\addplot table[x index=0,y index=6,col sep=comma] {Q15.dat};
+\addlegendentry{$\epsilon$=0.6}
+
+\addplot table[x index=0,y index=7,col sep=comma] {Q15.dat};
+\addlegendentry{$\epsilon$=0.7}
+
+\addplot table[x index=0,y index=8,col sep=comma] {Q15.dat};
+\addlegendentry{$\epsilon$=0.8}
+
+\addplot table[x index=0,y index=9,col sep=comma] {Q15.dat};
+\addlegendentry{$\epsilon$=0.9}
+\end{axis}
+\end{tikzpicture}
+}\\
+
+\end{tabular}
+\caption{Plots show the average performance over time spendt learning the policy with learning rates $\alpha$ from 0.1 to 0.5. The first plot shows the curve for discount factor $\gamma$ = 0.1, second $\gamma$ = 0.5, third $\gamma$ = 0.7 and fourth $\gamma$ = 0.9}
+\label{plotsEx2}
+\end{table}
+
+
 
 
 
@@ -332,40 +374,8 @@ In this experiment the difference between the $\epsilon$-greedy and the softmax 
 The experiment setup is the same as in Experiment 1, except that the softmax action selection policy is used instead.\\
 Assuming that 
 \subsubsection{Results}
+%take best curve of epsilon greedy and show softmaxes with different temperature, but same other setup
 
-
-\resizebox{450pt}{!}{
-\begin{tikzpicture}
-\begin{axis}[xlabel={$\alpha$},ylabel={Average Length}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
-
-
-\addplot table[x index=0,y index=2,col sep=comma] {softmax.dat};
-\addlegendentry{$\gamma$=0.1}
-
-\addplot table[x index=0,y index=3,col sep=comma] {softmax.dat};
-\addlegendentry{$\gamma$=0.2}
-
-\addplot table[x index=0,y index=4,col sep=comma] {softmax.dat};
-\addlegendentry{$\gamma$=0.3}
-
-\addplot table[x index=0,y index=5,col sep=comma] {softmax.dat};
-\addlegendentry{$\gamma$=0.4}
-
-\addplot table[x index=0,y index=6,col sep=comma] {softmax.dat};
-\addlegendentry{$\gamma$=0.5}
-
-\addplot table[x index=0,y index=7,col sep=comma] {softmax.dat};
-\addlegendentry{$\gamma$=0.6}
-
-\addplot table[x index=0,y index=8,col sep=comma] {softmax.dat};
-\addlegendentry{$\gamma$=0.7}
-
-\addplot table[x index=0,y index=9,col sep=comma] {softmax.dat};
-\addlegendentry{$\gamma$=0.8}
-
-\end{axis}
-\end{tikzpicture}
-}
 
 %--3) what does it show (and is that what you expected, and why)
 \subsubsection{Interpretation}
