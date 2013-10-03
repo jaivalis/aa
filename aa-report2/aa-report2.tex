@@ -141,7 +141,12 @@ This hypothesis can be unrealistic in some real-problem scenarios where for exam
 
 
 \subsubsection{On-policy Monte-Carlo Control}
-On-Policy 
+On-Policy Monte-Carlo Control methods evaluate or improve the making of decisions policy. In order to achieve this, the problem of 'too many episodes needed for exploring all the start state-action value pairs' needs to be dealt with. Using an action selection policy such as $\epsilon$-greedy, the policy would gradually shift to a deterministic optimal policy. The algorithm uses first-visit Monte-Carlo methods to estimate the action value function for the current policy, a method in which the average of just the first visit to state s, for all the given episodes, is determined, and generalised policy iteration will be moved toward an $\epsilon$-greedy policy. Thus the greedification is, as in Q-learning and Sarsa, replaced by soft greedification. $\epsilon$-greedy policy will guarantee there is an improvement over any policy using $\epsilon$-soft policies.
+
+
+
+\subsubsection{Off-policy Monte-Carlo Control}
+As in Q-learning, in Off-Policy Monte Carlo Control the estimate of the value of a policy is separated from the policy used for control. This algorithm is off-policy in the same sense as Q-learning, meaning that it can separate exploration from control, and and similar to On-policy Monte-Carlo Control in that it can learn from the the experience it gains only through each complete episode.
 
 
 
