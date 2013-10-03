@@ -269,7 +269,7 @@ $\gamma$ = 0.7 & $\gamma$ = 0.9\\
 \subsubsection{Hypotheses}
 The second experiment observes the impact of $\epsilon$ in the $\epsilon$-greedy action selection policy and the initialization of the Q-table. $\epsilon$ determines the exploration rate, with values close to zero favouring exploitation and values close to 1 prefering exploration.\\
 In order to test this, the constant learning rate $\alpha$ = 0.5 and the constant discount factor $\gamma$ = 0.9 are chosen, since these values had the best performance in the previous experiment.\\
-In the previous experiment the Q-Table was initialized optimistically, with values higher than the actual reward to receive, which encourages an early exploration, since any actual reward is less than the actual reward. Changing this value to a pessimistical initalization on the other hand inspires exploitation.\\
+In the previous experiment the Q-Table was initialized optimistically, with values higher than the actual reward to receive (15), which encourages an early exploration, since any actual reward is less than the actual reward. Changing this value to a pessimistical initalization (0) on the other hand inspires exploitation.\\
 The performance over time is measured again, in order to show how these variables influence the learning speed.
 
 \subsubsection{Results}
@@ -349,7 +349,7 @@ $Q_0$ = 15 & $Q_0$ = 0\\
 }\\
 
 \end{tabular}
-\caption{Plots show the average performance over time spendt learning the policy with learning rates $\alpha$ from 0.1 to 0.5. The first plot shows the curve for discount factor $\gamma$ = 0.1, second $\gamma$ = 0.5, third $\gamma$ = 0.7 and fourth $\gamma$ = 0.9}
+\caption{Plots show the average performance over time spendt learning the policy with $\epsilon$ from 0.1 to 0.9. The first plot shows the curve for pessimistically initialized Q-Values = 0 and the second optimistic Q-Values = 15}
 \label{plotsEx2}
 \end{table}
 
@@ -371,8 +371,8 @@ $Q_0$ = 15 & $Q_0$ = 0\\
 %--1) why? "in order to test..." (questions, and preferably hypotheses with explanation)
 \subsubsection{Hypotheses}
 In this experiment the difference between the $\epsilon$-greedy and the softmax action selection policy is researched. The $\epsilon$-greedy action selection chooses all actions, except the action with the highest estimated reward so far, with the same probability, while the softmax approach weights the other actions and chooses actions with more pay-off with a higher probability.\\
-The experiment setup is the same as in Experiment 1, except that the softmax action selection policy is used instead.\\
-Assuming that 
+The setup of this experiment is that softmax action selection policy is compared to an 0.1-$\epsilon$-greedy action selection policy, since this showed the best results in the previous experiment, with the same values for $\gamma$, $\alpha$ and initial Q-Values\\
+Given the fact that softmax weights all action, the hypothesis is that softmax outperforms $\epsilon$-greedy as long as its \emph{temperature $\tau$} is properly tuned.
 \subsubsection{Results}
 %take best curve of epsilon greedy and show softmaxes with different temperature, but same other setup
 
