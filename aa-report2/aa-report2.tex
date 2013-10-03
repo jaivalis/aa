@@ -7,6 +7,7 @@
 \usepackage{pgfplotstable}
 \usepackage{pgfplots}
 \usepackage{filecontents}
+\usepackage{amsmath}
 
 
 
@@ -143,7 +144,38 @@ This hypothesis can be unrealistic in some real-problem scenarios where for exam
 \subsubsection{On-policy Monte-Carlo Control}
 On-Policy Monte-Carlo Control methods evaluate or improve the making of decisions policy. In order to achieve this, the problem of 'too many episodes needed for exploring all the start state-action value pairs' needs to be dealt with. Using an action selection policy such as $\epsilon$-greedy, the policy would gradually shift to a deterministic optimal policy. The algorithm uses first-visit Monte-Carlo methods to estimate the action value function for the current policy, a method in which the average of just the first visit to state s, for all the given episodes, is determined, and generalised policy iteration will be moved toward an $\epsilon$-greedy policy. Thus the greedification is, as in Q-learning and Sarsa, replaced by soft greedification. $\epsilon$-greedy policy will guarantee there is an improvement over any policy using $\epsilon$-soft policies.
 
-
+\begin{algorithm}
+\caption{On-policy Monte-Carlo Control}
+\begin{algorithmic}[1]
+\label{onpmc}
+\FORALL{$s \in S, a \in A(s)$}
+\STATE Initialise:
+\STATE $Q(s,a) \leftarrow$ empty list
+\STATE $\pi \leftarrow$ an arbitrary $\epsilon$-soft policy
+\LOOP
+\STATE Generate and episode using $\pi$ 
+\FORALL{pairs $s$,$a$ appearing in the episode}
+\STATE $R \leftarrow$ return following the first occurrence of $s$,$a$
+\STATE Append $R$ to $Returns(s,a)$
+\STATE $Q(s,a) \leftarrow$ average($Returns(s,a)$)
+\ENDFOR
+\FORALL{$s$ in the episode}
+\STATE $a* \leftarrow$ $arg max_aQ(s,a)$
+\FORALL{$a \in A(s)$}
+\STATE 
+\begin{equation}
+  \pi(s,a) \leftarrow 
+  \begin{cases}
+    1 - \epsilon + \epsilon/ \left|A(s)\right| & \text{if $a=a^*$}\\  
+    \epsilon/ \left|A(s)\right| & \text{if $a \neq a^*$}
+  \end{cases}
+\end{equation}
+\ENDFOR
+\ENDFOR
+\ENDLOOP
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
 
 \subsubsection{Off-policy Monte-Carlo Control}
 As in Q-learning, in Off-Policy Monte Carlo Control the estimate of the value of a policy is separated from the policy used for control. This algorithm is off-policy in the same sense as Q-learning, meaning that it can separate exploration from control, and and similar to On-policy Monte-Carlo Control in that it can learn from the the experience it gains only through each complete episode.
@@ -290,9 +322,9 @@ Higher learning rates and discount factors close to one seem to achieve faster c
 
 %--1) why? "in order to test..." (questions, and preferably hypotheses with explanation)
 \subsubsection{Hypotheses}
-The second experiment observes the impact of $\epsilon$ in the $\epsilon$-greedy action selection policy and the initialization of the Q-table. $\epsilon$ determines the exploration rate, with values close to zero favouring exploitation and values close to 1 prefering exploration.\\
+The second experiment observes the impact of $\epsilon$ in the $\epsilon$-greedy action selection policy and the initialization of the Q-table. $\epsilon$ determines the exploration rate, with values close to zero favouring exploitation and values close to 1 preferring exploration.\\
 In order to test this, the constant learning rate $\alpha$ = 0.5 and the constant discount factor $\gamma$ = 0.9 are chosen, since these values had the best performance in the previous experiment.\\
-In the previous experiment the Q-Table was initialized optimistically, with values higher than the actual reward to receive (15), which encourages an early exploration, since any actual reward is less than the actual reward. Changing this value to a pessimistical initalization (0) on the other hand inspires exploitation.\\
+In the previous experiment the Q-Table was initialized optimistically, with values higher than the actual reward to receive (15), which encourages an early exploration, since any actual reward is less than the actual reward. Changing this value to a pessimistic initialization (0) on the other hand inspires exploitation.\\
 A high $\epsilon$ is assumed to almost always exploit and thus might not find a good policy, while low values are considered to converge to the best policy.
 The performance over time is measured again, in order to show how these variables influence the learning speed.
 
