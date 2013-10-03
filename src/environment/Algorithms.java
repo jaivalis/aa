@@ -441,13 +441,16 @@ public class Algorithms {
         } return q;
     }
 
-    public Q monteCarloOffPolicy(EpsilonGreedyPolicy pi, double initialQ, double gamma) {
+    public Q monteCarloOffPolicy(EpsilonGreedyPolicy pi, double initialQ, double gamma, int episodeCount) {
         Q q = this.initializeQ(initialQ); // initialize Q(s,a) arbitrarily
             // initialize pi(s) using ε-soft policy
 
         pi.setQ(q); // I know it's not the best thing, but for now, it works.
 
 
+        for (int i = 0; i < episodeCount; i++) {
+
+        }
         return q;
     }
 }
