@@ -16,7 +16,6 @@ import java.util.Random;
  *  Please note that a deterministic choice CAN be implemented with this system:
  *  it's just enough to set the probability of an action to 1 and the other actions to 0.
  * @author Francesco Stablum
- *
  */
 public abstract class PossibleActions {
 	
@@ -29,12 +28,11 @@ public abstract class PossibleActions {
 	public void setActionProbability(action a, double p) {
 		this.actionProbability.put(a, p);
 	}
-	
-	public void setAllActionProbabilitiesTo(double p) { 
-		Iterator<action> it = this.actionProbability.keySet().iterator();
-		while(it.hasNext()){
-			this.actionProbability.put(it.next(), p);
-		}
+
+	public void setAllActionProbabilitiesTo(double p) {
+        for (action ac : this.actionProbability.keySet()) {
+            this.actionProbability.put(ac, p);
+        }
 	}
 
 	public String toString() {
@@ -76,7 +74,7 @@ public abstract class PossibleActions {
 	}
 	
 	/**
-	 * following function can be used to implement a deterministic action choice.
+	 * The following function can be used to implement a deterministic action choice.
 	 * (unless actions are equiprobable, in which case a random is drawn).
 	 * @return action
 	 */
@@ -95,4 +93,15 @@ public abstract class PossibleActions {
 		}
 		return maxProbAction;
 	}
+
+    /**
+     * Sets the action probability of action a to 1.0 and all the rest to zero. Makes a a deterministic action.
+     * @param a The action to which all the states are initialized.
+     */
+    public void makeActionDeterministic(action a) {
+        for (action ac : this.actionProbability.keySet()) {
+            this.actionProbability.put(ac, 0.0);
+        }
+        this.actionProbability.put(a, 1.0);
+    }
 }

@@ -58,4 +58,14 @@ public abstract class Policy {
 			state.setStateValue(d);
 		}
 	}
+
+    /**
+     * Initializes all State actions to a given arbitrary action.
+     * @param ac The action to which all the states are initialized.
+     */
+    public void initializeActionsArbitrarily(action ac) {
+        for (State state : this.stateActionMapping.keySet()) {
+            this.stateActionMapping.get(state).makeActionDeterministic(ac);
+        }
+    }
 }
