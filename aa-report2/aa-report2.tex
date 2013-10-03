@@ -460,7 +460,13 @@ It is preferable to initialize the Q-Values optimistically. Low $\epsilon$ value
 In this experiment the difference between the $\epsilon$-greedy and the softmax action selection policy is researched. The $\epsilon$-greedy action selection chooses all actions, except the action with the highest estimated reward so far, with the same probability, while the softmax approach weights the other actions and chooses actions with more pay-off with a higher probability.\\
 The setup of this experiment is that softmax action selection policy is compared to an 0.1-$\epsilon$-greedy action selection policy, since this showed the best results in the previous experiment, with the same values for $\gamma$, $\alpha$ and initial Q-Values\\
 Given the fact that softmax weights all action, the hypothesis is that softmax outperforms $\epsilon$-greedy as long as its \emph{temperature $\tau$} is properly tuned.
+
+
+
+
+
 \subsubsection{Results}
+The results of this experiment are plotted in ~\ref{plotsEx3}.
 %take best curve of epsilon greedy and show softmaxes with different temperature, but same other setup
 \begin{table}
 \begin{tabular}{cc}
@@ -511,7 +517,11 @@ Given the fact that softmax weights all action, the hypothesis is that softmax o
 
 %--3) what does it show (and is that what you expected, and why)
 \subsubsection{Interpretation}
+The results of this experiment supports the hypothesis that softmax over the course of the 1,000 learned episodes, outperforms $\epsilon$-greedy. It can also be observed that for low values of $\tau$ the performance is better at more episodes since the actions will have been applied more often resulting in an optimally weighted rank between choices of action, but consequently performs poorly in the initial number of episodes compared to high values of $\tau$, since the actions have been applied too few times for it to have a good enough weighted rank. The opposite can be said about the high values of $\tau$, by observing that in fewer episodes it performs better, and in more episodes worse than it's counter part low valued $\tau$
 
+%--4) take home message (what do you want the reader to remember, e.g. "Therefore, by reducing the state space, we have gained several orders of magnitude in runtime.")
+\subsubsection{Findings}
+Softmax, does outperform $\epsilon$-greedy when used by Q-learning, but the most optimal performance would be achieved if the $\tau$ temperature of Softmax could be tuned according to the number of learned episodes.
 
 %--4) take home message (what do you want the reader to remember, e.g. "Therefore, by reducing the state space, we have gained several orders of magnitude in runtime.")
 \subsubsection{}
