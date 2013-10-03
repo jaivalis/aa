@@ -168,7 +168,7 @@ The interpretation of these results will follow in the next section.
 $\gamma$ = 0.1 & $\gamma$ = 0.5\\
 \resizebox{200pt}{!}{
 \begin{tikzpicture}
-\begin{axis}[xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
+\begin{axis}[restrict y to domain=0:500,xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
 
 
 \addplot table[x index=0,y index=1,col sep=comma] {epsGreedGamma1.dat};
@@ -193,7 +193,7 @@ $\gamma$ = 0.1 & $\gamma$ = 0.5\\
 &
 \resizebox{200pt}{!}{
 \begin{tikzpicture}
-\begin{axis}[xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
+\begin{axis}[restrict y to domain=0:500,xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
 
 
 \addplot table[x index=0,y index=1,col sep=comma] {epsGreedGamma5.dat};
@@ -218,7 +218,7 @@ $\gamma$ = 0.1 & $\gamma$ = 0.5\\
 $\gamma$ = 0.7 & $\gamma$ = 0.9\\
 \resizebox{200pt}{!}{
 \begin{tikzpicture}
-\begin{axis}[xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
+\begin{axis}[restrict y to domain=0:500,xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
 
 
 \addplot table[x index=0,y index=1,col sep=comma] {epsGreedGamma7.dat};
@@ -243,7 +243,7 @@ $\gamma$ = 0.7 & $\gamma$ = 0.9\\
 &
 \resizebox{200pt}{!}{
 \begin{tikzpicture}
-\begin{axis}[xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
+\begin{axis}[restrict y to domain=0:500,xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
 
 
 \addplot table[x index=0,y index=1,col sep=comma] {epsGreedGamma9.dat};
@@ -294,7 +294,7 @@ The performance over time is measured again, in order to show how these variable
 $Q_0$ = 15 & $Q_0$ = 0\\
 \resizebox{200pt}{!}{
 \begin{tikzpicture}
-\begin{axis}[xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
+\begin{axis}[restrict y to domain=0:130,xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
 
 
 \addplot table[x index=0,y index=1,col sep=comma] {Q0.dat};
@@ -331,7 +331,7 @@ $Q_0$ = 15 & $Q_0$ = 0\\
 &
 \resizebox{200pt}{!}{
 \begin{tikzpicture}
-\begin{axis}[xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
+\begin{axis}[restrict y to domain=0:130,xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
 
 
 \addplot table[x index=0,y index=1,col sep=comma] {Q15.dat};
@@ -391,7 +391,52 @@ The setup of this experiment is that softmax action selection policy is compared
 Given the fact that softmax weights all action, the hypothesis is that softmax outperforms $\epsilon$-greedy as long as its \emph{temperature $\tau$} is properly tuned.
 \subsubsection{Results}
 %take best curve of epsilon greedy and show softmaxes with different temperature, but same other setup
+\begin{table}
+\begin{tabular}{cc}
+ & \\
+\resizebox{200pt}{!}{
+\begin{tikzpicture}
+\begin{axis}[restrict y to domain=0:50,xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
 
+
+\addplot table[x index=0,y index=1,col sep=comma] {exp3.dat};
+\addlegendentry{$\tau$=0.1}
+
+\addplot table[x index=0,y index=2,col sep=comma] {exp3.dat};
+\addlegendentry{$\tau$=0.2}
+
+\addplot table[x index=0,y index=3,col sep=comma] {exp3.dat};
+\addlegendentry{$\tau$=0.3}
+
+\addplot table[x index=0,y index=4,col sep=comma] {exp3.dat};
+\addlegendentry{$\tau$=0.4}
+
+\addplot table[x index=0,y index=5,col sep=comma] {exp3.dat};
+\addlegendentry{$\tau$=0.5}
+
+\addplot table[x index=0,y index=6,col sep=comma] {exp3.dat};
+\addlegendentry{$\tau$=0.6}
+
+\addplot table[x index=0,y index=7,col sep=comma] {exp3.dat};
+\addlegendentry{$\tau$=0.7}
+
+\addplot table[x index=0,y index=8,col sep=comma] {exp3.dat};
+\addlegendentry{$\tau$=0.8}
+
+\addplot table[x index=0,y index=9,col sep=comma] {exp3.dat};
+\addlegendentry{$\epsilon$=0.1}
+
+
+\end{axis}
+\end{tikzpicture}
+}
+&
+\\
+
+\end{tabular}
+\caption{Plots show the average performance over time spendt learning the policy with $\tau$ from 0.1 to 0.8 compared to $\epsilon$ = 0.1.}
+\label{plotsEx3}
+\end{table}
 
 %--3) what does it show (and is that what you expected, and why)
 \subsubsection{Interpretation}
