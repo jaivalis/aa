@@ -66,7 +66,7 @@ The steps involved can be summarised into the following Algorithm ~\ref{algQ}\\\
 
 \subsection{Q-learning using $\epsilon$-greedy}
 
-When the Q-learning algorithm to selects an action, there needs to be some form of trade-off between selecting the action with the highest estimated reward so far, and the the rest of the actions available. Limiting the action selection policy to only the best action learnt so far, would mean potentially losing out  on a better action in the future, being in a given state. To satisfy this trade-off, $\epsilon$-greedy policy uses a (in this example a small) probability of $\epsilon$ to select randomly between all  between all the actions available in a given state, excluding the most optimal one so far. In turn, (as in this scenario $\epsilon$ is small), the most optimal action is chosen with a much larger probability, $1-\epsilon$, most of the time, giving the policy a tendency to exploit the best action so far most of the time, but not lose out on potentially better actions, which could be found through exploration of the other actions. 
+When the Q-learning algorithm to selects an action, there needs to be some form of trade-off between selecting the action with the highest estimated reward so far, and the the rest of the actions available. Limiting the action selection policy to only the best action learned so far, would mean potentially losing out  on a better action in the future, being in a given state. To satisfy this trade-off, $\epsilon$-greedy policy uses a (in this example a small) probability of $\epsilon$ to select randomly between all  between all the actions available in a given state, excluding the most optimal one so far. In turn, (as in this scenario $\epsilon$ is small), the most optimal action is chosen with a much larger probability, $1-\epsilon$, most of the time, giving the policy a tendency to exploit the best action so far most of the time, but not lose out on potentially better actions, which could be found through exploration of the other actions. 
 
 
 
@@ -171,10 +171,10 @@ The expected outcome is that high learning rates tend to always replace the curr
 \end{table*}
 \end{center}
 
-Gamma = 0.1\\
-
-
-\resizebox{450pt}{!}{
+\begin{table}
+\begin{tabular}{cc}
+$\gamma$ = 0.1 & $\gamma$ = 0.5\\
+\resizebox{200pt}{!}{
 \begin{tikzpicture}
 \begin{axis}[xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
 
@@ -198,10 +198,8 @@ Gamma = 0.1\\
 \end{axis}
 \end{tikzpicture}
 }
-
-Gamma = 0.5\\
-
-\resizebox{450pt}{!}{
+&
+\resizebox{200pt}{!}{
 \begin{tikzpicture}
 \begin{axis}[xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
 
@@ -224,11 +222,9 @@ Gamma = 0.5\\
 
 \end{axis}
 \end{tikzpicture}
-}
-
-Gamma = 0.7\\\
-
-\resizebox{450pt}{!}{
+}\\
+$\gamma$ = 0.7 & $\gamma$ = 0.9\\
+\resizebox{200pt}{!}{
 \begin{tikzpicture}
 \begin{axis}[xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
 
@@ -252,10 +248,8 @@ Gamma = 0.7\\\
 \end{axis}
 \end{tikzpicture}
 }
-
-Gamma = 0.9\\
-
-\resizebox{450pt}{!}{
+&
+\resizebox{200pt}{!}{
 \begin{tikzpicture}
 \begin{axis}[xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
 
@@ -279,6 +273,10 @@ Gamma = 0.9\\
 \end{axis}
 \end{tikzpicture}
 }
+\end{tabular}
+\caption{Plots show the average performance over time spendt on learning the policy with learning rates $\alpha$ from 0.1 to 0.5. The first plot shows the curve for discount factor $\gamma$ = 0.1, second $\gamma$ = 0.5, third $\gamma$ = 0.7 and fourth $\gamma$ = 0.9}
+\label{plotsEx1}
+\end{table}
 
 %--3) what does it show (and is that what you expected, and why)
 \subsubsection{Interpretation}
