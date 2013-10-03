@@ -129,47 +129,39 @@ Sarsa, like Q-learning is a temporal difference algorithm, meaning that it compa
 \end{algorithm}
 
 
+
+\subsection{Monte-Carlo Methods}
+Monte-Carlo methods are also usually used in situations where there is no model of the environment's dynamics, and so can learn from the the experience they gain through each complete episode. The main difference between Monte-Carlo and Temporal Difference (TD) methods is that in TD methods the final outcome does not need to be reached until the state-action values can be updated, whereas in Monte-Carlo methods, it does. Monte-Carlo methods also use a variation of generalized policy iteration for the control problem, so the main difference lies in the way way the prediction problem is solved.
+Through the number of episodes (i.e. experience), the action value function for each state should average towards the true value function, and the optimal action for each state could then be computed. For this to be true, the hypothesis must be taken in that:
+\begin{itemize}
+	\item The start of each episode must start at a state-action pair, and all state-action pairs have a chance of being used as a starting state-action. With a large enough number of episodes, each state-action pair should be visited enough times in order to make sufficient exploration for the best action to take, given a certain state. 
+\end{itemize}
+This hypothesis can be unrealistic in some real-problem scenarios where for example the number of episodes generated cannot be large enough to obtain optimal state-action values. This be overcome in two ways, which will be explained in the following subsections.
+
+
+
+\subsubsection{On-policy Monte-Carlo Control}
+On-Policy 
+
+
+
 \section{Experiments}
 This section describes the properties of the system the experiments were tested on and give an overview of the achieved results including plots to visualize them.
 
 %--2) is there anything to mention about the implementation/machinery the reader should know? (e.g. "these experiments were performed on a [insert machine specs]" when presenting runtimes)
 \subsection{System Properties}
-The experiments were performend on a \dots
+The experiments were performend on a 
 
 \subsection{Experiment 1}
 
 %--1) why? "in order to test..." (questions, and preferably hypotheses with explanation)
 \subsubsection{Hypotheses}
-The first experiment aims to measure the performance of the predator catching the predator with different learning rates $\alpha$ and different discount factors $\gamma$ over time. Therefore the average performance of 100 simulations with different $\alpha$ and $\gamma$ for learning with an episode count from 1 to 1000 is  taken into account. The reduced state space  with 11x11 states is chosen, in order to save computational time.\\
+The first experiment aims to measure the performance of the predator catching the predator with different learning rates $\alpha$ and different discount factors $\gamma$ over time. Therefore the average performance of 100 simulations with different $\alpha$ and $\gamma$ for learning with an episode count from 50 to 950 is  taken into account. The reduced state space  with 11x11 states is chosen, in order to save computational time.\\
 The expected outcome is that high learning rates tend to always replace the current value with the new estimates and converge quickly, while a small learning rate value leads to a slow convergence and seems to trust the current estimate. ~\cite{dar}
 
 \subsubsection{Results}
-
-\begin{center}
-\begin{table*}[ht]
-{\small
-\hfill{}
-\begin{center}
-\textbf{Discount factor $\gamma$}\\
-\end{center}
-\begin{tabular}{c|c|c|c|c|c|c|c|c|c}
-\textbf{$\alpha$} & \textbf{0} & \textbf{0.1} & \textbf{0.2} & \textbf{0.3} & \textbf{0.4} & \textbf{0.5} & \textbf{0.6} & \textbf{0.7} & \textbf{0.8}\\
-	\hline
-\textbf{0.1} & 128.01 & 82.30 & 142.60 & 58.69 & 97.13 & 73.41 & 61.77 & 42.48 & 60.84\\
-\textbf{0.2} & 350.93 & 43.34 & 45.81 & 24.97 & 31.01 & 27.86 & 53.84 & 31.07 & 12.59\\
-\textbf{0.3} & 176.75 & 26.79 & 44.83 & 23.03 & 38.17 & 23.18 & 36.65 & 20.38 & 18.65\\
-\textbf{0.4} & 438.45 & 22.70 & 11.47 & 29.59 & 11.90 & 11.53 & 11.21 & 20.08 & 12.67\\
-\textbf{0.5} & 108.22 & 18.73 & 14.48 & 22.76 & 24.03 & 21.24 & 16.49 & 19.14 & 10.22\\
-\textbf{0.6} & 132.71 & 16.77 & 10.87 & 11.29 & 15.32 & 17.70 & 19.83 & 20.96 & 10.31\\
-\textbf{0.7} & 788.89 & 16.54 & 29.32 & 12.29 & 10.25 & 18.48 & 12.50 & 17.12 & 16.60\\
-\textbf{0.8} & 436.39 & 20.89 & 10.75 & 19.35 & 19.0 & 16.65 & 17.4 & 11.22 & 10.43\\
-\textbf{0.9} & 204.36 & 15.72 & 10.41 & 11.58 & 11.12 & 18.24 & 20.53 & 11.29 & 10.46\\
-\end{tabular}}
-\hfill{}
-\caption{Average length of episode, the predator needs to catch the prey with different learning rates $\alpha$ and discount factors $\gamma$}
-\label{table:task1}
-\end{table*}
-\end{center}
+The results of this experiment are plottet in Table ~\ref{plotsEx1}. The five chosen learning rates $\alpha$ are shown in each of the four graphs with different discount factors $\gamma$.\\
+The interpretation of these results will follow in the next section.
 
 \begin{table}
 \begin{tabular}{cc}
@@ -274,7 +266,7 @@ $\gamma$ = 0.7 & $\gamma$ = 0.9\\
 \end{tikzpicture}
 }
 \end{tabular}
-\caption{Plots show the average performance over time spendt on learning the policy with learning rates $\alpha$ from 0.1 to 0.5. The first plot shows the curve for discount factor $\gamma$ = 0.1, second $\gamma$ = 0.5, third $\gamma$ = 0.7 and fourth $\gamma$ = 0.9}
+\caption{Plots show the average performance over time spendt learning the policy with learning rates $\alpha$ from 0.1 to 0.5. The first plot shows the curve for discount factor $\gamma$ = 0.1, second $\gamma$ = 0.5, third $\gamma$ = 0.7 and fourth $\gamma$ = 0.9}
 \label{plotsEx1}
 \end{table}
 
@@ -285,80 +277,99 @@ $\gamma$ = 0.7 & $\gamma$ = 0.9\\
 %--4) take home message (what do you want the reader to remember, e.g. "Therefore, by reducing the state space, we have gained several orders of magnitude in runtime.")
 \subsubsection{}
 
+
+
 \subsection{Experiment 2}
 
 %--1) why? "in order to test..." (questions, and preferably hypotheses with explanation)
 \subsubsection{Hypotheses}
 The second experiment observes the impact of $\epsilon$ in the $\epsilon$-greedy action selection policy and the initialization of the Q-table. $\epsilon$ determines the exploration rate, with values close to zero favouring exploitation and values close to 1 prefering exploration.\\
-In order to test this, the constant learning rate = 0.8 and the constant discount factor = 0.9 are chosen, since these values had the best performance in the previous experiment. The learning episode count is 1000 episodes and the number of simulations is 100.\\
-In the previous experiment the Q-Table was initialized optimistically, with values higher than the actual reward to receive, which encourages an early exploration, since any actual reward is less than the actual reward. Changing this value to a pessimistical initalization on the other hand inspires exploitation.
+In order to test this, the constant learning rate $\alpha$ = 0.5 and the constant discount factor $\gamma$ = 0.9 are chosen, since these values had the best performance in the previous experiment.\\
+In the previous experiment the Q-Table was initialized optimistically, with values higher than the actual reward to receive (15), which encourages an early exploration, since any actual reward is less than the actual reward. Changing this value to a pessimistical initalization (0) on the other hand inspires exploitation.\\
+The performance over time is measured again, in order to show how these variables influence the learning speed.
 
 \subsubsection{Results}
-\begin{center}
-\begin{table*}[ht]
-{\small
-\hfill{}
-\begin{center}
-\textbf{Initial Q-Value}\\
-\end{center}
-\begin{tabular}{c|c|c|c|c|c|c|c|c|c|c}
-\textbf{$\epsilon$} & \textbf{30} & \textbf{25} & \textbf{20} & \textbf{15} & \textbf{10} & \textbf{5} & \textbf{0} & \textbf{-5} & \textbf{-10}& \textbf{-15}\\
-	\hline
-\textbf{0.0} & 18.97 & 11.37 & 10.62 & 10.33 & 11.48 & 10.29 & 11.65 & 11.62 & 11.46 & 11.9\\
-\textbf{0.1} & 11.03 & 10.34 & 10.52 & 10.56 & 11.46 & 11.05 & 13.22 & 11.8 & 11.62 & 11.3\\
-\textbf{0.2} & 12.09 & 10.25 & 12.25 & 11.48 & 11.51 & 10.48 & 12.94 & 11.53 & 16.42 & 11.85\\
-\textbf{0.3} & 10.42 & 11.32 & 11.03 & 10.34 & 11.18 & 11.89 & 13.8 & 11.5 & 12.08 & 12.24\\
-\textbf{0.4} & 11.58 & 10.37 & 11.07 & 11.46 & 11.51 & 21.99 & 11.8 & 11.67 & 11.59 & 20.06\\
-\textbf{0.5} & 10.55 & 11.16 & 10.51 & 10.46 & 27.92 & 11.63 & 16.61 & 11.87 & 12.97 & 20.32\\
-\textbf{0.6} & 10.46 & 12.54 & 10.22 & 11.47 & 10.33 & 10.19 & 11.03 & 40.66 & 11.28 & 11.67\\
-\textbf{0.7} & 10.63 & 10.13 & 10.42 & 11.42 & 10.26 & 12.25 & 11.87 & 10.61 & 11.76 & 11.67\\
-\textbf{0.8} & 10.68 & 10.72 & 15.35 & 10.38 & 11.48 & 10.41 & 11.51 & 27.56 & 16.68 & 11.81\\
-\textbf{0.9} & 10.39 & 10.21 & 13.31 & 10.6 & 11.31 & 10.38 & 11.19 & 11.47 & 11.41 & 22.84\\
-\end{tabular}}
-\hfill{}
-\caption{Average length of episode, the predator needs to catch the prey, with different exploration rate $\epsilon$ and initial Q-Values}
-\label{table:task1}
-\end{table*}
-\end{center}
-
-
-\resizebox{450pt}{!}{
+\begin{table}
+\begin{tabular}{cc}
+$Q_0$ = 15 & $Q_0$ = 0\\
+\resizebox{200pt}{!}{
 \begin{tikzpicture}
-\begin{axis}[xlabel={$\epsilon$},ylabel={Average Length}, legend style={at={(1.3,1)},anchor=north,legend cell align=left}]
+\begin{axis}[xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
 
-\addplot table[x index=0,y index=1,col sep=comma] {epsilonvsqvalue.dat};
-\addlegendentry{$Q_0$=30}
 
-\addplot table[x index=0,y index=2,col sep=comma] {epsilonvsqvalue.dat};
-\addlegendentry{$Q_0$=25}
+\addplot table[x index=0,y index=1,col sep=comma] {Q0.dat};
+\addlegendentry{$\epsilon$=0.1}
 
-\addplot table[x index=0,y index=3,col sep=comma] {epsilonvsqvalue.dat};
-\addlegendentry{$Q_0$=20}
+\addplot table[x index=0,y index=2,col sep=comma] {Q0.dat};
+\addlegendentry{$\epsilon$=0.2}
 
-\addplot table[x index=0,y index=4,col sep=comma] {epsilonvsqvalue.dat};
-\addlegendentry{$Q_0$=15}
+\addplot table[x index=0,y index=3,col sep=comma] {Q0.dat};
+\addlegendentry{$\epsilon$=0.3}
 
-\addplot table[x index=0,y index=5,col sep=comma] {epsilonvsqvalue.dat};
-\addlegendentry{$Q_0$=10}
+\addplot table[x index=0,y index=4,col sep=comma] {Q0.dat};
+\addlegendentry{$\epsilon$=0.4}
 
-\addplot table[x index=0,y index=6,col sep=comma] {epsilonvsqvalue.dat};
-\addlegendentry{$Q_0$=5}
+\addplot table[x index=0,y index=5,col sep=comma] {Q0.dat};
+\addlegendentry{$\epsilon$=0.5}
 
-\addplot table[x index=0,y index=7,col sep=comma] {epsilonvsqvalue.dat};
-\addlegendentry{$Q_0$=0}
+\addplot table[x index=0,y index=6,col sep=comma] {Q0.dat};
+\addlegendentry{$\epsilon$=0.6}
 
-\addplot table[x index=0,y index=8,col sep=comma] {epsilonvsqvalue.dat};
-\addlegendentry{$Q_0$=-5}
+\addplot table[x index=0,y index=7,col sep=comma] {Q0.dat};
+\addlegendentry{$\epsilon$=0.7}
 
-\addplot table[x index=0,y index=9,col sep=comma] {epsilonvsqvalue.dat};
-\addlegendentry{$Q_0$=-10}
+\addplot table[x index=0,y index=8,col sep=comma] {Q0.dat};
+\addlegendentry{$\epsilon$=0.8}
 
-\addplot table[x index=0,y index=10,col sep=comma] {epsilonvsqvalue.dat};
-\addlegendentry{$Q_0$=-15}
+\addplot table[x index=0,y index=9,col sep=comma] {Q0.dat};
+\addlegendentry{$\epsilon$=0.9}
+
 
 \end{axis}
 \end{tikzpicture}
 }
+&
+\resizebox{200pt}{!}{
+\begin{tikzpicture}
+\begin{axis}[xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
+
+
+\addplot table[x index=0,y index=1,col sep=comma] {Q15.dat};
+\addlegendentry{$\epsilon$=0.1}
+
+\addplot table[x index=0,y index=2,col sep=comma] {Q15.dat};
+\addlegendentry{$\epsilon$=0.2}
+
+\addplot table[x index=0,y index=3,col sep=comma] {Q15.dat};
+\addlegendentry{$\epsilon$=0.3}
+
+\addplot table[x index=0,y index=4,col sep=comma] {Q15.dat};
+\addlegendentry{$\epsilon$=0.4}
+
+\addplot table[x index=0,y index=5,col sep=comma] {Q15.dat};
+\addlegendentry{$\epsilon$=0.5}
+
+\addplot table[x index=0,y index=6,col sep=comma] {Q15.dat};
+\addlegendentry{$\epsilon$=0.6}
+
+\addplot table[x index=0,y index=7,col sep=comma] {Q15.dat};
+\addlegendentry{$\epsilon$=0.7}
+
+\addplot table[x index=0,y index=8,col sep=comma] {Q15.dat};
+\addlegendentry{$\epsilon$=0.8}
+
+\addplot table[x index=0,y index=9,col sep=comma] {Q15.dat};
+\addlegendentry{$\epsilon$=0.9}
+\end{axis}
+\end{tikzpicture}
+}\\
+
+\end{tabular}
+\caption{Plots show the average performance over time spendt learning the policy with $\epsilon$ from 0.1 to 0.9. The first plot shows the curve for pessimistically initialized Q-Values = 0 and the second optimistic Q-Values = 15}
+\label{plotsEx2}
+\end{table}
+
+
 
 
 
@@ -376,67 +387,11 @@ In the previous experiment the Q-Table was initialized optimistically, with valu
 %--1) why? "in order to test..." (questions, and preferably hypotheses with explanation)
 \subsubsection{Hypotheses}
 In this experiment the difference between the $\epsilon$-greedy and the softmax action selection policy is researched. The $\epsilon$-greedy action selection chooses all actions, except the action with the highest estimated reward so far, with the same probability, while the softmax approach weights the other actions and chooses actions with more pay-off with a higher probability.\\
-The experiment setup is the same as in Experiment 1, except that the softmax action selection policy is used instead.\\
-Assuming that 
+The setup of this experiment is that softmax action selection policy is compared to an 0.1-$\epsilon$-greedy action selection policy, since this showed the best results in the previous experiment, with the same values for $\gamma$, $\alpha$ and initial Q-Values\\
+Given the fact that softmax weights all action, the hypothesis is that softmax outperforms $\epsilon$-greedy as long as its \emph{temperature $\tau$} is properly tuned.
 \subsubsection{Results}
-\begin{center}
-\begin{table*}[ht]
-{\small
-\hfill{}
-\begin{center}
-\textbf{Discount factor $\gamma$}\\
-\end{center}
-\begin{tabular}{c|c|c|c|c|c|c|c|c|c}
-\textbf{$\alpha$} & \textbf{0} & \textbf{0.1} & \textbf{0.2} & \textbf{0.3} & \textbf{0.4} & \textbf{0.5} & \textbf{0.6} & \textbf{0.7} & \textbf{0.8}\\
-	\hline
-\textbf{0.1} & 231.392 & 10.256 & 10.333 & 10.354 & 10.333 & 10.381 & 11.286 & 10.253 & 14.68\\
-\textbf{0.2} & 5251.302 & 10.327 & 10.257 & 10.296 & 10.207 & 10.369 & 10.286 & 10.24 & 10.349 \\
-\textbf{0.3} & 250.205 & 10.545 & 10.194 & 10.328 & 10.349 & 10.347 & 10.356 & 10.389 & 10.331 \\
-\textbf{0.4} & 126.436 & 10.237 & 10.267 & 10.244 & 10.467 & 10.372 & 10.482 & 10.364 & 10.288 \\
-\textbf{0.5} & 983.615 & 10.431 & 10.283 & 10.336 & 10.419 & 10.662 & 10.379 & 10.306 & 10.208 \\
-\textbf{0.6} & 87.172 & 10.333 & 10.323 & 10.418 & 10.396 & 10.334 & 11.216 & 10.33 & 10.246\\
-\textbf{0.7} & 653.722 & 10.403 & 10.467 & 12.033 & 17.742 & 10.796 & 10.514 & 10.817 & 10.977 \\
-\textbf{0.8} & 65.172 & 18.431 & 11.344 & 10.173 & 10.522 & 10.476 & 11.188 & 10.287 & 10.69\\
-\textbf{0.9} & 354.228 & 15.363 & 10.904 & 10.392 & 10.569 & 18.122 & 11.246 & 31.038 & 17.399\\
-\end{tabular}}
-\hfill{}
-\caption{Average length of episode, the predator needs to catch the prey with different learning rates $\alpha$ and discount factors $\gamma$}
-\label{table:task1}
-\end{table*}
-\end{center}
+%take best curve of epsilon greedy and show softmaxes with different temperature, but same other setup
 
-\resizebox{450pt}{!}{
-\begin{tikzpicture}
-\begin{axis}[xlabel={$\alpha$},ylabel={Average Length}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
-
-
-\addplot table[x index=0,y index=2,col sep=comma] {softmax.dat};
-\addlegendentry{$\gamma$=0.1}
-
-\addplot table[x index=0,y index=3,col sep=comma] {softmax.dat};
-\addlegendentry{$\gamma$=0.2}
-
-\addplot table[x index=0,y index=4,col sep=comma] {softmax.dat};
-\addlegendentry{$\gamma$=0.3}
-
-\addplot table[x index=0,y index=5,col sep=comma] {softmax.dat};
-\addlegendentry{$\gamma$=0.4}
-
-\addplot table[x index=0,y index=6,col sep=comma] {softmax.dat};
-\addlegendentry{$\gamma$=0.5}
-
-\addplot table[x index=0,y index=7,col sep=comma] {softmax.dat};
-\addlegendentry{$\gamma$=0.6}
-
-\addplot table[x index=0,y index=8,col sep=comma] {softmax.dat};
-\addlegendentry{$\gamma$=0.7}
-
-\addplot table[x index=0,y index=9,col sep=comma] {softmax.dat};
-\addlegendentry{$\gamma$=0.8}
-
-\end{axis}
-\end{tikzpicture}
-}
 
 %--3) what does it show (and is that what you expected, and why)
 \subsubsection{Interpretation}
