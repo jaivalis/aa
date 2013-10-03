@@ -8,42 +8,7 @@
 \usepackage{pgfplots}
 \usepackage{filecontents}
 
-\begin{filecontents}{discountvsalpha.dat}
-0.1, 128.0169 , 82.3094 , 142.6086 , 58.6978 , 97.1353 , 73.4194 , 61.7706 , 42.4856 , 60.8453
-0.2, 350.9369 , 43.3417 , 45.8161 , 24.9713 , 31.0176 , 27.8658 , 53.8418 , 31.0789 , 12.5948
-0.3, 176.7514 , 26.7957 , 44.8313 , 23.0337 , 38.1784 , 23.1881 , 36.6555 , 20.3898 , 18.6524
-0.4, 438.4551 , 22.7017 , 11.4753 , 29.597 , 11.9084 , 11.5321 , 11.2164 , 20.088 , 12.6738
-0.5, 108.2213 , 18.7378 , 14.4834 , 22.7681 , 24.034 , 21.244 , 16.4981 , 19.1462 , 10.2268
-0.6, 132.7185 , 16.7787 , 10.8735 , 11.2989 , 15.3218 , 17.7085 , 19.8306 , 20.9615 , 10.315
-0.7, 788.898 , 16.5484 , 29.3294 , 12.2979 , 10.2584 , 18.4839 , 12.5068 , 17.1235 , 16.6028
-0.8, 436.3914 , 20.8921 , 10.7558 , 19.3525 , 19.0 , 16.6532 , 17.4 , 11.2239 , 10.4383
-0.9, 204.3642 , 15.7251 , 10.4158 , 11.5867 , 11.1238 , 18.2433 , 20.532 , 11.292 , 10.4699
-\end{filecontents}
 
-\begin{filecontents}{epsilonvsqvalue.dat}
-0.0, 18.97, 11.37, 10.62, 10.33, 11.48, 10.29, 11.65, 11.62, 11.46, 11.9
-0.1, 11.03, 10.34, 10.52, 10.56, 11.46, 11.05, 13.22, 11.8, 11.62, 11.3
-0.2, 12.09, 10.25, 12.25, 11.48, 11.51, 10.48, 12.94, 11.53, 16.42, 11.85
-0.3, 10.42, 11.32, 11.03, 10.34, 11.18, 11.89, 13.8, 11.5, 12.08, 12.24
-0.4, 11.58, 10.37, 11.07, 11.46, 11.51, 21.99, 11.8, 11.67, 11.59, 20.06
-0.5, 10.55, 11.16, 10.51, 10.46, 27.92, 11.63, 16.61, 11.87, 12.97, 20.32
-0.6, 10.46, 12.54, 10.22, 11.47, 10.33, 10.19, 11.03, 40.66, 11.28, 11.67
-0.7, 10.63, 10.13, 10.42, 11.42, 10.26, 12.25, 11.87, 10.61, 11.76, 11.67
-0.8, 10.68, 10.72, 15.35, 10.38, 11.48, 10.41, 11.51, 27.56, 16.68, 11.81
-0.9, 10.39, 10.21, 13.31, 10.6, 11.31, 10.38, 11.19, 11.47, 11.41, 22.84
-\end{filecontents}
-
-\begin{filecontents}{softmax.dat}
-0.1, 231.392, 10.256, 10.333, 10.354, 10.333, 10.381, 11.286, 10.253, 14.68
-0.2, 5251.302, 10.327,10.257,10.296,10.207,10.369,10.286,10.24,10.349
-0.3, 250.205 , 10.545 , 10.194 , 10.328 , 10.349 , 10.347 , 10.356 , 10.389 , 10.331
-0.4, 126.436 , 10.237 , 10.267 , 10.244 , 10.467 , 10.372 , 10.482 , 10.364 , 10.288
-0.5, 983.615 , 10.431 , 10.283 , 10.336 , 10.419 , 10.662 , 10.379 , 10.306 , 10.208
-0.6, 87.172 , 10.333 , 10.323 , 10.418 , 10.396 , 10.334 , 11.216 , 10.33 , 10.246
-0.7, 653.722 , 10.403 , 10.467 , 12.033 , 17.742 , 10.796 , 10.514 , 10.817 , 10.977
-0.8, 65.172 , 18.431 , 11.344 , 10.173 , 10.522 , 10.476 , 11.188 , 10.287 , 10.69
-0.9, 354.228 , 15.363 , 10.904 , 10.392 , 10.569 , 18.122 , 11.246 , 31.038 , 17.399
-\end{filecontents}
 
 \title{
 	\textbf{Autonomous Agents Assignment 2}
@@ -74,7 +39,7 @@ The steps involved can be summarised into the following Algorithm ~\ref{algQ}\\\
 
 \begin{algorithm}
 \caption{Q-learning}
-\begin{algorithmic}
+\begin{algorithmic}[1]
 \label{algQ}
 \STATE Initialise $Q(s,a)$ arbitrarily
 \FORALL{Episodes}
@@ -146,7 +111,7 @@ Sarsa, like Q-learning is a temporal difference algorithm, meaning that it compa
 
 \begin{algorithm}
 \caption{Sarsa}
-\begin{algorithmic}
+\begin{algorithmic}[1]
 \label{sarsa}
 \STATE Initialise $Q(s,a)$ arbitrarily
 \FORALL{Episodes}
@@ -175,7 +140,7 @@ The experiments were performend on a \dots
 
 %--1) why? "in order to test..." (questions, and preferably hypotheses with explanation)
 \subsubsection{Hypotheses}
-The first experiment aims to measure the performance of the predator catching the predator with different learning rates $\alpha$ and different discount factors $\gamma$ over time. Therefor the average performance of 100 simulations with different $\alpha$ and $\gamma$ for learning with an episode count from 1 to 1000 is  taken into account. The reduced state space  with 11x11 states is chosen, in order to save computational time.\\
+The first experiment aims to measure the performance of the predator catching the predator with different learning rates $\alpha$ and different discount factors $\gamma$ over time. Therefore the average performance of 100 simulations with different $\alpha$ and $\gamma$ for learning with an episode count from 1 to 1000 is  taken into account. The reduced state space  with 11x11 states is chosen, in order to save computational time.\\
 The expected outcome is that high learning rates tend to always replace the current value with the new estimates and converge quickly, while a small learning rate value leads to a slow convergence and seems to trust the current estimate. ~\cite{dar}
 
 \subsubsection{Results}
@@ -190,15 +155,15 @@ The expected outcome is that high learning rates tend to always replace the curr
 \begin{tabular}{c|c|c|c|c|c|c|c|c|c}
 \textbf{$\alpha$} & \textbf{0} & \textbf{0.1} & \textbf{0.2} & \textbf{0.3} & \textbf{0.4} & \textbf{0.5} & \textbf{0.6} & \textbf{0.7} & \textbf{0.8}\\
 	\hline
-\textbf{0.1} & 128.0169 & 82.3094 & 142.6086 & 58.6978 & 97.1353 & 73.4194 & 61.7706 & 42.4856 & 60.8453\\
-\textbf{0.2} & 350.9369 & 43.3417 & 45.8161 & 24.9713 & 31.0176 & 27.8658 & 53.8418 & 31.0789 & 12.5948\\
-\textbf{0.3} & 176.7514 & 26.7957 & 44.8313 & 23.0337 & 38.1784 & 23.1881 & 36.6555 & 20.3898 & 18.6524\\
-\textbf{0.4} & 438.4551 & 22.7017 & 11.4753 & 29.597 & 11.9084 & 11.5321 & 11.2164 & 20.088 & 12.6738\\
-\textbf{0.5} & 108.2213 & 18.7378 & 14.4834 & 22.7681 & 24.034 & 21.244 & 16.4981 & 19.1462 & 10.2268\\
-\textbf{0.6} & 132.7185 & 16.7787 & 10.8735 & 11.2989 & 15.3218 & 17.7085 & 19.8306 & 20.9615 & 10.315\\
-\textbf{0.7} & 788.898 & 16.5484 & 29.3294 & 12.2979 & 10.2584 & 18.4839 & 12.5068 & 17.1235 & 16.6028\\
-\textbf{0.8} & 436.3914 & 20.8921 & 10.7558 & 19.3525 & 19.0 & 16.6532 & 17.4 & 11.2239 & 10.4383\\
-\textbf{0.9} & 204.3642 & 15.7251 & 10.4158 & 11.5867 & 11.1238 & 18.2433 & 20.532 & 11.292 & 10.4699\\
+\textbf{0.1} & 128.01 & 82.30 & 142.60 & 58.69 & 97.13 & 73.41 & 61.77 & 42.48 & 60.84\\
+\textbf{0.2} & 350.93 & 43.34 & 45.81 & 24.97 & 31.01 & 27.86 & 53.84 & 31.07 & 12.59\\
+\textbf{0.3} & 176.75 & 26.79 & 44.83 & 23.03 & 38.17 & 23.18 & 36.65 & 20.38 & 18.65\\
+\textbf{0.4} & 438.45 & 22.70 & 11.47 & 29.59 & 11.90 & 11.53 & 11.21 & 20.08 & 12.67\\
+\textbf{0.5} & 108.22 & 18.73 & 14.48 & 22.76 & 24.03 & 21.24 & 16.49 & 19.14 & 10.22\\
+\textbf{0.6} & 132.71 & 16.77 & 10.87 & 11.29 & 15.32 & 17.70 & 19.83 & 20.96 & 10.31\\
+\textbf{0.7} & 788.89 & 16.54 & 29.32 & 12.29 & 10.25 & 18.48 & 12.50 & 17.12 & 16.60\\
+\textbf{0.8} & 436.39 & 20.89 & 10.75 & 19.35 & 19.0 & 16.65 & 17.4 & 11.22 & 10.43\\
+\textbf{0.9} & 204.36 & 15.72 & 10.41 & 11.58 & 11.12 & 18.24 & 20.53 & 11.29 & 10.46\\
 \end{tabular}}
 \hfill{}
 \caption{Average length of episode, the predator needs to catch the prey with different learning rates $\alpha$ and discount factors $\gamma$}
@@ -207,6 +172,7 @@ The expected outcome is that high learning rates tend to always replace the curr
 \end{center}
 
 Gamma = 0.1\\
+
 
 \resizebox{450pt}{!}{
 \begin{tikzpicture}
@@ -327,7 +293,7 @@ Gamma = 0.9\\
 \subsubsection{Hypotheses}
 The second experiment observes the impact of $\epsilon$ in the $\epsilon$-greedy action selection policy and the initialization of the Q-table. $\epsilon$ determines the exploration rate, with values close to zero favouring exploitation and values close to 1 prefering exploration.\\
 In order to test this, the constant learning rate = 0.8 and the constant discount factor = 0.9 are chosen, since these values had the best performance in the previous experiment. The learning episode count is 1000 episodes and the number of simulations is 100.\\
-In the previous experiment the Q-Table was initialized optimistically, with values higher than the actual reward to receive, which encourages an early exploration, since any actual reward is less than the actual reward. Changing this value to a pessimistically initalization on the other hand inspires exploitation.
+In the previous experiment the Q-Table was initialized optimistically, with values higher than the actual reward to receive, which encourages an early exploration, since any actual reward is less than the actual reward. Changing this value to a pessimistical initalization on the other hand inspires exploitation.
 
 \subsubsection{Results}
 \begin{center}
@@ -363,34 +329,34 @@ In the previous experiment the Q-Table was initialized optimistically, with valu
 \begin{axis}[xlabel={$\epsilon$},ylabel={Average Length}, legend style={at={(1.3,1)},anchor=north,legend cell align=left}]
 
 \addplot table[x index=0,y index=1,col sep=comma] {epsilonvsqvalue.dat};
-\addlegendentry{$Q$-Value=30}
+\addlegendentry{$Q_0$=30}
 
 \addplot table[x index=0,y index=2,col sep=comma] {epsilonvsqvalue.dat};
-\addlegendentry{$Q$-Value=25}
+\addlegendentry{$Q_0$=25}
 
 \addplot table[x index=0,y index=3,col sep=comma] {epsilonvsqvalue.dat};
-\addlegendentry{$Q$-Value=20}
+\addlegendentry{$Q_0$=20}
 
 \addplot table[x index=0,y index=4,col sep=comma] {epsilonvsqvalue.dat};
-\addlegendentry{$Q$-Value=15}
+\addlegendentry{$Q_0$=15}
 
 \addplot table[x index=0,y index=5,col sep=comma] {epsilonvsqvalue.dat};
-\addlegendentry{$Q$-Value=10}
+\addlegendentry{$Q_0$=10}
 
 \addplot table[x index=0,y index=6,col sep=comma] {epsilonvsqvalue.dat};
-\addlegendentry{$Q$-Value=5}
+\addlegendentry{$Q_0$=5}
 
 \addplot table[x index=0,y index=7,col sep=comma] {epsilonvsqvalue.dat};
-\addlegendentry{$Q$-Value=0}
+\addlegendentry{$Q_0$=0}
 
 \addplot table[x index=0,y index=8,col sep=comma] {epsilonvsqvalue.dat};
-\addlegendentry{$Q$-Value=-5}
+\addlegendentry{$Q_0$=-5}
 
 \addplot table[x index=0,y index=9,col sep=comma] {epsilonvsqvalue.dat};
-\addlegendentry{$Q$-Value=-10}
+\addlegendentry{$Q_0$=-10}
 
 \addplot table[x index=0,y index=10,col sep=comma] {epsilonvsqvalue.dat};
-\addlegendentry{$Q$-Value=-15}
+\addlegendentry{$Q_0$=-15}
 
 \end{axis}
 \end{tikzpicture}
