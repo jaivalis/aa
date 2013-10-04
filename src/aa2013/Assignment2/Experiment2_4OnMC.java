@@ -2,7 +2,8 @@ package aa2013.Assignment2;
 
 import environment.Algorithms;
 import environment.Util;
-import policy.EpsilonGreedyPolicy;
+import policy.MCEpsilonGreedyPolicy;
+import policy.QEpsilonGreedyPolicy;
 import statespace.ReducedStateSpace;
 import statespace.StateSpace;
 
@@ -15,10 +16,10 @@ public class Experiment2_4OnMC {
     public static void debug() {
         StateSpace ss = new ReducedStateSpace();
         Algorithms algos = new Algorithms(ss);
-        EpsilonGreedyPolicy pi = new EpsilonGreedyPolicy(algos.getStateSpace()); // Predator learn
+        MCEpsilonGreedyPolicy pi = new MCEpsilonGreedyPolicy(algos.getStateSpace()); // Predator learn
         int initialQValue = 15;
-        int episodeCount = 1000;
-        algos.monteCarloOnPolicy(pi, initialQValue, episodeCount);
+        int episodeCount = 100;
+        pi = algos.monteCarloOnPolicy(pi, initialQValue, episodeCount);
         pi.printMaxActionsGrid();
     }
     
@@ -27,7 +28,7 @@ public class Experiment2_4OnMC {
         Algorithms algos = new Algorithms(ss);
 
         double simulations = 100;  // many simulations ensure higher precision.
-        EpsilonGreedyPolicy egp = new EpsilonGreedyPolicy(algos.getStateSpace()); // Predator learn
+        MCEpsilonGreedyPolicy egp = new MCEpsilonGreedyPolicy(algos.getStateSpace()); // Predator learn
 
         double savedEpsilon = Util.epsilon;
 //        long timestamp = (new Date()).getTime();
@@ -44,7 +45,7 @@ public class Experiment2_4OnMC {
                 for(int episodeCount = 0; episodeCount < Util.EPISODE_COUNT; episodeCount++) {
                     // 1. train
                     Util.epsilon = savedEpsilon; // we need a stochastic epsilon policy for the learning, for exploration
-                    EpsilonGreedyPolicy mco = algos.monteCarloOnPolicy(egp, initialQValue, episodeCount);
+                    MCEpsilonGreedyPolicy mco = algos.monteCarloOnPolicy(egp, initialQValue, episodeCount);
                     Util.epsilon = 0.0; // now it has already learned, so we can use a stochastic policy
                     algos.getPredator().setPolicy(mco);
 

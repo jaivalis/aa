@@ -3,7 +3,7 @@ package aa2013.Assignment2;
 import environment.Algorithms;
 import environment.Q;
 import environment.Util;
-import policy.EpsilonGreedyPolicy;
+import policy.QEpsilonGreedyPolicy;
 import statespace.ReducedStateSpace;
 import statespace.StateSpace;
 
@@ -19,7 +19,7 @@ public class Experiment2_4OffMC {
         Algorithms algos = new Algorithms(ss);
 
         double simulations = 100;  // many simulations ensure higher precision.
-        EpsilonGreedyPolicy egp = new EpsilonGreedyPolicy(algos.getStateSpace()); // Predator learn
+        QEpsilonGreedyPolicy egp = new QEpsilonGreedyPolicy(algos.getStateSpace()); // Predator learn
 
         double savedEpsilon = Util.epsilon;
 //        long timestamp = (new Date()).getTime();
@@ -36,7 +36,7 @@ public class Experiment2_4OffMC {
                 for(int episodeCount = 0; episodeCount < Util.EPISODE_COUNT; episodeCount++) {
                     // 1. train
                     Util.epsilon = savedEpsilon; // we need a stochastic epsilon policy for the learning, for exploration
-                    EpsilonGreedyPolicy mco = algos.monteCarloOffPolicy(egp, initialQValue, episodeCount);
+                    QEpsilonGreedyPolicy mco = algos.monteCarloOffPolicy(egp, initialQValue, episodeCount);
                     Util.epsilon = 0.0; // now it has already learned, so we can use a stochastic policy
                     algos.getPredator().setPolicy(mco);
 

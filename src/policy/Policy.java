@@ -88,7 +88,18 @@ public abstract class Policy {
             this.stateActionMapping.get(state).makeActionDeterministic(ac);
         }
     }
-	
+
+    /**
+     * Initializes all State actions to a given arbitrary action.
+     * @param ac The action to which all the states are initialized.
+     */
+    public void initializeActionsAsRandom() {
+        for (State state : this.stateActionMapping.keySet()) {
+        	action ac = Algorithms.action.getRandom();
+            this.stateActionMapping.get(state).makeActionDeterministic(ac);
+        }
+    }
+    
     public void printMaxActionsGrid() {
 		State[][] states = new State[11][11];
 		for(State s : this.stateActionMapping.keySet()){
