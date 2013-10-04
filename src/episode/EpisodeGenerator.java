@@ -28,17 +28,13 @@ public class EpisodeGenerator {
 
         int steps = 0;
         do {
-            if (s_prime.isTerminal()) {
-                episode.addStep(s, action.WAIT, s_prime.getStateReward(), s_prime);
-                break;
-            }
         	steps++;
             action a =  pi.getAction(s);
             s = s_prime;
             s_prime = stateSpace.produceStochasticTransition(s, a);
             double r = s_prime.getStateReward();
             episode.addStep(s, a, r, s_prime);
-        } while(true);
+        } while(!s_prime.isTerminal()&&steps<10000);
 
 		return episode;
 	}
