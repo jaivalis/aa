@@ -1,5 +1,6 @@
 package policy;
 
+import action.LearnedAction;
 import action.PossibleActions;
 import environment.Algorithms;
 import environment.Algorithms.action;
@@ -8,17 +9,12 @@ import environment.Util;
 import state.State;
 import statespace.StateSpace;
 
-public class EpsilonGreedyPolicy extends PredatorPolicy {
-	Q q = null;
+public class QEpsilonGreedyPolicy extends QPolicy {
 
-    public EpsilonGreedyPolicy(StateSpace ss) {
+    public QEpsilonGreedyPolicy(StateSpace ss) {
     	super(ss);
     }
     
-    public void setQ(Q q) {
-    	this.q = q;
-    }
-
     @Override
 	public action getAction(State s) {
 		

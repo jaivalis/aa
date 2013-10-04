@@ -26,7 +26,7 @@
 
 
 \section{Introduction}
-This report is based on the implementation of an assignment exercise in which a predator is trying to catch a prey in a 2-dimensional environment, being unknown to the predator. This will be attempted  using Temporal Difference learning methods (TD), a combination of Monte Carlo and dynamic programming. TD learning methods can learn directly from experience, rather than having to rely on a model of the environment. TD methods can update action state values estimates based on other learned estimates, without having to wait for the final outcome. 
+In this report we are going to use an already implemented Predator versus Prey grid to illustrate some of the differences and features of learning algorithms. In this scenario the Predator agent does not have any prior knowledge towards the environment and will make use of model-free learning, in order to reach its goal which is to catch the Prey. This will be attempted  using Temporal Difference learning methods (TD), a combination of Monte Carlo and dynamic programming. TD learning methods can learn directly from experience, rather than having to rely on a model of the environment. TD methods can update action state values estimates based on other learned estimates, without having to wait for the final outcome. 
 
 \section{Algorithms}
 In this part of the report the used algorithms are introduced on the basis of their Pseudocode description.
@@ -219,6 +219,7 @@ The experiments were performend on a
 
 \subsection{Experiment 1}
 
+The source code for the implementation of this experiment can be found under the package $aa2013.Assignment2$ in the file $Experiment2\_1.java$.
 %--1) why? "in order to test..." (questions, and preferably hypotheses with explanation)
 \subsubsection{Hypotheses}
 The first experiment aims to measure the performance of the predator catching the predator with different learning rates $\alpha$ and different discount factors $\gamma$ over time. Therefore the average performance of 100 simulations with different $\alpha$ and $\gamma$ for learning with an episode count from 50 to 950 is  taken into account. The reduced state space  with 11x11 states is chosen, in order to save computational time.\\
@@ -347,7 +348,7 @@ Higher learning rates and discount factors close to one seem to achieve faster c
 
 
 \subsection{Experiment 2}
-
+The source code for the implementation of this experiment can be found under the package $aa2013.Assignment2$ in the file $Experiment2\_2.java$.
 %--1) why? "in order to test..." (questions, and preferably hypotheses with explanation)
 \subsubsection{Hypotheses}
 The second experiment observes the impact of $\epsilon$ in the $\epsilon$-greedy action selection policy and the initialization of the Q-table. $\epsilon$ determines the exploration rate, with values close to zero favouring exploitation and values close to 1 preferring exploration.\\
@@ -454,7 +455,7 @@ The results of this experiment supports the hypothesis that high $\epsilon$ stru
 It is preferable to initialize the Q-Values optimistically. Low $\epsilon$ values in an $\epsilon$-greedy action selection policy outperform high values.
 
 \subsection{Experiment 3}
-
+The source code for the implementation of this experiment can be found under the package $aa2013.Assignment2$ in the file $Experiment2\_3.java$.
 %--1) why? "in order to test..." (questions, and preferably hypotheses with explanation)
 \subsubsection{Hypotheses}
 In this experiment the difference between the $\epsilon$-greedy and the softmax action selection policy is researched. The $\epsilon$-greedy action selection chooses all actions, except the action with the highest estimated reward so far, with the same probability, while the softmax approach weights the other actions and chooses actions with more pay-off with a higher probability.\\
@@ -528,6 +529,10 @@ Softmax, does outperform $\epsilon$-greedy when used by Q-learning, but the most
 
 \subsection{Experiment 4}
 
+
+
+\subsubsection{Experiment 4.1}
+The source code for the implementation of this experiment can be found under the package $aa2013.Assignment2$ in the file $Experiment2\_4OnMC.java$.
 %--1) why? "in order to test..." (questions, and preferably hypotheses with explanation)
 \subsubsection{Sarsa}
 
@@ -641,7 +646,44 @@ $\gamma$ = 0.7 & $\gamma$ = 0.9\\
 
 
 %--4) take home message (what do you want the reader to remember, e.g. "Therefore, by reducing the state space, we have gained several orders of magnitude in runtime.")
-\subsubsection{}
+\subsubsection{Findings}
+
+
+
+
+\subsubsection{Experiment 4.2}
+The source code for the implementation of this experiment can be found under the package $aa2013.Assignment2$ in the file $Experiment2\_4OffMC.java$.
+%--1) why? "in order to test..." (questions, and preferably hypotheses with explanation)
+\subsubsection{Hypotheses}
+
+
+\subsubsection{Results}
+
+
+%--3) what does it show (and is that what you expected, and why)
+\subsubsection{Interpretation}
+
+
+%--4) take home message (what do you want the reader to remember, e.g. "Therefore, by reducing the state space, we have gained several orders of magnitude in runtime.")
+\subsubsection{Findings}
+
+
+
+\subsubsection{Experiment 4.1}
+The source code for the implementation of this experiment can be found under the package $aa2013.Assignment2$ in the file $Experiment2\_4Sarsa.java$.
+%--1) why? "in order to test..." (questions, and preferably hypotheses with explanation)
+\subsubsection{Hypotheses}
+
+
+\subsubsection{Results}
+
+
+%--3) what does it show (and is that what you expected, and why)
+\subsubsection{Interpretation}
+
+
+%--4) take home message (what do you want the reader to remember, e.g. "Therefore, by reducing the state space, we have gained several orders of magnitude in runtime.")
+\subsubsection{Findings}
 
 %redundance with take home message?
 \section{Conclusion}

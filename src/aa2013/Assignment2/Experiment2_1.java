@@ -3,7 +3,7 @@ package aa2013.Assignment2;
 import environment.Algorithms;
 import environment.Q;
 import environment.Util;
-import policy.EpsilonGreedyPolicy;
+import policy.QEpsilonGreedyPolicy;
 import statespace.ReducedStateSpace;
 import statespace.StateSpace;
 
@@ -30,7 +30,7 @@ public class Experiment2_1 {
 
         double optimisticInitialQ = 15;
         double simulations = 100;  // many simulations ensure higher precision.
-        EpsilonGreedyPolicy egp = new EpsilonGreedyPolicy(algos.getStateSpace()); // Predator learn
+        QEpsilonGreedyPolicy egp = new QEpsilonGreedyPolicy(algos.getStateSpace()); // Predator learn
 
         double savedEpsilon = Util.epsilon; // FIXME: dirty hack!
         long timestamp = (new Date()).getTime(); 
@@ -49,7 +49,7 @@ public class Experiment2_1 {
 	                Util.epsilon = savedEpsilon; // we need a stochastic epsilon policy for the learning, for exploration
 	                Q newQ = algos.Q_Learning(egp, optimisticInitialQ, alpha, gamma, episodeCount);
 	                Util.epsilon = 0.0; // now it has already learned, so we can use a stochastic policy
-	                ((EpsilonGreedyPolicy) algos.getPredator().getPolicy()).setQ(newQ);
+	                ((QEpsilonGreedyPolicy) algos.getPredator().getPolicy()).setQ(newQ);
 	
 	                // 2. simulate & output results
 	                double averageRounds = algos.getSimulationAverageRounds(simulations);

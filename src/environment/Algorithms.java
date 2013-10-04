@@ -3,9 +3,11 @@ package environment;
 import actor.Predator;
 import actor.Prey;
 import action.StateAction;
-import policy.EpsilonGreedyPolicy;
+import policy.MCEpsilonGreedyPolicy;
+import policy.QEpsilonGreedyPolicy;
 import policy.LearnedPolicy;
 import policy.Policy;
+import policy.QPolicy;
 import policy.SoftmaxPolicy;
 import state.State;
 import statespace.StateSpace;
@@ -344,7 +346,7 @@ public class Algorithms {
      * @param gamma Decay factor.
      * @return
      */
-    public Q Q_Learning(EpsilonGreedyPolicy pi, double initialQ, double alpha, double gamma, int episodeCount) {
+    public Q Q_Learning(QPolicy pi, double initialQ, double alpha, double gamma, int episodeCount) {
     	Q q = this.initializeQ(initialQ); // initialize Q(s,a) arbitrarily
     	pi.setQ(q); // I know it's not the best thing, but for now, it works.
         for (int i = 0; i < episodeCount; i++) {  // repeat for each episode
@@ -422,7 +424,7 @@ public class Algorithms {
      * @param gamma
      * @return
      */
-    public Q sarsa(EpsilonGreedyPolicy pi, double initialQ, double alpha, double gamma, int episodeCount) {
+    public Q sarsa(QEpsilonGreedyPolicy pi, double initialQ, double alpha, double gamma, int episodeCount) {
         Q q = this.initializeQ(initialQ); // initialize Q(s,a) arbitrarily
         pi.setQ(q); // I know it's not the best thing, but for now, it works.
 
@@ -464,11 +466,11 @@ public class Algorithms {
     }
 
     public Q monteCarloOffPolicy(double initialQ, double gamma, int episodeCount) {
-        EpsilonGreedyPolicy pi = (EpsilonGreedyPolicy) this.predator.getPolicy();
+        QEpsilonGreedyPolicy pi = (QEpsilonGreedyPolicy) this.predator.getPolicy();
         Q q = this.initializeQ(initialQ);               // for all s∈S: Q(s,a) = arbitrary
         pi.initializeActionsArbitrarily(action.SOUTH);  // for all s∈S: π(s) = arbitrary
         //pi.setQ(q);
-        ((EpsilonGreedyPolicy) this.predator.getPolicy()).setQ(q);
+        ((QEpsilonGreedyPolicy) this.predator.getPolicy()).setQ(q);
 
         HashMap<StateAction, List<Double>> stateReturns = new HashMap<>();
         for (State s : this.stateSpace) {               // for all s∈S: Returns(s,a) = empty list
@@ -505,10 +507,10 @@ public class Algorithms {
         } return q;
     }
 
-    public EpsilonGreedyPolicy monteCarloOnPolicy(EpsilonGreedyPolicy pi, double initialQ, int episodeCount) {
+    public MCEpsilonGreedyPolicy monteCarloOnPolicy(MCEpsilonGreedyPolicy pi, double initialQ, int episodeCount) {
         Q q = this.initializeQ(initialQ);               // for all s∈S: Q(s,a) = arbitrary
-        pi.initializeActionsArbitrarily(Algorithms.action.getRandom());  // for all s∈S: π(s) = arbitrary
-        pi.setQ(q);
+        pi.initializeActionsAsRandom();  // for all s∈S: π(s) = arbitrary
+        pi.printMaxActionsGrid();
 
         HashMap<StateAction, List<Double>> stateActionReturns = new HashMap<>();
         for (State s : this.stateSpace) {               // for all s∈S: Returns(s,a) = empty list
@@ -527,7 +529,6 @@ public class Algorithms {
             episode.add(s);
             while (!s.isTerminal()) {                   // (b) for each pair s,a in the episode.
                 action a =  pi.getAction(s);            // Derive a π.
-
                 double r = s.getStateReward();
 
                 List<Double> returns = stateActionReturns.get(new StateAction(s, a));
@@ -547,7 +548,7 @@ public class Algorithms {
     }
 
     // TODO
-    public EpsilonGreedyPolicy monteCarloOffPolicy(EpsilonGreedyPolicy egp, float initialQValue, int episodeCount) {
+    public QEpsilonGreedyPolicy monteCarloOffPolicy(QEpsilonGreedyPolicy egp, float initialQValue, int episodeCount) {
         return null;
     }
 
