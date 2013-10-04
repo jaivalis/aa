@@ -42,8 +42,8 @@ public class Experiment2_1 {
 			System.exit(0);
 		}
         out.println("gamma,alpha,episodeCount,averageRounds");
-        for (double gamma = 0.1; gamma <= 0.9; gamma += 0.2) {
-        	for (double alpha = 0.1; alpha <= 0.5; alpha += 0.1) {
+        for (double gamma = 0.1; gamma <= 1.0; gamma += 0.2) {
+        	for (double alpha = 0.1; alpha <= 0.6; alpha += 0.1) {
         		for(int episodeCount = 0; episodeCount < Util.EPISODE_COUNT; episodeCount += 50) {
 	                // 1. train
 	                Util.epsilon = savedEpsilon; // we need a stochastic epsilon policy for the learning, for exploration
