@@ -1,0 +1,718 @@
+\documentclass[11pt]{article}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{graphicx}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{pgfplotstable}
+\usepackage{pgfplots}
+\usepackage{filecontents}
+\usepackage{amsmath}
+
+
+
+\title{
+	\textbf{Autonomous Agents Assignment 2}
+}
+
+\author{Tobias Stahl \\ 10528199 \and Spyros Michaelides \\ 10523316 \and Ioannis Giounous Aivalis \\ 10524851 \and Francesco Stablum \\ 6200982}
+
+
+
+
+\begin{document}
+
+\maketitle
+
+
+\section{Introduction}
+In this report we are going to use an already implemented Predator versus Prey grid to illustrate some of the differences and features of learning algorithms. In this scenario the Predator agent does not have any prior knowledge towards the environment and will make use of model-free learning, in order to reach its goal which is to catch the Prey. This will be attempted  using Temporal Difference learning methods (TD), a combination of Monte Carlo and dynamic programming. TD learning methods can learn directly from experience, rather than having to rely on a model of the environment. TD methods can update action state values estimates based on other learned estimates, without having to wait for the final outcome. Finally, once TD algorithms have been implemented, they will be compared to Monte-Carlo methods, whose form can resemble to some extent TD learning because they also learn by sampling the environment according to some policy.
+
+
+\section{Algorithms}
+
+
+\subsection{Q-Learning}
+The initial exercise of this lab assignment is to implement Q-learning, a temporal-difference (TD) learning algorithm. This algorithm is to be used by the predator agent to catch the prey. Q-learning is an off-policy TD control algorithm. An off-policy TD learning algorithm is one in which the estimated value functions can be updated using hypothetical actions, without having actually executed the actions themselves. Using this approach the algorithm can separate exploration from control, since the deterministic learned policy is separate to the exploration. For this reason the agent could learn through the environment without necessarily having had the explicit experience.
+The steps involved can be summarised into the following Algorithm ~\ref{algQ}\\\\
+
+
+\begin{algorithm}
+\caption{Q-learning}
+\begin{algorithmic}[1]
+\label{algQ}
+\STATE Initialise $Q(s,a)$ arbitrarily
+\FORALL{Episodes}
+\STATE Initialise s
+\FORALL{Steps of episodes}
+\STATE Choose $a$ from $s$ using policy derived from $Q$ (e.g., $\epsilon$-greedy)
+\STATE Take action $a$, observe $r$, $s'$
+\STATE $Q(s,a) \leftarrow Q(s,a) + \alpha \lbrack r + \gamma max_{a'} Q(s',a') - Q(s,a)\rbrack$
+\STATE $s \leftarrow s';$\
+\ENDFOR
+\STATE Until s is terminal
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
+\noindent Where:
+\begin{itemize}
+	\item $\alpha$ is the learning rate. Setting it to a high value will force learning to occur faster, whereas for a low value it will occur slower.
+	\item $max_{a'}$ is the maximum reward reachable in the state $s'$
+	\item $\gamma$ is the value which gives future rewards less worth than immediate ones
+\end{itemize}
+\vspace*{10mm}
+
+
+\subsection{Q-learning using $\epsilon$-greedy}
+
+When the Q-learning algorithm selects an action, there needs to be some form of trade-off between selecting the action with the highest estimated reward so far, and the the rest of the actions available. Limiting the action selection policy to only the best action learned so far, would mean potentially losing out  on a better action in the future, being in a given state. To satisfy this trade-off, $\epsilon$-greedy policy uses a (in this example a small) probability of $\epsilon$ to select randomly between all the actions available in a given state, excluding the most optimal one so far. In turn, (as in this scenario $\epsilon$ is small), the most optimal action is chosen with a much larger probability, $1-\epsilon$, most of the time, giving the policy a tendency to exploit the best action so far most of the time, but not lose out on potentially better actions, which could be found through exploration of the other actions. 
+
+
+
+Based on the task at hand, the predator should directly learn a high reward policy without learning a model, since the agent is not supposed to know the transition probabilities, nor the reward structure of the environment. It is assumed that convergence should occur as long as all state action pair values continue to be updated using a certain policy (in this case $\epsilon$-greedy. 
+
+
+
+
+
+\subsection{Softmax Action-Selection Policy}
+
+In this section, a different action selection policy will be used in Q-learning instead of $\epsilon$-greedy. $\epsilon$-greedy policy satisfies the exploration/exploitation variance which is desired to be used in the Q-learning algorithm, although the way in which it achieves this could be a disadvantage in scenarios where the least favourable action has a much worse pay-off than the e.g., the second-best one. When the algorithm explores with a probability $\epsilon$, it does not do this by taking into consideration the performance of the individual non-best actions themselves. The probability distribution between which non-best action is selected, is uniformly distributed and therefore, each one is as likely to be chosen as the rest. To optimise the performance of the Q-learning algorithm, it could be more efficient to make the selection among the non-best actions by weighing them according to their action-value estimates, thus increasing probability of selection for the higher action-value estimates, and hence making a more guided (by value) exploration.
+Algorithm ~\ref{softmax} differs from $\epsilon$-greedy in Operation ~\ref{soft}.
+
+\begin{algorithm}
+\caption{Softmax}
+\begin{algorithmic}[1]
+\label{softmax}
+\STATE Initialise $Q(s,a)$ arbitrarily
+\FORALL{Episodes}
+\STATE Initialise s
+\FORALL{Steps of episodes}
+\STATE Choose Choose $a$ with probability $\frac{\exp^{Q_t(a)/\tau}}{\sum{\exp^{Q_t(b)/\tau}}}$ \label{soft}
+\STATE Take action $a$, observe $r$, $s'$
+\STATE $Q(s,a) \leftarrow Q(s,a) + \alpha \lbrack r + \gamma max_{a'} Q(s',a') - Q(s,a)\rbrack$
+\STATE $s \leftarrow s';$\
+\ENDFOR
+\STATE Until s is terminal
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
+\noindent Where:
+\begin{itemize}
+	\item $\tau$ is a positive parameter called \emph{temperature}. A high temperature leads the actions to be almost equiproble, low tempreature values cause a greater difference with $\tau$ $\rightarrow$ 0 beeing the same as greedy action selection.
+\end{itemize}
+\vspace*{10mm}
+
+
+\subsection{Sarsa}
+Sarsa, like Q-learning is a temporal difference algorithm, meaning that it compares temporally successive predictions. Unlike Q-learning though, Sarsa is an on-policy TD method. In on-policy TD learning the algorithm learns the value of the policy that is used to make the decisions, directly through experience. This is in contrast to off-policy where value functions are not updated solely on experienced actions. The action selection policies previously discussed in Q-learning are also applicable for use in Sarsa. Again, there is the choice of specifying the trade-off between exploitation/exploration by setting the $\epsilon$ parameter when using $\epsilon$-greedy, or using the softmax policy.
+
+\begin{algorithm}
+\caption{Sarsa}
+\begin{algorithmic}[1]
+\label{sarsa}
+\STATE Initialise $Q(s,a)$ arbitrarily
+\FORALL{Episodes}
+\STATE Initialise s
+\STATE Choose $a$ from $s$ using derived from $Q$ (e.g., $\epsilon$-greedy)
+\FORALL{Steps of episodes}
+\STATE Take action $a$, observe $r$, $s'$
+\STATE Choose $a'$ from $s'$ using policy derived from Q (e.g., $\epsilon$-greedy)
+\STATE $Q(s,a) \leftarrow Q(s,a) + \alpha \lbrack r + \gamma Q(s',a') - Q(s,a)\rbrack$
+\STATE $s \leftarrow s';$ $a \leftarrow a';$
+\ENDFOR
+\STATE Until s is terminal
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
+
+
+\subsection{Monte-Carlo Methods}
+Monte-Carlo methods can also be used in situations where there is no model of the environment's dynamics, and so can learn from the the experience they gain through each complete episode. The main difference between Monte-Carlo and Temporal Difference (TD) methods is that in TD methods the final outcome does not need to be reached until the state-action values can be updated, whereas in Monte-Carlo methods, it does. Monte-Carlo methods also use a variation of generalized policy iteration for the control problem, so the main difference lies in the way way the prediction problem is solved.
+Through the number of episodes (i.e. experience), the action value function for each state should average towards the true value function, and the optimal action for each state could then be computed. For this to be true, the hypothesis must be taken in that:
+\begin{itemize}
+	\item The start of each episode must start at a state-action pair, and all state-action pairs have a chance of being used as a starting state-action. With a large enough number of episodes, each state-action pair should be visited enough times in order to make sufficient exploration for the best action to take, given a certain state. This is named exploring starts
+\end{itemize}
+This hypothesis can be unrealistic in some real-problem scenarios where for example the number of episodes generated cannot be large enough to obtain optimal state-action values.
+
+
+
+\subsubsection{On-policy Monte-Carlo Control}
+On-Policy Monte-Carlo Control methods evaluate or improve the making of decisions policy. In order to achieve this, the problem of 'exploring starts' needs to be dealt with. Using an action selection policy such as $\epsilon$-greedy, the policy would gradually shift to a deterministic optimal policy. The algorithm uses first-visit Monte-Carlo methods to estimate the action value function for the current policy, a method in which the average of just the first visit to state s, for all the given episodes, is determined, and generalised policy iteration will be moved toward an $\epsilon$-greedy policy. Thus the greedification is, as in Q-learning and Sarsa, replaced by soft greedification. $\epsilon$-greedy policy will guarantee there is an improvement over any policy using $\epsilon$-soft policies.
+
+\begin{algorithm}
+\caption{On-policy Monte-Carlo Control}
+\begin{algorithmic}[1]
+\label{onpmc}
+\FORALL{$s \in S, a \in A(s)$}
+\STATE Initialise:
+\STATE $Q(s,a) \leftarrow$ empty list
+\STATE $Returns(s,a) \leftarrow$ empty list
+\STATE $\pi \leftarrow$ an arbitrary $\epsilon$-soft policy
+\LOOP
+\STATE Generate and episode using $\pi$ 
+\FOR{each pair $s$,$a$ appearing in the episode}
+\STATE $R \leftarrow$ return following the first occurrence of $s$,$a$
+\STATE Append $R$ to $Returns(s,a)$
+\STATE $Q(s,a) \leftarrow$ average($Returns(s,a)$)
+\ENDFOR
+\FOR{each $s$ in the episode}
+\STATE $a* \leftarrow$ $arg max_aQ(s,a)$
+\FORALL{$a \in A(s)$}
+\STATE 
+\begin{equation}
+  \pi(s,a) \leftarrow 
+  \begin{cases}
+    1 - \epsilon + \epsilon/ \left|A(s)\right| & \text{if $a=a^*$}\\  
+    \epsilon/ \left|A(s)\right| & \text{if $a \neq a^*$}
+  \end{cases}
+\end{equation}
+\ENDFOR
+\ENDFOR
+\ENDLOOP
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
+\subsubsection{Off-policy Monte-Carlo Control}
+As in Q-learning, in Off-Policy Monte Carlo Control the estimate of the value of a policy is separated from the policy used for control. This algorithm is off-policy in the same sense as Q-learning, meaning that it can separate exploration from control, and and similar to On-policy Monte-Carlo Control in that it can learn from the the experience it gains only through each complete episode.
+
+\begin{algorithm}
+\caption{Off-policy Monte-Carlo Control}
+\begin{algorithmic}[1]
+\label{offpmc}
+\FORALL{$s \in S, a \in A(s)$:}
+\STATE Initialise:
+\STATE $(s,a) \leftarrow$ arbitrary
+\STATE $N(s,a) \leftarrow 0$ \hspace{20mm} ; Numerator and
+\STATE $D(s,a) \leftarrow 0$ \hspace{20mm} ; Denominator of $Q(s,a)$
+\STATE $\pi \leftarrow$ an arbitrary deterministic policy
+\LOOP
+\STATE Select a policy $\pi'$ and us it to generate an episode:
+\STATE \hspace{20mm} $s_0,a_0,r_1,s_1,a_1,r_2,...,s_{T-1},a_{T-1},r_T,s_T$
+\STATE $\tau \leftarrow $ latest time at which $a_r \neq \pi(s_{\tau}$
+\FOR{each pair $s,a$ appearing in the episode at time $\tau$ or later}
+\STATE $t \leftarrow$ the time of the first occurrence of $s,a$ such that $t \ge \tau$
+\STATE $w \leftarrow \prod_{k=t+1}^{T-1} \frac{1}{\pi'(s_k,a_k)}$
+\STATE $N(s,a) \leftarrow N(s,a) + wR_t$
+\STATE $D(s,a) \leftarrow D(s,a) + w$
+\STATE $Q(s,a) \leftarrow \frac{N(s,a)}{D(s,a)}$
+\ENDFOR
+\FOR{each $s \in S$}
+\STATE $\pi \leftarrow argmax_aQ(s,a)$
+\ENDFOR
+\ENDLOOP
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
+\section{Experiments}
+This section describes the experiments performed along with the results obtained per experiment. In all the experiments the process followed was as follows: the Predator agent used an algorithm with which he learned about the world and then its performance was calculated in rounds it took for its to reach its goal (to catch the prey).
+
+Throughout the experiments the general idea was to train the agent on an increasing number of episodes and measure its performance so as to be able to compare the algorithms implemented on different set-ups. The number of episodes chosen for learning is in the range from 50 to 1000 with a step size of 50, so 20 samples per set-up. This corresponds to the time and is illustrated in the following plots.\\
+Another detail of the configuration for all the experiments is that the state space used is the reduced state space with 11 $\times4$ states, which saves a significant amount of computational time compared to the $11^4$ state space. Furthermore the average  of 100 simulations is chosen to be the performance measurement in each experiment.
+
+%--2) is there anything to mention about the implementation/machinery the reader should know? (e.g. "these experiments were performed on a [insert machine specs]" when presenting runtimes)
+
+\subsection{Experiment 1}
+
+The source code for the implementation of this experiment can be found under the package \texttt{aa2013.Assignment2} in the file \texttt{Experiment2$\_$1.java}.
+%--1) why? "in order to test..." (questions, and preferably hypotheses with explanation)
+\subsubsection{Hypothesis}
+The first experiment aims to measure the performance of the predator catching the prey with different learning rates $\alpha$ and different discount factors $\gamma$ over time.\\
+The expected outcome is that high learning rates tend to always replace the current value with the new estimates and converge quickly, while a small learning rate value leads to a slow convergence and seems to trust the current estimate. ~\cite{dar}\\
+A small discount factor $\gamma$ lets the agent appear short-sighted, while a value close to one increases the agents ambition for a long-term high reward.
+
+\subsubsection{Results}
+The results of this experiment are plotted in Table ~\ref{plotsEx1}. The five chosen learning rates $\alpha$ are shown in each of the four graphs with different discount factors $\gamma$.\\
+
+\begin{table}
+\begin{tabular}{cc}
+$\gamma$ = 0.1 & $\gamma$ = 0.5\\
+\resizebox{200pt}{!}{
+\begin{tikzpicture}
+\begin{axis}[ymin=0,ymax=605,restrict y to domain=0:605,xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
+
+
+\addplot table[x index=0,y index=1,col sep=comma] {epsGreedGamma1.dat};
+\addlegendentry{$\alpha$=0.1}
+
+\addplot table[x index=0,y index=2,col sep=comma] {epsGreedGamma1.dat};
+\addlegendentry{$\alpha$=0.2}
+
+\addplot table[x index=0,y index=3,col sep=comma] {epsGreedGamma1.dat};
+\addlegendentry{$\alpha$=0.3}
+
+\addplot table[x index=0,y index=4,col sep=comma] {epsGreedGamma1.dat};
+\addlegendentry{$\alpha$=0.4}
+
+\addplot table[x index=0,y index=5,col sep=comma] {epsGreedGamma1.dat};
+\addlegendentry{$\alpha$=0.5}
+
+
+\end{axis}
+\end{tikzpicture}
+}
+&
+\resizebox{200pt}{!}{
+\begin{tikzpicture}
+\begin{axis}[ymin=0,ymax=605,restrict y to domain=0:605,xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
+
+
+\addplot table[x index=0,y index=1,col sep=comma] {epsGreedGamma5.dat};
+\addlegendentry{$\alpha$=0.1}
+
+\addplot table[x index=0,y index=2,col sep=comma] {epsGreedGamma5.dat};
+\addlegendentry{$\alpha$=0.2}
+
+\addplot table[x index=0,y index=3,col sep=comma] {epsGreedGamma5.dat};
+\addlegendentry{$\alpha$=0.3}
+
+\addplot table[x index=0,y index=4,col sep=comma] {epsGreedGamma5.dat};
+\addlegendentry{$\alpha$=0.4}
+
+\addplot table[x index=0,y index=5,col sep=comma] {epsGreedGamma5.dat};
+\addlegendentry{$\alpha$=0.5}
+
+
+\end{axis}
+\end{tikzpicture}
+}\\
+$\gamma$ = 0.7 & $\gamma$ = 0.9\\
+\resizebox{200pt}{!}{
+\begin{tikzpicture}
+\begin{axis}[ymin=0,ymax=605,restrict y to domain=0:605,xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
+
+
+\addplot table[x index=0,y index=1,col sep=comma] {epsGreedGamma7.dat};
+\addlegendentry{$\alpha$=0.1}
+
+\addplot table[x index=0,y index=2,col sep=comma] {epsGreedGamma7.dat};
+\addlegendentry{$\alpha$=0.2}
+
+\addplot table[x index=0,y index=3,col sep=comma] {epsGreedGamma7.dat};
+\addlegendentry{$\alpha$=0.3}
+
+\addplot table[x index=0,y index=4,col sep=comma] {epsGreedGamma7.dat};
+\addlegendentry{$\alpha$=0.4}
+
+\addplot table[x index=0,y index=5,col sep=comma] {epsGreedGamma7.dat};
+\addlegendentry{$\alpha$=0.5}
+
+
+\end{axis}
+\end{tikzpicture}
+}
+&
+\resizebox{200pt}{!}{
+\begin{tikzpicture}
+\begin{axis}[ymin=0,ymax=605,restrict y to domain=0:605,xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
+
+
+\addplot table[x index=0,y index=1,col sep=comma] {epsGreedGamma9.dat};
+\addlegendentry{$\alpha$=0.1}
+
+\addplot table[x index=0,y index=2,col sep=comma] {epsGreedGamma9.dat};
+\addlegendentry{$\alpha$=0.2}
+
+\addplot table[x index=0,y index=3,col sep=comma] {epsGreedGamma9.dat};
+\addlegendentry{$\alpha$=0.3}
+
+\addplot table[x index=0,y index=4,col sep=comma] {epsGreedGamma9.dat};
+\addlegendentry{$\alpha$=0.4}
+
+\addplot table[x index=0,y index=5,col sep=comma] {epsGreedGamma9.dat};
+\addlegendentry{$\alpha$=0.5}
+
+
+\end{axis}
+\end{tikzpicture}
+}
+\end{tabular}
+\caption{Plots show the average performance over time spendt learning the policy with learning rates $\alpha$ from 0.1 to 0.5. The first plot shows the curve for discount factor $\gamma$ = 0.1, second $\gamma$ = 0.5, third $\gamma$ = 0.7 and fourth $\gamma$ = 0.9}
+\label{plotsEx1}
+\end{table}
+
+%--Interpretation
+As shown in the plots of the results, the hypothesis that a high learning rate $\alpha$ converges faster than a low one was correct. All of the four plots show that agents with a learning rate $\alpha$ of 0.1 or 0.2 need the longest time to perform well and agents with a learning rate of 0.5 achieve a good performance the fastest. This can be best seen in the plots with $\gamma$ = 0.7 and $\gamma$ = 0.9.\\
+The influence of $\gamma$ can be visible, if the different plots are compared to each other. No matter which learning rate $\alpha$, all agents perform better earlier with a value close to one.
+%findings
+Higher learning rates and discount factors close to one seem to achieve faster convergence in multi-armed bandit problems.
+
+
+\subsection{Experiment 2}
+The source code for the implementation of this experiment can be found under the package \texttt{aa2013.Assignment2} in the file \texttt{Experiment2$\_$2.java}.
+%--1) why? "in order to test..." (questions, and preferably hypotheses with explanation)
+\subsubsection{Hypothesis}
+The second experiment observes the impact of $\epsilon$ in the $\epsilon$-greedy action selection policy and the initialization of the Q-table. $\epsilon$ determines the exploration rate, with values close to zero favouring exploitation and values close to 1 preferring exploration.\\
+In order to test this, the constant learning rate $\alpha$ = 0.5 and the constant discount factor $\gamma$ = 0.9 are chosen, since these values had the best performance in the previous experiment.\\
+In the previous experiment the Q-Table was initialized optimistically, with values higher than the actual reward to receive (15), which encourages an early exploration, since any actual reward is less than the actual reward. Changing this value to a pessimistic initialization (0) on the other hand inspires exploitation.\\
+A high $\epsilon$ is assumed to almost always exploit and thus might not find a good policy, while low values are considered to converge to the best policy.
+The performance over time is measured again, in order to show how these variables influence the learning speed.
+
+\subsubsection{Results}
+The results of this experiment are plotted in ~\ref{plotsEx2}.
+\begin{table}
+\begin{tabular}{cc}
+$Q_0$ = 15 & $Q_0$ = 0\\
+\resizebox{200pt}{!}{
+\begin{tikzpicture}
+\begin{axis}[restrict y to domain=0:130,xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
+
+
+\addplot table[x index=0,y index=1,col sep=comma] {Q0.dat};
+\addlegendentry{$\epsilon$=0.1}
+
+\addplot table[x index=0,y index=2,col sep=comma] {Q0.dat};
+\addlegendentry{$\epsilon$=0.2}
+
+\addplot table[x index=0,y index=3,col sep=comma] {Q0.dat};
+\addlegendentry{$\epsilon$=0.3}
+
+\addplot table[x index=0,y index=4,col sep=comma] {Q0.dat};
+\addlegendentry{$\epsilon$=0.4}
+
+\addplot table[x index=0,y index=5,col sep=comma] {Q0.dat};
+\addlegendentry{$\epsilon$=0.5}
+
+\addplot table[x index=0,y index=6,col sep=comma] {Q0.dat};
+\addlegendentry{$\epsilon$=0.6}
+
+\addplot table[x index=0,y index=7,col sep=comma] {Q0.dat};
+\addlegendentry{$\epsilon$=0.7}
+
+\addplot table[x index=0,y index=8,col sep=comma] {Q0.dat};
+\addlegendentry{$\epsilon$=0.8}
+
+\addplot table[x index=0,y index=9,col sep=comma] {Q0.dat};
+\addlegendentry{$\epsilon$=0.9}
+
+
+\end{axis}
+\end{tikzpicture}
+}
+&
+\resizebox{200pt}{!}{
+\begin{tikzpicture}
+\begin{axis}[restrict y to domain=0:130,xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
+
+
+\addplot table[x index=0,y index=1,col sep=comma] {Q15.dat};
+\addlegendentry{$\epsilon$=0.1}
+
+\addplot table[x index=0,y index=2,col sep=comma] {Q15.dat};
+\addlegendentry{$\epsilon$=0.2}
+
+\addplot table[x index=0,y index=3,col sep=comma] {Q15.dat};
+\addlegendentry{$\epsilon$=0.3}
+
+\addplot table[x index=0,y index=4,col sep=comma] {Q15.dat};
+\addlegendentry{$\epsilon$=0.4}
+
+\addplot table[x index=0,y index=5,col sep=comma] {Q15.dat};
+\addlegendentry{$\epsilon$=0.5}
+
+\addplot table[x index=0,y index=6,col sep=comma] {Q15.dat};
+\addlegendentry{$\epsilon$=0.6}
+
+\addplot table[x index=0,y index=7,col sep=comma] {Q15.dat};
+\addlegendentry{$\epsilon$=0.7}
+
+\addplot table[x index=0,y index=8,col sep=comma] {Q15.dat};
+\addlegendentry{$\epsilon$=0.8}
+
+\addplot table[x index=0,y index=9,col sep=comma] {Q15.dat};
+\addlegendentry{$\epsilon$=0.9}
+\end{axis}
+\end{tikzpicture}
+}\\
+
+\end{tabular}
+\caption{Plots show the average performance over time spendt learning the policy with $\epsilon$ from 0.1 to 0.9. The first plot shows the curve for pessimistically initialized Q-Values = 0 and the second optimistic Q-Values = 15. Learning rate is $\alpha$ = 0.5 and discount factor is $\gamma$ = 0.9, since these values had the best performance in the previous experiment.}
+\label{plotsEx2}
+\end{table}
+
+
+
+
+
+
+
+%interpretation
+The results of this experiment supports the hypothesis that high $\epsilon$ struggle to find a well-performing policy, as $\epsilon$=0.8 and $\epsilon$=0.9 proof. On the other hand $\epsilon$=0.1 and $\epsilon$=0.2 outperform all other agents with different $\epsilon$.\\
+A significant difference between the Q-Value initialization is not evident, but the agents with pessimistically initialized Q-Values need slightly longer to achieve the same performance as the agents with an optimistic initialization.
+
+%findings
+\subsubsection{Findings}
+It is preferable to initialize the Q-Values optimistically. Low $\epsilon$ values in an $\epsilon$-greedy action selection policy outperform high values.
+
+\subsection{Experiment 3}
+The source code for the implementation of this experiment can be found under the package \texttt{aa2013.Assignment2} in the file \texttt{Experiment2$\_$3.java}.
+%--1) why? "in order to test..." (questions, and preferably hypotheses with explanation)
+\subsubsection{Hypothesis}
+In this experiment the difference between the $\epsilon$-greedy and the softmax action selection policy is researched. The $\epsilon$-greedy action selection chooses all actions, except the action with the highest estimated reward so far, with the same probability, while the softmax approach weights the other actions and chooses actions with more pay-off with a higher probability.\\
+The setup of this experiment is that softmax action selection policy is compared to an 0.1-$\epsilon$-greedy action selection policy, since this showed the best results in the previous experiment, with the same values for $\gamma$ = 0.9, $\alpha$ = 0.5 and initial Q-Values of 15. \\
+Given the fact that softmax weights all action, the hypothesis is that softmax outperforms $\epsilon$-greedy as long as its \emph{temperature $\tau$} is properly tuned.
+
+
+
+
+
+\subsubsection{Results}
+The results of this experiment are plotted in Figure ~\ref{Exp3}.
+%take best curve of epsilon greedy and show softmaxes with different temperature, but same other setup
+
+\begin{center}
+\begin{figure}
+\resizebox{350pt}{!}{
+\begin{tikzpicture}
+\begin{axis}[restrict y to domain=0:50,xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
+
+
+\addplot table[x index=0,y index=1,col sep=comma] {exp3.dat};
+\addlegendentry{$\tau$=0.1}
+
+\addplot table[x index=0,y index=2,col sep=comma] {exp3.dat};
+\addlegendentry{$\tau$=0.2}
+
+\addplot table[x index=0,y index=3,col sep=comma] {exp3.dat};
+\addlegendentry{$\tau$=0.3}
+
+\addplot table[x index=0,y index=4,col sep=comma] {exp3.dat};
+\addlegendentry{$\tau$=0.4}
+
+\addplot table[x index=0,y index=5,col sep=comma] {exp3.dat};
+\addlegendentry{$\tau$=0.5}
+
+\addplot table[x index=0,y index=6,col sep=comma] {exp3.dat};
+\addlegendentry{$\tau$=0.6}
+
+\addplot table[x index=0,y index=7,col sep=comma] {exp3.dat};
+\addlegendentry{$\tau$=0.7}
+
+\addplot table[x index=0,y index=8,col sep=comma] {exp3.dat};
+\addlegendentry{$\tau$=0.8}
+
+\addplot table[x index=0,y index=9,col sep=comma] {exp3.dat};
+\addlegendentry{$\epsilon$=0.1}
+
+
+\end{axis}
+\end{tikzpicture}
+}
+\caption{Performance of agents learning with softmax action selection policy over time with different $\tau$ compared to an agent learning with 0.1-$\epsilon$-greedy action selection policy. Learning rate is $\alpha$ = 0.5 and discount factor is $\gamma$ = 0.9, since these values had the best performance in the previous experiment.}
+\label{Exp3}
+\end{figure}
+\end{center}
+
+%interpretation
+The results of this experiment supports the hypothesis that softmax over the course of the 1,000 learned episodes, outperforms $\epsilon$-greedy. It can also be observed that for low values of $\tau$ the performance is better at more episodes since the actions will have been applied more often resulting in an optimally weighted rank between choices of action, but consequently performs poorly in the initial number of episodes compared to high values of $\tau$, since the actions have been applied too few times for it to have a good enough weighted rank. The opposite can be said about the high values of $\tau$, by observing that in fewer episodes it performs better, and in more episodes worse than it's counter part low valued $\tau$.\\
+%findings
+Softmax, does outperform $\epsilon$-greedy when used by Q-learning, but the most optimal performance would be achieved if the $\tau$ temperature of Softmax could be tuned according to the number of learned episodes.
+
+
+
+
+\subsection{Experiment 4}
+
+
+
+\subsubsection{On-policy Monte-Carlo}
+The source code for the implementation of this experiment can be found under the package \texttt{aa2013.Assignment2} in the file \texttt{Experiment2$\_$4OnMC.java}.
+%--1) why? "in order to test..." (questions, and preferably hypotheses with explanation)
+
+
+
+\subsubsection{Hypothesis}
+
+
+
+
+\subsubsection{Results}
+
+%--interpretation
+
+%--findings
+
+
+
+
+
+\subsubsection{Off-policy Monte-Carlo}
+The source code for the implementation of this experiment can be found under the package \texttt{aa2013.Assignment2} in the file \texttt{Experiment2$\_$4OffMC.java}.
+%--1) why? "in order to test..." (questions, and preferably hypotheses with explanation)
+
+
+
+\subsubsection{Hypothesis}
+
+
+
+
+\subsubsection{Results}
+
+
+%--interpretation
+
+%--findings
+
+
+
+
+\subsubsection{Sarsa}
+The source code for the implementation of this experiment can be found under the package \texttt{aa2013.Assignment2} in the file \texttt{Experiment2$\_$4Sarsa.java}.
+%--1) why? "in order to test..." (questions, and preferably hypotheses with explanation)
+
+
+\subsubsection{Hypothesis}
+This experiment aims to measure the performance of the predator catching the prey with different learning rates $\alpha$ and different discount factors $\gamma$ over time and compare them to the Q-learning algorithm performance. The expected outcome for this experiment is for results to be similar to Q-learning, with the difference of having less fluctuations in the average performance, due to the inability to learn while changing policies. For Sarsa, the effect of the learning rate $\alpha$ and the discount factor $\gamma$ should have a similar effect to that of Q-learning.
+
+
+\subsubsection{Results}
+The results of this experiment are plotted in Table ~\ref{plotsSarsa}. The five chosen learning rates $\alpha$ are shown in each of the four graphs with different discount factors $\gamma$.\\
+
+
+
+
+\begin{table}
+\begin{tabular}{cc}
+$\gamma$ = 0.1 & $\gamma$ = 0.5\\
+\resizebox{200pt}{!}{
+\begin{tikzpicture}
+\begin{axis}[ymin=0,ymax=610,restrict y to domain=0:610,xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
+
+
+\addplot table[x index=0,y index=1,col sep=comma] {sarsa1.dat};
+\addlegendentry{$\alpha$=0.1}
+
+\addplot table[x index=0,y index=2,col sep=comma] {sarsa1.dat};
+\addlegendentry{$\alpha$=0.2}
+
+\addplot table[x index=0,y index=3,col sep=comma] {sarsa1.dat};
+\addlegendentry{$\alpha$=0.3}
+
+\addplot table[x index=0,y index=4,col sep=comma] {sarsa1.dat};
+\addlegendentry{$\alpha$=0.4}
+
+\addplot table[x index=0,y index=5,col sep=comma] {sarsa1.dat};
+\addlegendentry{$\alpha$=0.5}
+
+
+\end{axis}
+\end{tikzpicture}
+}
+&
+\resizebox{200pt}{!}{
+\begin{tikzpicture}
+\begin{axis}[ymin=0,ymax=610,restrict y to domain=0:610,xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
+
+
+\addplot table[x index=0,y index=1,col sep=comma] {sarsa5.dat};
+\addlegendentry{$\alpha$=0.1}
+
+\addplot table[x index=0,y index=2,col sep=comma] {sarsa5.dat};
+\addlegendentry{$\alpha$=0.2}
+
+\addplot table[x index=0,y index=3,col sep=comma] {sarsa5.dat};
+\addlegendentry{$\alpha$=0.3}
+
+\addplot table[x index=0,y index=4,col sep=comma] {sarsa5.dat};
+\addlegendentry{$\alpha$=0.4}
+
+\addplot table[x index=0,y index=5,col sep=comma] {sarsa5.dat};
+\addlegendentry{$\alpha$=0.5}
+
+
+\end{axis}
+\end{tikzpicture}
+}\\
+$\gamma$ = 0.7 & $\gamma$ = 0.9\\
+\resizebox{200pt}{!}{
+\begin{tikzpicture}
+\begin{axis}[ymin=0,ymax=610,restrict y to domain=0:610,xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
+
+
+\addplot table[x index=0,y index=1,col sep=comma] {sarsa7.dat};
+\addlegendentry{$\alpha$=0.1}
+
+\addplot table[x index=0,y index=2,col sep=comma] {sarsa7.dat};
+\addlegendentry{$\alpha$=0.2}
+
+\addplot table[x index=0,y index=3,col sep=comma] {sarsa7.dat};
+\addlegendentry{$\alpha$=0.3}
+
+\addplot table[x index=0,y index=4,col sep=comma] {sarsa7.dat};
+\addlegendentry{$\alpha$=0.4}
+
+\addplot table[x index=0,y index=5,col sep=comma] {sarsa7.dat};
+\addlegendentry{$\alpha$=0.5}
+
+
+\end{axis}
+\end{tikzpicture}
+}
+&
+\resizebox{200pt}{!}{
+\begin{tikzpicture}
+\begin{axis}[ymin=0,ymax=610,restrict y to domain=0:610,xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
+
+
+\addplot table[x index=0,y index=1,col sep=comma] {sarsa9.dat};
+\addlegendentry{$\alpha$=0.1}
+
+\addplot table[x index=0,y index=2,col sep=comma] {sarsa9.dat};
+\addlegendentry{$\alpha$=0.2}
+
+\addplot table[x index=0,y index=3,col sep=comma] {sarsa9.dat};
+\addlegendentry{$\alpha$=0.3}
+
+\addplot table[x index=0,y index=4,col sep=comma] {sarsa9.dat};
+\addlegendentry{$\alpha$=0.4}
+
+\addplot table[x index=0,y index=5,col sep=comma] {sarsa9.dat};
+\addlegendentry{$\alpha$=0.5}
+
+
+\end{axis}
+\end{tikzpicture}
+}
+\end{tabular}
+\caption{Plots show the average performance over time spent learning the policy with a Sarsa-Learning-Algorithm with learning rates $\alpha$ from 0.1 to 0.5. The first plot shows the curve for discount factor $\gamma$ = 0.1, second $\gamma$ = 0.5, third $\gamma$ = 0.7 and fourth $\gamma$ = 0.9}
+\label{plotsSarsa}
+\end{table}
+
+
+%interpretation
+
+From looking at the table of results, it can be observed that indeed, the performance of Sarsa, is comparable to that of Q-learning when analysing the effect of changing the learning rate and discount factor. The difference between the two algorithms according to the graphs, is that Sarsa manages to converge towards a better average performance quicker than the Q-learning, which can be explained, as in the hypothesis, from it's inability to learn while changing policies, even though at points throughout the episodes, Q-learning will be outperforming Sarsa.
+%findings
+The insight that was gained through the execution of this experiment, is that although Q-learning learns the optimal policy faster than Sarsa, it performs worse on average than Sarsa due to it's $\epsilon$-greedy action selection.
+
+
+
+
+
+
+
+
+
+\section{Conclusion}
+
+\begin{thebibliography}{9}
+
+\bibitem{sutton}
+  Richard S. Sutton and Andrew G. Barto ,
+  \emph{Reinforcement Learning: An Introduction}.
+  The MIT Press, Cambridge, Massachusetts
+
+\bibitem{dar}
+  Eyal Even-Dar and Yishay Mansour ,
+  \emph{Learning Rates for Q-learning}.
+  Journal of Machine Learning Research 5 (2003)
+
+\end{thebibliography}
+
+\end{document}
