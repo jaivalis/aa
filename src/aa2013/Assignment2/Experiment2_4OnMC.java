@@ -15,8 +15,8 @@ import java.util.Date;
 
 public class Experiment2_4OnMC {
     public static void main(String[] args) {
-    	Experiment2_4OnMC.debug();
-    	//Experiment2_4OnMC.averages();
+//    	Experiment2_4OnMC.debug();
+    	Experiment2_4OnMC.averages();
     }
     
     public static void debug() {
@@ -24,7 +24,7 @@ public class Experiment2_4OnMC {
         Algorithms algos = new Algorithms(ss);
         MCEpsilonGreedyPolicy pi = new MCEpsilonGreedyPolicy(algos.getStateSpace()); // Predator learn
         int initialQValue = 15;
-        int episodeCount = 1000;
+        int episodeCount = 500;
         double gamma = 0.5;
         pi = algos.monteCarloOnPolicy(pi, initialQValue, episodeCount, gamma);
         pi.printMaxActionsGrid();
