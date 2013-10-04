@@ -237,7 +237,7 @@ The interpretation of these results will follow in the next section.
 $\gamma$ = 0.1 & $\gamma$ = 0.5\\
 \resizebox{200pt}{!}{
 \begin{tikzpicture}
-\begin{axis}[ymin=0,ymax=500,restrict y to domain=0:500,xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
+\begin{axis}[ymin=0,ymax=605,restrict y to domain=0:605,xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
 
 
 \addplot table[x index=0,y index=1,col sep=comma] {epsGreedGamma1.dat};
@@ -262,7 +262,7 @@ $\gamma$ = 0.1 & $\gamma$ = 0.5\\
 &
 \resizebox{200pt}{!}{
 \begin{tikzpicture}
-\begin{axis}[ymin=0,ymax=500,restrict y to domain=0:500,xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
+\begin{axis}[ymin=0,ymax=605,restrict y to domain=0:605,xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
 
 
 \addplot table[x index=0,y index=1,col sep=comma] {epsGreedGamma5.dat};
@@ -287,7 +287,7 @@ $\gamma$ = 0.1 & $\gamma$ = 0.5\\
 $\gamma$ = 0.7 & $\gamma$ = 0.9\\
 \resizebox{200pt}{!}{
 \begin{tikzpicture}
-\begin{axis}[ymin=0,ymax=500,restrict y to domain=0:500,xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
+\begin{axis}[ymin=0,ymax=605,restrict y to domain=0:605,xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
 
 
 \addplot table[x index=0,y index=1,col sep=comma] {epsGreedGamma7.dat};
@@ -312,7 +312,7 @@ $\gamma$ = 0.7 & $\gamma$ = 0.9\\
 &
 \resizebox{200pt}{!}{
 \begin{tikzpicture}
-\begin{axis}[ymin=0,ymax=500,restrict y to domain=0:500,xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
+\begin{axis}[ymin=0,ymax=605,restrict y to domain=0:605,xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
 
 
 \addplot table[x index=0,y index=1,col sep=comma] {epsGreedGamma9.dat};
@@ -510,7 +510,7 @@ The results of this experiment are plotted in Figure ~\ref{Exp3}.
 \end{axis}
 \end{tikzpicture}
 }
-\caption{Performance of agents learning with softmax action selection policy over time with different $\tau$ compared to an agent learning with 0.1-$\epsilon$-greedy action selection policy.}
+\caption{Performance of agents learning with softmax action selection policy over time with different $\tau$ compared to an agent learning with 0.1-$\epsilon$-greedy action selection policy .Learning rate is $\alpha$ = 0.5 and discount factor is $\gamma$ = 0.9, since these values had the best performance in the previous experiment.}
 \label{Exp3}
 \end{figure}
 \end{center}
@@ -539,7 +539,7 @@ The source code for the implementation of this experiment can be found under the
 $\gamma$ = 0.1 & $\gamma$ = 0.5\\
 \resizebox{200pt}{!}{
 \begin{tikzpicture}
-\begin{axis}[ymin=0,ymax=500,restrict y to domain=0:500,xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
+\begin{axis}[ymin=0,ymax=610,restrict y to domain=0:610,xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
 
 
 \addplot table[x index=0,y index=1,col sep=comma] {sarsa1.dat};
@@ -564,7 +564,7 @@ $\gamma$ = 0.1 & $\gamma$ = 0.5\\
 &
 \resizebox{200pt}{!}{
 \begin{tikzpicture}
-\begin{axis}[ymin=0,ymax=500,restrict y to domain=0:500,xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
+\begin{axis}[ymin=0,ymax=610,restrict y to domain=0:610,xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
 
 
 \addplot table[x index=0,y index=1,col sep=comma] {sarsa5.dat};
@@ -589,7 +589,7 @@ $\gamma$ = 0.1 & $\gamma$ = 0.5\\
 $\gamma$ = 0.7 & $\gamma$ = 0.9\\
 \resizebox{200pt}{!}{
 \begin{tikzpicture}
-\begin{axis}[ymin=0,ymax=500,restrict y to domain=0:500,xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
+\begin{axis}[ymin=0,ymax=610,restrict y to domain=0:610,xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
 
 
 \addplot table[x index=0,y index=1,col sep=comma] {sarsa7.dat};
@@ -614,7 +614,7 @@ $\gamma$ = 0.7 & $\gamma$ = 0.9\\
 &
 \resizebox{200pt}{!}{
 \begin{tikzpicture}
-\begin{axis}[ymin=0,ymax=500,restrict y to domain=0:500,xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
+\begin{axis}[ymin=0,ymax=610,restrict y to domain=0:610,xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
 
 
 \addplot table[x index=0,y index=1,col sep=comma] {sarsa9.dat};
