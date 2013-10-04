@@ -24,7 +24,7 @@ public class Experiment2_4OnMC {
         Algorithms algos = new Algorithms(ss);
         MCEpsilonGreedyPolicy pi = new MCEpsilonGreedyPolicy(algos.getStateSpace()); // Predator learn
         int initialQValue = 15;
-        int episodeCount = 100;
+        int episodeCount = 1000;
         pi = algos.monteCarloOnPolicy(pi, initialQValue, episodeCount);
         pi.printMaxActionsGrid();
     }
