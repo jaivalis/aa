@@ -29,13 +29,13 @@
 In this report we are going to use an already implemented Predator versus Prey grid to illustrate some of the differences and features of learning algorithms. In this scenario the Predator agent does not have any prior knowledge towards the environment and will make use of model-free learning, in order to reach its goal which is to catch the Prey. This will be attempted  using Temporal Difference learning methods (TD), a combination of Monte Carlo and dynamic programming. TD learning methods can learn directly from experience, rather than having to rely on a model of the environment. TD methods can update action state values estimates based on other learned estimates, without having to wait for the final outcome. 
 
 \section{Algorithms}
-In this part of the report the used algorithms are introduced on the basis of their Pseudocode description.
+In this part of the report the used algorithms are introduced on the basis of their Pseudo-code description.
 
 
 \subsection{Q-Learning}
 The initial exercise of this lab assignment is to implement Q-learning, a temporal-difference (TD) learning algorithm. This algorithm is to be used by the predator agent to catch the prey.\\
 Q-learning is an off-policy TD control algorithm. An off-policy TD algorithm is one in which the estimated value functions can be updated using hypothetical actions, without having actually executed the actions themselves. Using this approach the algorithm can separate exploration from control, since the deterministic learned policy is separate to the exploration, meaning the agent could learn through the environment without necessarily having had the explicit experience.
-The steps involved can be summarised into the following Algorithm ~\ref{algQ}\\\\
+The steps involved can be summarized into the following Algorithm ~\ref{algQ}\\\\
 
 
 \begin{algorithm}
@@ -79,13 +79,13 @@ Based on the task at hand, the predator should directly learn a high reward poli
 
 \subsection{Softmax Action-Selection Policy}
 
-In this section, a different action selection policy will be used in Q-learning instead of $\epsilon$-greedy. $\epsilon$-greedy policy satisfies the exploration/exploitation variance which is desired to be used in the Q-learning algorithm, although the way in which it achieves this could be a disadvantage in scenarios where the least favourable action has a much worse pay-off than the e.g., the second-best one. When the algorithm explores with a probability $\epsilon$, it does not do this by taking into consideration the performance of the individual non-best actions themselves. The probability distribution between which non-best action is selected, is uniformly distributed and therefore, each one is as likely to be chosen as the rest. To optimise the performance of the Q-learning algorithm, it could be more efficient to make the selection among the non-best actions by weighing them according to their action-value estimates, thus increasing probability of selection for the higher action-value estimates, and hence making a more guided (by value) exploration.
-Algorithm ~\ref{softmax} differs from $\epsilon$-greedy in Operation ~\ref{soft}.
+In this section, a different action selection policy will be used in Q-learning instead of $\epsilon$-greedy. $\epsilon$-greedy policy satisfies the exploration/exploitation variance which is desired to be used in the Q-learning algorithm, although the way in which it achieves this could be a disadvantage in scenarios where the least favorable action has a much worse pay-off than the e.g., the second-best one. When the algorithm explores with a probability $\epsilon$, it does not do this by taking into consideration the performance of the individual non-best actions themselves. The probability distribution between which non-best action is selected, is uniformly distributed and therefore, each one is as likely to be chosen as the rest. To optimize the performance of the Q-learning algorithm, it could be more efficient to make the selection among the non-best actions by weighing them according to their action-value estimates, thus increasing probability of selection for the higher action-value estimates, and hence making a more guided (by value) exploration.
+Algorithm ~\ref{Softmax} differs from $\epsilon$-greedy in Operation ~\ref{soft}.
 
 \begin{algorithm}
 \caption{Softmax}
 \begin{algorithmic}[1]
-\label{softmax}
+\label{Softmax}
 \STATE Initialise $Q(s,a)$ arbitrarily
 \FORALL{Episodes}
 \STATE Initialise s
@@ -102,13 +102,13 @@ Algorithm ~\ref{softmax} differs from $\epsilon$-greedy in Operation ~\ref{soft}
 
 \noindent Where:
 \begin{itemize}
-	\item $\tau$ is a positive parameter called \emph{temperature}. A high temperature leads the actions to be almost equiproble, low tempreature values cause a greater difference with $\tau$ $\rightarrow$ 0 beeing the same as greedy action selection.
+	\item $\tau$ is a positive parameter called \emph{temperature}. A high temperature leads the actions to be almost equiprobable, low temperature values cause a greater difference with $\tau$ $\rightarrow$ 0 being the same as greedy action selection.
 \end{itemize}
 \vspace*{10mm}
 
 
 \subsection{Sarsa}
-Sarsa, like Q-learning is a temporal difference algorithm, meaning that it compares temporally successive predictions. Unlike Q-learning though, Sarsa is an on-policy TD method. In on-policy TD learning the algorithm learns the value of the policy that is used to make the decisions, meaning directly through experience. This is in contrast to off-policy where value functions are not updated solely on experienced actions. The action selection policies previously discussed in Q-learning are also applicable for use in Sarsa. Again, there is the choice of specifying the trade-off between exploitation/exploration by setting the $\epsilon$ parameter when using $\epsilon$-greedy, or using the softmax policy.
+Sarsa, like Q-learning is a temporal difference algorithm, meaning that it compares temporally successive predictions. Unlike Q-learning though, Sarsa is an on-policy TD method. In on-policy TD learning the algorithm learns the value of the policy that is used to make the decisions, meaning directly through experience. This is in contrast to off-policy where value functions are not updated solely on experienced actions. The action selection policies previously discussed in Q-learning are also applicable for use in Sarsa. Again, there is the choice of specifying the trade-off between exploitation/exploration by setting the $\epsilon$ parameter when using $\epsilon$-greedy, or using the Softmax policy.
 
 \begin{algorithm}
 \caption{Sarsa}
@@ -142,14 +142,14 @@ This hypothesis can be unrealistic in some real-problem scenarios where for exam
 
 
 \subsubsection{On-policy Monte-Carlo Control}
-On-Policy Monte-Carlo Control methods evaluate or improve the making of decisions policy. In order to achieve this, the problem of 'too many episodes needed for exploring all the start state-action value pairs' needs to be dealt with. Using an action selection policy such as $\epsilon$-greedy, the policy would gradually shift to a deterministic optimal policy. The algorithm uses first-visit Monte-Carlo methods to estimate the action value function for the current policy, a method in which the average of just the first visit to state s, for all the given episodes, is determined, and generalised policy iteration will be moved toward an $\epsilon$-greedy policy. Thus the greedification is, as in Q-learning and Sarsa, replaced by soft greedification. $\epsilon$-greedy policy will guarantee there is an improvement over any policy using $\epsilon$-soft policies.
+On-Policy Monte-Carlo Control methods evaluate or improve the making of decisions policy. In order to achieve this, the problem of 'too many episodes needed for exploring all the start state-action value pairs' needs to be dealt with. Using an action selection policy such as $\epsilon$-greedy, the policy would gradually shift to a deterministic optimal policy. The algorithm uses first-visit Monte-Carlo methods to estimate the action value function for the current policy, a method in which the average of just the first visit to state s, for all the given episodes, is determined, and generalized policy iteration will be moved toward an $\epsilon$-greedy policy. Thus the greedification is, as in Q-learning and Sarsa, replaced by soft greedification. $\epsilon$-greedy policy will guarantee there is an improvement over any policy using $\epsilon$-soft policies.
 
 \begin{algorithm}
 \caption{On-policy Monte-Carlo Control}
 \begin{algorithmic}[1]
 \label{onpmc}
 \FORALL{$s \in S, a \in A(s)$}
-\STATE Initialise:
+\STATE Initialize:
 \STATE $Q(s,a) \leftarrow$ empty list
 \STATE $Returns(s,a) \leftarrow$ empty list
 \STATE $\pi \leftarrow$ an arbitrary $\epsilon$-soft policy
@@ -186,7 +186,7 @@ As in Q-learning, in Off-Policy Monte Carlo Control the estimate of the value of
 \begin{algorithmic}[1]
 \label{offpmc}
 \FORALL{$s \in S, a \in A(s)$:}
-\STATE Initialise:
+\STATE Initialize:
 \STATE $(s,a) \leftarrow$ arbitrary
 \STATE $N(s,a) \leftarrow 0$ \hspace{20mm} ; Numerator and
 \STATE $D(s,a) \leftarrow 0$ \hspace{20mm} ; Denominator of $Q(s,a)$
@@ -218,9 +218,9 @@ Another detail of the configuration for all the experiments is that the state sp
 
 %--2) is there anything to mention about the implementation/machinery the reader should know? (e.g. "these experiments were performed on a [insert machine specs]" when presenting runtimes)
 
-\subsection{Experiment 1}
+\subsection[title] {Experiment 1\footnote{The source code for the implementation of this experiment can be found under the package \texttt{aa2013.Assignment2} in the file \texttt{Experiment2$\_$1.java}.}}
 
-The source code for the implementation of this experiment can be found under the package \texttt{aa2013.Assignment2} in the file \texttt{Experiment2$\_$1.java}.
+
 %--1) why? "in order to test..." (questions, and preferably hypotheses with explanation)
 \subsubsection{Hypothesis}
 The first experiment aims to measure the performance of the predator catching the predator with different learning rates $\alpha$ and different discount factors $\gamma$ over time.\\
@@ -335,7 +335,7 @@ $\gamma$ = 0.7 & $\gamma$ = 0.9\\
 \end{tikzpicture}
 }
 \end{tabular}
-\caption{Plots show the average performance over time spendt learning the policy with learning rates $\alpha$ from 0.1 to 0.5. The first plot shows the curve for discount factor $\gamma$ = 0.1, second $\gamma$ = 0.5, third $\gamma$ = 0.7 and fourth $\gamma$ = 0.9}
+\caption{Plots show the average performance over time spent learning the policy with learning rates $\alpha$ from 0.1 to 0.5. The first plot shows the curve for discount factor $\gamma$ = 0.1, second $\gamma$ = 0.5, third $\gamma$ = 0.7 and fourth $\gamma$ = 0.9}
 \label{plotsEx1}
 \end{table}
 
@@ -346,11 +346,11 @@ The influence of $\gamma$ can be visible, if the different plots are compared to
 Higher learning rates and discount factors close to one seem to achieve faster convergence in multi-armed bandit problems.
 
 
-\subsection{Experiment 2}
-The source code for the implementation of this experiment can be found under the package \texttt{aa2013.Assignment2} in the file \texttt{Experiment2$\_$2.java}.
+\subsection[title]{Experiment 2\footnote{The source code for the implementation of this experiment can be found under the package \texttt{aa2013.Assignment2} in the file \texttt{Experiment2$\_$2.java}.}}
+
 %--1) why? "in order to test..." (questions, and preferably hypotheses with explanation)
 \subsubsection{Hypothesis}
-The second experiment observes the impact of $\epsilon$ in the $\epsilon$-greedy action selection policy and the initialization of the Q-table. $\epsilon$ determines the exploration rate, with values close to zero favouring exploitation and values close to 1 preferring exploration.\\
+The second experiment observes the impact of $\epsilon$ in the $\epsilon$-greedy action selection policy and the initialization of the Q-table. $\epsilon$ determines the exploration rate, with values close to zero favoring exploitation and values close to 1 preferring exploration.\\
 In order to test this, the constant learning rate $\alpha$ = 0.5 and the constant discount factor $\gamma$ = 0.9 are chosen, since these values had the best performance in the previous experiment.\\
 In the previous experiment the Q-Table was initialized optimistically, with values higher than the actual reward to receive (15), which encourages an early exploration, since any actual reward is less than the actual reward. Changing this value to a pessimistic initialization (0) on the other hand inspires exploitation.\\
 A high $\epsilon$ is assumed to almost always exploit and thus might not find a good policy, while low values are considered to converge to the best policy.
@@ -434,7 +434,7 @@ $Q_0$ = 15 & $Q_0$ = 0\\
 }\\
 
 \end{tabular}
-\caption{Plots show the average performance over time spendt learning the policy with $\epsilon$ from 0.1 to 0.9. The first plot shows the curve for pessimistically initialized Q-Values = 0 and the second optimistic Q-Values = 15. Learning rate is $\alpha$ = 0.5 and discount factor is $\gamma$ = 0.9, since these values had the best performance in the previous experiment.}
+\caption{Plots show the average performance over time spent learning the policy with $\epsilon$ from 0.1 to 0.9. The first plot shows the curve for pessimistically initialized Q-Values = 0 and the second optimistic Q-Values = 15. Learning rate is $\alpha$ = 0.5 and discount factor is $\gamma$ = 0.9, since these values had the best performance in the previous experiment.}
 \label{plotsEx2}
 \end{table}
 
@@ -452,13 +452,12 @@ A significant difference between the Q-Value initialization is not evident, but 
 \subsubsection{Findings}
 It is preferable to initialize the Q-Values optimistically. Low $\epsilon$ values in an $\epsilon$-greedy action selection policy outperform high values.
 
-\subsection{Experiment 3}
-The source code for the implementation of this experiment can be found under the package \texttt{aa2013.Assignment2} in the file \texttt{Experiment2$\_$3.java}.
+\subsection[title]{Experiment 3\footnote{The source code for the implementation of this experiment can be found under the package\texttt{aa2013.Assignment2} in the file \texttt{Experiment2$\_$3.java}.}}
 %--1) why? "in order to test..." (questions, and preferably hypotheses with explanation)
 \subsubsection{Hypothesis}
-In this experiment the difference between the $\epsilon$-greedy and the softmax action selection policy is researched. The $\epsilon$-greedy action selection chooses all actions, except the action with the highest estimated reward so far, with the same probability, while the softmax approach weights the other actions and chooses actions with more pay-off with a higher probability.\\
-The setup of this experiment is that softmax action selection policy is compared to an 0.1-$\epsilon$-greedy action selection policy, since this showed the best results in the previous experiment, with the same values for $\gamma$ = 0.9, $\alpha$ = 0.5 and initial Q-Values of 15. \\
-Given the fact that softmax weights all action, the hypothesis is that softmax outperforms $\epsilon$-greedy as long as its \emph{temperature $\tau$} is properly tuned.
+In this experiment the difference between the $\epsilon$-greedy and the Softmax action selection policy is researched. The $\epsilon$-greedy action selection chooses all actions, except the action with the highest estimated reward so far, with the same probability, while the Softmax approach weights the other actions and chooses actions with more pay-off with a higher probability.\\
+The setup of this experiment is that Softmax action selection policy is compared to an 0.1-$\epsilon$-greedy action selection policy, since this showed the best results in the previous experiment, with the same values for $\gamma$ = 0.9, $\alpha$ = 0.5 and initial Q-Values of 15. \\
+Given the fact that Softmax weights all action, the hypothesis is that Softmax outperforms $\epsilon$-greedy as long as its \emph{temperature $\tau$} is properly tuned.
 
 
 
@@ -466,7 +465,7 @@ Given the fact that softmax weights all action, the hypothesis is that softmax o
 
 \subsubsection{Results}
 The results of this experiment are plotted in Figure ~\ref{Exp3}.
-%take best curve of epsilon greedy and show softmaxes with different temperature, but same other setup
+%take best curve of epsilon greedy and show Softmaxes with different temperature, but same other setup
 
 \begin{center}
 \begin{figure}
@@ -506,13 +505,13 @@ The results of this experiment are plotted in Figure ~\ref{Exp3}.
 \end{axis}
 \end{tikzpicture}
 }
-\caption{Performance of agents learning with softmax action selection policy over time with different $\tau$ compared to an agent learning with 0.1-$\epsilon$-greedy action selection policy. Learning rate is $\alpha$ = 0.5 and discount factor is $\gamma$ = 0.9, since these values had the best performance in the previous experiment.}
+\caption{Performance of agents learning with Softmax action selection policy over time with different $\tau$ compared to an agent learning with 0.1-$\epsilon$-greedy action selection policy. Learning rate is $\alpha$ = 0.5 and discount factor is $\gamma$ = 0.9, since these values had the best performance in the previous experiment.}
 \label{Exp3}
 \end{figure}
 \end{center}
 
 %interpretation
-The results of this experiment supports the hypothesis that softmax over the course of the 1,000 learned episodes, outperforms $\epsilon$-greedy. It can also be observed that for low values of $\tau$ the performance is better at more episodes since the actions will have been applied more often resulting in an optimally weighted rank between choices of action, but consequently performs poorly in the initial number of episodes compared to high values of $\tau$, since the actions have been applied too few times for it to have a good enough weighted rank. The opposite can be said about the high values of $\tau$, by observing that in fewer episodes it performs better, and in more episodes worse than it's counter part low valued $\tau$.\\
+The results of this experiment supports the hypothesis that Softmax over the course of the 1,000 learned episodes, outperforms $\epsilon$-greedy. It can also be observed that for low values of $\tau$ the performance is better at more episodes since the actions will have been applied more often resulting in an optimally weighted rank between choices of action, but consequently performs poorly in the initial number of episodes compared to high values of $\tau$, since the actions have been applied too few times for it to have a good enough weighted rank. The opposite can be said about the high values of $\tau$, by observing that in fewer episodes it performs better, and in more episodes worse than it's counter part low valued $\tau$.\\
 %findings
 Softmax, does outperform $\epsilon$-greedy when used by Q-learning, but the most optimal performance would be achieved if the $\tau$ temperature of Softmax could be tuned according to the number of learned episodes.
 
@@ -523,8 +522,8 @@ Softmax, does outperform $\epsilon$-greedy when used by Q-learning, but the most
 
 
 
-\subsubsection{On-policy Monte-Carlo}
-The source code for the implementation of this experiment can be found under the package \texttt{aa2013.Assignment2} in the file \texttt{Experiment2$\_$4OnMC.java}.
+\subsubsection[title]{On-Policy Monte Carlo \footnote{The source code for the implementation of this experiment can be found under the package \texttt{aa2013.Assignment2} in the file \texttt{Experiment2$\_$4OnMC.java}.}}
+
 %--1) why? "in order to test..." (questions, and preferably hypotheses with explanation)
 
 
@@ -544,8 +543,8 @@ The source code for the implementation of this experiment can be found under the
 
 
 
-\subsubsection{Off-policy Monte-Carlo}
-The source code for the implementation of this experiment can be found under the package \texttt{aa2013.Assignment2} in the file \texttt{Experiment2$\_$4OffMC.java}.
+\subsubsection[title] {Off-policy Monte-Carlo\footnote{The source code for the implementation of this experiment can be found under the package \texttt{aa2013.Assignment2} in the file \texttt{Experiment2$\_$4OffMC.java}.}}
+
 %--1) why? "in order to test..." (questions, and preferably hypotheses with explanation)
 
 
@@ -565,8 +564,8 @@ The source code for the implementation of this experiment can be found under the
 
 
 
-\subsubsection{Sarsa}
-The source code for the implementation of this experiment can be found under the package \texttt{aa2013.Assignment2} in the file \texttt{Experiment2$\_$4Sarsa.java}.
+\subsubsection[title]{Sarsa\footnote{The source code for the implementation of this experiment can be found under the package \texttt{aa2013.Assignment2} in the file \texttt{Experiment2$\_$4Sarsa.java}.}}
+
 %--1) why? "in order to test..." (questions, and preferably hypotheses with explanation)
 
 
@@ -691,7 +690,7 @@ $\gamma$ = 0.7 & $\gamma$ = 0.9\\
 
 %interpretation
 
-From looking at the table of results, it can be observed that indeed, the performance of Sarsa, is comparable to that of Q-learning when analysing the effect of changing the learning rate and discount factor. The difference between the two algorithms according to the graphs, is that Sarsa manages to converge towards a better average performance quicker than the Q-learning, which can be explained, as in the hypothesis, from it's inability to learn while changing policies, even though at points throughout the episodes, Q-learning will be outperforming Sarsa.
+From looking at the table of results, it can be observed that indeed, the performance of Sarsa, is comparable to that of Q-learning when analyzing the effect of changing the learning rate and discount factor. The difference between the two algorithms according to the graphs, is that Sarsa manages to converge towards a better average performance quicker than the Q-learning, which can be explained, as in the hypothesis, from it's inability to learn while changing policies, even though at points throughout the episodes, Q-learning will be outperforming Sarsa.
 %findings
 The insight that was gained through the execution of this experiment, is that although Q-learning learns the optimal policy faster than Sarsa, it performs worse on average than Sarsa due to it's $\epsilon$-greedy action selection.
 
