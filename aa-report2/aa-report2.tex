@@ -1,4 +1,4 @@
-\documentclass[11pt]{article}
+\documentclass[a4paper,10pt]{article}
 \usepackage{array}
 \usepackage{tabularx}
 \usepackage{graphicx}
@@ -471,7 +471,7 @@ The results of this experiment are plotted in Figure ~\ref{Exp3}.
 %take best curve of epsilon greedy and show Softmaxes with different temperature, but same other setup
 
 \begin{center}
-\begin{figure}
+\begin{figure}[H]
 \resizebox{350pt}{!}{
 \begin{tikzpicture}
 \begin{axis}[restrict y to domain=0:50,xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
