@@ -39,8 +39,8 @@ public class Experiment2_4Sarsa {
             System.exit(0);
         }
         out.println("gamma,alpha,episodeCount,averageRounds");
-        for (double gamma = 0.1; gamma <= 0.9; gamma += 0.2) {
-            for (double alpha = 0.1f; alpha <= 0.5; alpha += 0.1) {
+        for (double gamma = 0.1; gamma <= 1.0; gamma += 0.2) {
+            for (double alpha = 0.1; alpha <= 0.6; alpha += 0.1) {
                 for(int episodeCount = 50; episodeCount < Util.EPISODE_COUNT; episodeCount += 50) {
                     // 1. train
                     Q newQ = algos.sarsa(egp, optimisticInitialQ, alpha, gamma, episodeCount);

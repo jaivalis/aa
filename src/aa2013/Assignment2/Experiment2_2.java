@@ -31,7 +31,7 @@ public class Experiment2_2 {
 
         double alpha = 0.8; // as found to be optimal in previous task.
         double gamma = 0.8; // as found to be optimal in previous task.
-        for (double epsilon = 0.1; epsilon <= 0.9; epsilon += 0.1) {
+        for (double epsilon = 0.1; epsilon <= 0.95; epsilon += 0.1) {
             Util.epsilon = epsilon;
             EpsilonGreedyPolicy egp = new EpsilonGreedyPolicy(algos.getStateSpace()); // Predator learn with variant ε.
             for (float initialQValue = 15; initialQValue >= -15; initialQValue -= 15) {

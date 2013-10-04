@@ -31,9 +31,9 @@ public class Experiment2_3 {
         SoftmaxPolicy smp = new SoftmaxPolicy(algos.getStateSpace()); // Predator learn
 
         double savedEpsilon = Util.epsilon; // FIXME: dirty hack!
-        for (float alpha = 0.1f; alpha <= 1.0; alpha += 0.2) {
-            for (float gamma = 0; gamma <= 0.5; gamma += 0.1) {
-            	for(int episodeCount = 0; episodeCount < Util.EPISODE_COUNT; episodeCount += 50) {
+        for (double gamma = 0.1; gamma <= 1.0; gamma += 0.2) {
+        	for (double alpha = 0.1; alpha <= 0.6; alpha += 0.1) {
+               	for(int episodeCount = 0; episodeCount < Util.EPISODE_COUNT; episodeCount += 50) {
             		// 1. train
             		Util.epsilon = savedEpsilon; // we need a stochastic epsilon policy for the learning, for exploration
             		Q newQ = algos.Q_Learning(smp, optimisticInitialQ, alpha, gamma, episodeCount);
