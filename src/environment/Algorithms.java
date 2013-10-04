@@ -500,6 +500,48 @@ public class Algorithms {
         } return q;
     }
 
+    public EpsilonGreedyPolicy monteCarloOnPolicy(EpsilonGreedyPolicy pi, double initialQ, double gamma, int episodeCount) {
+        Q q = this.initializeQ(initialQ);               // for all s∈S: Q(s,a) = arbitrary
+        pi.initializeActionsArbitrarily(action.SOUTH);  // for all s∈S: π(s) = arbitrary
+        pi.setQ(q);
+
+        HashMap<StateAction, List<Double>> stateActionReturns = new HashMap<>();
+        for (State s : this.stateSpace) {               // for all s∈S: Returns(s,a) = empty list
+            for (StateAction sa : this.getAllStateActions(s)) {
+                stateActionReturns.put(sa, new ArrayList<Double>());
+            }
+        }
+
+        for (int i = 0; i < episodeCount; i++) {        // Repeat forever:
+
+            // (a) generate an episode using exploring starts and π.
+            State initialState = this.stateSpace.getRandomState();
+            State s = initialState;
+
+            List<State> episode = new ArrayList<State>();
+            episode.add(s);
+            while (!s.isTerminal()) {                   // (b) for each pair s,a in the episode.
+                action a =  pi.getAction(s);            // Derive a π.
+
+                double r = s.getStateReward();
+
+                List<Double> returns = stateActionReturns.get(new StateAction(s, a));
+                returns.add(r);
+                stateActionReturns.put(new StateAction(s, a), returns);
+
+                q.set(s, a, this.averageReturns(returns));
+
+                // Take action a. observe r, s'
+                s = this.stateSpace.getNextState(s, a);
+                episode.add(s);
+            }
+
+            for (State state : episode) { // (c) for each s in the episode
+                pi.setUniqueAction(state, q.getArgmaxA(s));
+            }
+        } return pi;
+    }
+
     /**
      * Used by Monte Carlo Off policy.
      * @param l List of Doubles to find double of.
