@@ -8,6 +8,7 @@
 \usepackage{pgfplots}
 \usepackage{filecontents}
 \usepackage{amsmath}
+\usepackage{float}
 
 
 
@@ -573,18 +574,18 @@ From the plot it can be seen that for On-policy Monte-Carlo a $\gamma$ discount 
 
 
 
-\subsubsection[title] {Off-policy Monte-Carlo\footnote{The source code for the implementation of this experiment can be found under the package \texttt{aa2013.Assignment2} in the file \texttt{Experiment2$\_$4OffMC.java}.}}
+%\subsubsection[title] {Off-policy Monte-Carlo\footnote{The source code for the implementation of this experiment can be found under the package \texttt{aa2013.Assignment2} in the file \texttt{Experiment2$\_$4OffMC.java}.}}
 
 %--1) why? "in order to test..." (questions, and preferably hypotheses with explanation)
 
 
 
-\subsubsection{Hypothesis}
+%\subsubsection{Hypothesis}
 
 
 
 
-\subsubsection{Results}
+%\subsubsection{Results}
 
 
 %--interpretation
@@ -736,7 +737,7 @@ There is no unique way to pick the best performing combination of parameters, ho
 \end{itemize}
 
 \begin{center}
-\begin{figure}
+\begin{figure}[H]
 \resizebox{350pt}{!}{
 \begin{tikzpicture}
 \begin{axis}[ymin=0,ymax=100,restrict y to domain=0:605,xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
@@ -763,11 +764,10 @@ There is no unique way to pick the best performing combination of parameters, ho
 \end{figure}
 \end{center}
 
-It now becomes clearer that [...]
-
-
+Although these models perform almost equally well, as seen previously, the best Softmax model outperforms the best other models in general. 
 
 \section{Conclusion}
+For this experiment alternate algorithms, that are based on model-free learning, were implemented. The first approach was with temporal difference methods with Q-Learning with different action selection schemes, namely $\epsilon$-greedy and Softmax. The second approach involved different learning methods like Monte Carlo Control and Sarsa. Finally a comparison and explanation between the various implemented approaches is provided.
 
 \begin{thebibliography}{9}
 
