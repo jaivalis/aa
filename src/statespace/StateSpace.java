@@ -62,7 +62,13 @@ public abstract class StateSpace implements Iterable<State>, Iterator<State>  {
      * @return ProbableTransition a structure containing possible states and probabilities
      */
     public abstract ProbableTransitions getProbableTransitions(State s, Algorithms.action a);
-
+    
+    /**
+     * Given a current state and an action hat has been chosen by the agent,
+     * produce a stochastically determined new state that belongs to the set
+     * of states that that action might lead to.
+     * In other words, this is the environment deciding the agent's next state.
+     */
     public State produceStochasticTransition(State s, Algorithms.action a) {
 		Random rand = new Random();
 		float randfl = rand.nextFloat();
