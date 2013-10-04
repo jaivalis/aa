@@ -541,6 +541,11 @@ public class Algorithms {
         } return pi;
     }
 
+    // TODO
+    public EpsilonGreedyPolicy monteCarloOffPolicy(EpsilonGreedyPolicy egp, float initialQValue, int episodeCount) {
+        return null;
+    }
+
     /**
      * Used by Monte Carlo Off policy.
      * @param l List of Doubles to find double of.
