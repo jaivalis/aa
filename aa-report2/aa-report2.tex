@@ -724,11 +724,16 @@ From looking at the table of results, it can be observed that indeed, the perfor
 %findings
 The insight that was gained through the execution of this experiment, is that although Q-learning learns the optimal policy faster than Sarsa, it performs worse on average than Sarsa due to it's $\epsilon$-greedy action selection.
 
+
+\section{Discussion}
+Having conducted the previous experiments we now have obtained a wide overview of some interesting learning algorithms. In this section we will provide a comparison of those by plotting the best performing combination of each of those in a plot. Figure \ref{discussion} illustrates a concentrated overview of all the algorithms.\\
+There is no unique way to pick the best performing combination of parameters, however we assumed that the best performing model is the one that outperformed the rest for the optimal combination of parameters. In that sense, finding an optimal candidate from the Softmax was non trivial. [TODO]-explain how we picked it
+
 \begin{center}
 \begin{figure}
 \resizebox{350pt}{!}{
 \begin{tikzpicture}
-\begin{axis}[ymin=0,ymax=40,restrict y to domain=0:605,xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
+\begin{axis}[ymin=0,ymax=100,restrict y to domain=0:605,xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
 
 
 \addplot table[x index=0,y index=1,col sep=comma] {discussion.dat};
@@ -752,7 +757,7 @@ The insight that was gained through the execution of this experiment, is that al
 \end{figure}
 \end{center}
 
-
+It now becomes clearer that [...]
 
 
 
