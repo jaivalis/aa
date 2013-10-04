@@ -471,46 +471,58 @@ public class Algorithms {
         } return al;
     }
 
-    public Q monteCarloOffPolicy(double initialQ, double gamma, int episodeCount) {
-        QEpsilonGreedyPolicy pi = (QEpsilonGreedyPolicy) this.predator.getPolicy();
+    public MCEpsilonGreedyPolicy monteCarloOffPolicy(double initialQ, int episodeCount, double gamma) {
         Q q = this.initializeQ(initialQ);               // for all s∈S: Q(s,a) = arbitrary
-        pi.initializeActionsArbitrarily(action.SOUTH);  // for all s∈S: π(s) = arbitrary
-        //pi.setQ(q);
-        ((QEpsilonGreedyPolicy) this.predator.getPolicy()).setQ(q);
-
-        HashMap<StateAction, List<Double>> stateReturns = new HashMap<>();
+        HashMap<StateAction, Double> mapN = new HashMap<StateAction, Double>();
+        HashMap<StateAction, Double> mapD = new HashMap<StateAction, Double>();
         for (State s : this.stateSpace) {               // for all s∈S: Returns(s,a) = empty list
             for (StateAction sa : this.getAllStateActions(s)) {
-                stateReturns.put(sa, new ArrayList<Double>());
+                mapN.put(sa, 0.0);
+                mapD.put(sa, 1.0);
             }
         }
+
+    	MCEpsilonGreedyPolicy pi = new MCEpsilonGreedyPolicy(this.stateSpace);
+    	pi.initializeActionsAsRandom();
 
         for (int i = 0; i < episodeCount; i++) {        // Repeat forever:
             // (a) generate an episode using exploring starts and π.
             State initialState = this.stateSpace.getRandomState();
-            State s = initialState;
 
-            List<State> episode = new ArrayList<>();
-            episode.add(s);
-            while (!s.isTerminal()) {                   // (b) for each pair s,a in the episode.
-                action a =  pi.getAction(s);            // Derive a π.
+            MCEpsilonGreedyPolicy pi_prime = new MCEpsilonGreedyPolicy(this.stateSpace);
+            pi_prime.initializeActionsAsRandom();
+            Episode episode = EpisodeGenerator.generate(this.stateSpace, initialState, pi_prime, gamma);
 
-                double r = s.getStateReward();
-
-                List<Double> returns = stateReturns.get(new StateAction(s, a));
-                returns.add(r);
-                stateReturns.put(new StateAction(s, a), returns);
-
-                q.set(s, a, this.averageReturns(returns));
-
-                s = this.stateSpace.produceStochasticTransition(s, a);
-                episode.add(s);
+            int steps = 0;
+            
+            Episode tauized = episode.getTauized(pi);
+            double w = 1.0;
+            for(EpisodeStep episodeStep : tauized) {
+            	State s = episodeStep.getS();
+            	action a = episodeStep.getA();
+            	w = w * 1.0/pi_prime.getActionProbability(s, a);
             }
-
-            for (State state : episode) { // (c) for each s in the episode
-                pi.setUniqueAction(state, q.getArgmaxA(s));
+			for(EpisodeStep episodeStep : tauized) {
+            	steps++;
+            	double discounted = episodeStep.getDiscounted();
+            	State s = episodeStep.getS();
+            	action a = episodeStep.getA();
+            	StateAction sa = new StateAction(s, a);
+            	double currNsa = mapN.get(sa);
+            	double currDsa = mapD.get(sa);
+            	double nextNsa = currNsa + w*discounted;
+            	double nextDsa = currDsa + w;
+            	mapN.put(sa, nextNsa);
+                mapD.put(sa, nextDsa);
+                q.set(s, a, nextNsa/nextDsa);
             }
-        } return q;
+			
+            for (EpisodeStep episodeStep : episode) { // (c) for each s in the episode
+                State state = episodeStep.getS();
+                pi.setUniqueAction(state, q.getArgmaxA(state));
+            }
+        } 
+        return pi;
     }
 
     public MCEpsilonGreedyPolicy monteCarloOnPolicy(MCEpsilonGreedyPolicy pi, double initialQ, int episodeCount, double gamma) {
