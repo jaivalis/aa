@@ -523,26 +523,38 @@ public class Algorithms {
 
             // (a) generate an episode using exploring starts and π.
             State initialState = this.stateSpace.getRandomState();
+            System.out.println("initial state:"+initialState);
             State s = initialState;
+            State s_prime = initialState;
 
             List<State> episode = new ArrayList<>();
             episode.add(s);
-            while (!s.isTerminal()) {                   // (b) for each pair s,a in the episode.
+            int steps = 0;
+            do {                   // (b) for each pair s,a in the episode.
+            	steps++;
                 action a =  pi.getAction(s);            // Derive a π.
-                double r = s.getStateReward();
+                s = s_prime;
+                s_prime = this.stateSpace.produceStochasticTransition(s, a);  // s' = π(s,a) : transition
 
+                double r = s_prime.getStateReward();
+                
                 List<Double> returns = stateActionReturns.get(new StateAction(s, a));
+
                 returns.add(r);
                 stateActionReturns.put(new StateAction(s, a), returns);
 
-                q.set(s, a, this.averageReturns(returns));
+                Double avg_r = this.averageReturns(returns);
+                if(avg_r>0.0){
+                    System.out.println(i+" - "+s_prime+" - "+a);
+                	System.out.println("avg_r:"+avg_r);
+                }
+                q.set(s_prime, a, avg_r);
 
-                s = this.stateSpace.produceStochasticTransition(s, a);  // s' = π(s,a) : transition
-                episode.add(s);
-            }
+                episode.add(s_prime);
+            } while((!s_prime.isTerminal()) && (steps<10000));
 
             for (State state : episode) { // (c) for each s in the episode
-                pi.setUniqueAction(state, q.getArgmaxA(s));
+                pi.setUniqueAction(state, q.getArgmaxA(s_prime));
             }
         } return pi;
     }
