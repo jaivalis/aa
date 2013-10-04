@@ -213,7 +213,8 @@ As in Q-learning, in Off-Policy Monte Carlo Control the estimate of the value of
 \section{Experiments}
 This section describes the experiments performed along with the results obtained per experiment. In all the experiments the process followed was as follows: the Predator agent used an algorithm with which he learned about the world and then its performance was calculated in rounds it took for its to reach its goal (to catch the prey).
 
-Throughout the experiments the general idea was to train the agent on an increasing number of rounds and measure its performance so as to be able to compare the algorithms implemented on different setups. 
+Throughout the experiments the general idea was to train the agent on an increasing number of epsisodes and measure its performance so as to be able to compare the algorithms implemented on different setups. The number of episodes chosen for learning is in the range from 50 to 1000 with a step size of 50, so 20 samples per setup. This corresponds to the time and is illustrated in the following plots.\\
+Another detail of the configuration for all the experiments is that the state space used is the reduced state space with 11 $\times4$ states, which saves a significant amount of computational time compared to the 11^4 state space. Furthermore the average  of 100 simulations is chosen to be the performance measurement in each experiment.
 
 %--2) is there anything to mention about the implementation/machinery the reader should know? (e.g. "these experiments were performed on a [insert machine specs]" when presenting runtimes)
 
@@ -222,7 +223,7 @@ Throughout the experiments the general idea was to train the agent on an increas
 The source code for the implementation of this experiment can be found under the package $aa2013.Assignment2$ in the file $Experiment2\_1.java$.
 %--1) why? "in order to test..." (questions, and preferably hypotheses with explanation)
 \subsubsection{Hypothesis}
-The first experiment aims to measure the performance of the predator catching the predator with different learning rates $\alpha$ and different discount factors $\gamma$ over time. Therefore the average performance of 100 simulations with different $\alpha$ and $\gamma$ for learning with an episode count from 50 to 950 is  taken into account. The reduced state space  with 11x11 states is chosen, in order to save computational time.\\
+The first experiment aims to measure the performance of the predator catching the predator with different learning rates $\alpha$ and different discount factors $\gamma$ over time.\\
 The expected outcome is that high learning rates tend to always replace the current value with the new estimates and converge quickly, while a small learning rate value leads to a slow convergence and seems to trust the current estimate. ~\cite{dar}\\
 A small discount factor $\gamma$ lets the agent appear short-sighted, while a value close to one increases the agents ambition for a long-term high reward.
 
