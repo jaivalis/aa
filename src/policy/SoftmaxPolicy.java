@@ -19,15 +19,10 @@ import java.util.HashSet;
  * exp(Q_t(a) / tau) / sum{ exp(Q_t(b) / tau) }
  * tau = temperature
  */
-public class SoftmaxPolicy extends PredatorPolicy {
-    Q q = null;
+public class SoftmaxPolicy extends QPolicy {
 
     public SoftmaxPolicy(StateSpace ss) {
         super(ss);
-    }
-
-    public void setQ(Q q) {
-        this.q = q;
     }
 
     @Override

@@ -31,17 +31,19 @@ public class Experiment2_3 {
         SoftmaxPolicy smp = new SoftmaxPolicy(algos.getStateSpace()); // Predator learn
 
         double savedEpsilon = Util.epsilon; // FIXME: dirty hack!
-        for (float alpha = 0.1f; alpha <= 1.0; alpha += 0.1) {
-            for (float gamma = 0; gamma <= 0.9; gamma += 0.1) {
-                // 1. train
-                Util.epsilon = savedEpsilon; // we need a stochastic epsilon policy for the learning, for exploration
-                Q newQ = algos.Q_Learning(smp, optimisticInitialQ, alpha, gamma);
-                Util.epsilon = 0.0; // now it has already learned, so we can use a stochastic policy
-                ((QEpsilonGreedyPolicy) algos.getPredator().getPolicy()).setQ(newQ);
+        for (double gamma = 0.1; gamma <= 1.0; gamma += 0.2) {
+        	for (double alpha = 0.1; alpha <= 0.6; alpha += 0.1) {
+               	for(int episodeCount = 0; episodeCount < Util.EPISODE_COUNT; episodeCount += 50) {
+            		// 1. train
+            		Util.epsilon = savedEpsilon; // we need a stochastic epsilon policy for the learning, for exploration
+            		Q newQ = algos.Q_Learning(smp, optimisticInitialQ, alpha, gamma, episodeCount);
+            		Util.epsilon = 0.0; // now it has already learned, so we can use a stochastic policy
+            		((QEpsilonGreedyPolicy) algos.getPredator().getPolicy()).setQ(newQ);
 
-                // 2. simulate & output results
-                double averageRounds = algos.getSimulationAverageRounds(simulations);
-                System.out.print(averageRounds + " & ");
+            		// 2. simulate & output results
+            		double averageRounds = algos.getSimulationAverageRounds(simulations);
+            		System.out.print(averageRounds + " & ");
+            	}
             } System.out.println("\\\\");
         }
     }

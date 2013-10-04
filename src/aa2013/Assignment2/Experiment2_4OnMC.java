@@ -7,6 +7,12 @@ import policy.QEpsilonGreedyPolicy;
 import statespace.ReducedStateSpace;
 import statespace.StateSpace;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Date;
+
 public class Experiment2_4OnMC {
     public static void main(String[] args) {
     	Experiment2_4OnMC.debug();
@@ -31,15 +37,15 @@ public class Experiment2_4OnMC {
         MCEpsilonGreedyPolicy egp = new MCEpsilonGreedyPolicy(algos.getStateSpace()); // Predator learn
 
         double savedEpsilon = Util.epsilon;
-//        long timestamp = (new Date()).getTime();
-//        PrintWriter out = null;
-//        try {
-//            out = new PrintWriter(new BufferedWriter(new FileWriter("experiment2_4OnMC_results_"+timestamp+".csv", true)));
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            System.exit(0);
-//        }
-//        out.println("gamma,alpha,episodeCount,averageRounds");
+        long timestamp = (new Date()).getTime();
+        PrintWriter out = null;
+        try {
+            out = new PrintWriter(new BufferedWriter(new FileWriter("experiment2_4OnMC_results_"+timestamp+".csv", true)));
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(0);
+        }
+        out.println("gamma,episodeCount,averageRounds");
         for (float gamma = 0; gamma <= 0.9; gamma += 0.1) {
             for (float initialQValue = 30; initialQValue >= -15; initialQValue -= 5) {
                 for(int episodeCount = 0; episodeCount < Util.EPISODE_COUNT; episodeCount++) {
@@ -51,10 +57,10 @@ public class Experiment2_4OnMC {
 
                     // 2. simulate & output results
                     double averageRounds = algos.getSimulationAverageRounds(simulations);
-                    String str = gamma + "," + 10 + "," + averageRounds;
+                    String str = gamma + "," + episodeCount + "," + averageRounds;
                     System.out.println(str);
-//                    out.println(str);
-//                    out.flush();
+                    out.println(str);
+                    out.flush();
                 }
             }
         }

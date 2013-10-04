@@ -1,17 +1,17 @@
 package aa2013.Assignment2;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Date;
-
 import environment.Algorithms;
 import environment.Q;
 import environment.Util;
 import policy.QEpsilonGreedyPolicy;
 import statespace.ReducedStateSpace;
 import statespace.StateSpace;
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Date;
 
 public class Experiment2_1 {
 
@@ -42,9 +42,9 @@ public class Experiment2_1 {
 			System.exit(0);
 		}
         out.println("gamma,alpha,episodeCount,averageRounds");
-        for (float gamma = 0; gamma <= 0.9; gamma += 0.1) {
-        	for (float alpha = 0.1f; alpha <= 1.0; alpha += 0.1) {
-        		for(int episodeCount = 0; episodeCount < Util.EPISODE_COUNT; episodeCount++) {
+        for (double gamma = 0.1; gamma <= 1.0; gamma += 0.2) {
+        	for (double alpha = 0.1; alpha <= 0.6; alpha += 0.1) {
+        		for(int episodeCount = 0; episodeCount < Util.EPISODE_COUNT; episodeCount += 50) {
 	                // 1. train
 	                Util.epsilon = savedEpsilon; // we need a stochastic epsilon policy for the learning, for exploration
 	                Q newQ = algos.Q_Learning(egp, optimisticInitialQ, alpha, gamma, episodeCount);

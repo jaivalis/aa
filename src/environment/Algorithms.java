@@ -7,6 +7,7 @@ import policy.MCEpsilonGreedyPolicy;
 import policy.QEpsilonGreedyPolicy;
 import policy.LearnedPolicy;
 import policy.Policy;
+import policy.QPolicy;
 import policy.SoftmaxPolicy;
 import state.State;
 import statespace.StateSpace;
@@ -345,7 +346,7 @@ public class Algorithms {
      * @param gamma Decay factor.
      * @return
      */
-    public Q Q_Learning(QEpsilonGreedyPolicy pi, double initialQ, double alpha, double gamma, int episodeCount) {
+    public Q Q_Learning(QPolicy pi, double initialQ, double alpha, double gamma, int episodeCount) {
     	Q q = this.initializeQ(initialQ); // initialize Q(s,a) arbitrarily
     	pi.setQ(q); // I know it's not the best thing, but for now, it works.
         for (int i = 0; i < episodeCount; i++) {  // repeat for each episode
