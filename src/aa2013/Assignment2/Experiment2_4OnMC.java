@@ -25,8 +25,10 @@ public class Experiment2_4OnMC {
         MCEpsilonGreedyPolicy pi = new MCEpsilonGreedyPolicy(algos.getStateSpace()); // Predator learn
         int initialQValue = 15;
         int episodeCount = 1000;
-        pi = algos.monteCarloOnPolicy(pi, initialQValue, episodeCount);
+        double gamma = 0.5;
+        pi = algos.monteCarloOnPolicy(pi, initialQValue, episodeCount, gamma);
         pi.printMaxActionsGrid();
+        System.out.println("end.");
     }
     
     public static void averages() {
@@ -51,7 +53,7 @@ public class Experiment2_4OnMC {
                 for(int episodeCount = 0; episodeCount < Util.EPISODE_COUNT; episodeCount++) {
                     // 1. train
                     Util.epsilon = savedEpsilon; // we need a stochastic epsilon policy for the learning, for exploration
-                    MCEpsilonGreedyPolicy mco = algos.monteCarloOnPolicy(egp, initialQValue, episodeCount);
+                    MCEpsilonGreedyPolicy mco = algos.monteCarloOnPolicy(egp, initialQValue, episodeCount, gamma);
                     Util.epsilon = 0.0; // now it has already learned, so we can use a stochastic policy
                     algos.getPredator().setPolicy(mco);
 

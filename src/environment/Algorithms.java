@@ -17,6 +17,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
+import com.sun.org.apache.xml.internal.serializer.utils.Utils;
+
+import episode.Episode;
+import episode.EpisodeGenerator;
+
 public class Algorithms {	
 	private StateSpace stateSpace;
 	private Prey prey;
@@ -507,10 +512,9 @@ public class Algorithms {
         } return q;
     }
 
-    public MCEpsilonGreedyPolicy monteCarloOnPolicy(MCEpsilonGreedyPolicy pi, double initialQ, int episodeCount) {
+    public MCEpsilonGreedyPolicy monteCarloOnPolicy(MCEpsilonGreedyPolicy pi, double initialQ, int episodeCount, double gamma) {
         Q q = this.initializeQ(initialQ);               // for all s∈S: Q(s,a) = arbitrary
         pi.initializeActionsAsRandom();  // for all s∈S: π(s) = arbitrary
-        pi.printMaxActionsGrid();
 
         HashMap<StateAction, List<Double>> stateActionReturns = new HashMap<>();
         for (State s : this.stateSpace) {               // for all s∈S: Returns(s,a) = empty list
@@ -518,17 +522,17 @@ public class Algorithms {
                 stateActionReturns.put(sa, new ArrayList<Double>());
             }
         }
-
+        
         for (int i = 0; i < episodeCount; i++) {        // Repeat forever:
 
             // (a) generate an episode using exploring starts and π.
             State initialState = this.stateSpace.getRandomState();
-            System.out.println("initial state:"+initialState);
+            
+            Episode episode = EpisodeGenerator.generate(initialState)
+
             State s = initialState;
             State s_prime = initialState;
 
-            List<State> episode = new ArrayList<>();
-            episode.add(s);
             int steps = 0;
             do {                   // (b) for each pair s,a in the episode.
             	steps++;
@@ -536,7 +540,7 @@ public class Algorithms {
                 s = s_prime;
                 s_prime = this.stateSpace.produceStochasticTransition(s, a);  // s' = π(s,a) : transition
 
-                double r = s_prime.getStateReward();
+                double r = s_prime.getStateReward() + gamma * q.get(s, a);
                 
                 List<Double> returns = stateActionReturns.get(new StateAction(s, a));
 
@@ -544,14 +548,10 @@ public class Algorithms {
                 stateActionReturns.put(new StateAction(s, a), returns);
 
                 Double avg_r = this.averageReturns(returns);
-                if(avg_r>0.0){
-                    System.out.println(i+" - "+s_prime+" - "+a);
-                	System.out.println("avg_r:"+avg_r);
-                }
                 q.set(s_prime, a, avg_r);
 
                 episode.add(s_prime);
-            } while((!s_prime.isTerminal()) && (steps<10000));
+            } while(steps<100);
 
             for (State state : episode) { // (c) for each s in the episode
                 pi.setUniqueAction(state, q.getArgmaxA(s_prime));
