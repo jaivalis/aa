@@ -524,7 +524,7 @@ Softmax, does outperform $\epsilon$-greedy when used by Q-learning, but the most
 
 
 \subsection{Experiment 4}
-
+In this experiment we will compare and contrast a variety of other learning methods instead of Q-Learning, namely: On-Policy Monte-Carlo Control and Sarsa. By the end of this experiment we will have an overview of the different algorithms and we will be able to compare them
 
 
 \subsubsection[title]{On-Policy Monte Carlo \footnote{The source code for the implementation of this experiment can be found under the package \texttt{aa2013.Assignment2} in the file \texttt{Experiment2$\_$4OnMC.java}.}}
@@ -727,7 +727,13 @@ The insight that was gained through the execution of this experiment, is that al
 
 \section{Discussion}
 Having conducted the previous experiments we now have obtained a wide overview of some interesting learning algorithms. In this section we will provide a comparison of those by plotting the best performing combination of each of those in a plot. Figure \ref{discussion} illustrates a concentrated overview of all the algorithms.\\
-There is no unique way to pick the best performing combination of parameters, however we assumed that the best performing model is the one that outperformed the rest for the optimal combination of parameters. In that sense, finding an optimal candidate from the Softmax was non trivial. [TODO]-explain how we picked it
+There is no unique way to pick the best performing combination of parameters, however we assumed that the best performing model is the one that outperformed the rest for the optimal combination of parameters. In that sense, finding an optimal candidate from the Softmax was non trivial. According to the previous statement the following models were picked:
+\begin{itemize}
+	\item{Q-Learning:} $Q_0$ = 15, $\epsilon$ = 0.1, $\alpha$ = 0.1, $\gamma$ = 0.9
+	\item{Softmax:} $Q_0$ = 15, $\tau$ = 0.6, $\alpha$ = 0.5, $\gamma$ = 0.9
+	\item{On-Policy Monte Carlo:} $Q_0$ = 15, $\gamma$ = 0.7
+	\item{Sarsa:} $Q_0$ = 15, $\gamma$ = 0.9, $\alpha$ = 0.5, $\epsilon$ = 0.1
+\end{itemize}
 
 \begin{center}
 \begin{figure}
