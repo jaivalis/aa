@@ -29,8 +29,9 @@ public class EpisodeGenerator {
             s_prime = stateSpace.produceStochasticTransition(s, a);
             double r = s_prime.getStateReward();
             episode.addStep(s, a, r, s_prime);
-        } while(s_prime.isTerminal());
+        } while(!s_prime.isTerminal()&&steps<10000);
 
+        episode.refreshDiscounted(gamma);
 		return episode;
 	}
 }

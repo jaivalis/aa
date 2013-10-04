@@ -9,7 +9,8 @@ public class EpisodeStep {
 	private action a;
 	private double r;
 	private State s_prime;
-
+	private double discounted;
+	
 	public EpisodeStep(State s, action a, double r, State s_prime) {
 		this.s = s;
 		this.a = a;
@@ -28,6 +29,14 @@ public class EpisodeStep {
 	}
 	public State getS_prime() {
 		return s_prime;
+	}
+
+	public void setDiscounted(double curr_discounted) {
+		this.discounted = curr_discounted;
+	}
+	
+	public double getDiscounted() {
+		return this.discounted;
 	}
 	
 }

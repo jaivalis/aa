@@ -49,23 +49,21 @@ public class Experiment2_4OnMC {
             System.exit(0);
         }
         out.println("gamma,episodeCount,averageRounds");
-        for (float gamma = 0; gamma <= 0.9; gamma += 0.1) {
-//            for (float initialQValue = 30; initialQValue >= -15; initialQValue -= 5) {
-                for(int episodeCount = 0; episodeCount < Util.EPISODE_COUNT; episodeCount+=50) {
-                    // 1. train
-                    Util.epsilon = savedEpsilon; // we need a stochastic epsilon policy for the learning, for exploration
-                    MCEpsilonGreedyPolicy mco = algos.monteCarloOnPolicy(egp, optimisticQ, episodeCount, gamma);
-                    Util.epsilon = 0.0; // now it has already learned, so we can use a stochastic policy
-                    algos.getPredator().setPolicy(mco);
+        for (double gamma = 0.1; gamma <= 0.9; gamma += 0.2) {
+            for(int episodeCount = 50; episodeCount < Util.EPISODE_COUNT; episodeCount+=50) {
+                // 1. train
+                Util.epsilon = savedEpsilon; // we need a stochastic epsilon policy for the learning, for exploration
+                MCEpsilonGreedyPolicy mco = algos.monteCarloOnPolicy(egp, optimisticQ, episodeCount, gamma);
+                Util.epsilon = 0.0; // now it has already learned, so we can use a stochastic policy
+                algos.getPredator().setPolicy(mco);
 
-                    // 2. simulate & output results
-                    double averageRounds = algos.getSimulationAverageRounds(simulations);
-                    String str = gamma + "," + episodeCount + "," + averageRounds;
-                    System.out.println(str);
-                    out.println(str);
-                    out.flush();
-                }
-//            }
+                // 2. simulate & output results
+                double averageRounds = algos.getSimulationAverageRounds(simulations);
+                String str = gamma + "," + episodeCount + "," + averageRounds;
+                System.out.println(str);
+                out.println(str);
+                out.flush();
+            }
         }
     }
 }
