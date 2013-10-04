@@ -531,7 +531,7 @@ Softmax, does outperform $\epsilon$-greedy when used by Q-learning, but the most
 
 
 \subsubsection{Hypothesis}
-
+For this experiment we will make use of the on-policy Monte Carlo control algorithm. It is assumed that the algorithm converge towards a better average performance slower than Q-learning due to the fact that it must wait until the end of every episode to make an update for a value at time t. There should be improvement in every step except when the best policy ha been found among the $\epsilon$-soft policies. The algorithm will be tested using different values of $\gamma$, where $\gamma$ is the discount factor calculated towards the reward observed.
 
 
 
