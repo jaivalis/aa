@@ -235,7 +235,7 @@ The interpretation of these results will follow in the next section.
 $\gamma$ = 0.1 & $\gamma$ = 0.5\\
 \resizebox{200pt}{!}{
 \begin{tikzpicture}
-\begin{axis}[restrict y to domain=0:500,xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
+\begin{axis}[ymin=0,ymax=500,restrict y to domain=0:500,xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
 
 
 \addplot table[x index=0,y index=1,col sep=comma] {epsGreedGamma1.dat};
@@ -260,7 +260,7 @@ $\gamma$ = 0.1 & $\gamma$ = 0.5\\
 &
 \resizebox{200pt}{!}{
 \begin{tikzpicture}
-\begin{axis}[restrict y to domain=0:500,xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
+\begin{axis}[ymin=0,ymax=500,restrict y to domain=0:500,xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
 
 
 \addplot table[x index=0,y index=1,col sep=comma] {epsGreedGamma5.dat};
@@ -285,7 +285,7 @@ $\gamma$ = 0.1 & $\gamma$ = 0.5\\
 $\gamma$ = 0.7 & $\gamma$ = 0.9\\
 \resizebox{200pt}{!}{
 \begin{tikzpicture}
-\begin{axis}[restrict y to domain=0:500,xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
+\begin{axis}[ymin=0,ymax=500,restrict y to domain=0:500,xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
 
 
 \addplot table[x index=0,y index=1,col sep=comma] {epsGreedGamma7.dat};
@@ -310,7 +310,7 @@ $\gamma$ = 0.7 & $\gamma$ = 0.9\\
 &
 \resizebox{200pt}{!}{
 \begin{tikzpicture}
-\begin{axis}[restrict y to domain=0:500,xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
+\begin{axis}[ymin=0,ymax=500,restrict y to domain=0:500,xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
 
 
 \addplot table[x index=0,y index=1,col sep=comma] {epsGreedGamma9.dat};
