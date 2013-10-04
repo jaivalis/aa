@@ -1,12 +1,7 @@
 package episode;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import policy.Policy;
-import action.StateAction;
 import environment.Algorithms.action;
+import policy.Policy;
 import state.State;
 import statespace.StateSpace;
 
@@ -28,17 +23,13 @@ public class EpisodeGenerator {
 
         int steps = 0;
         do {
-            if (s_prime.isTerminal()) {
-                episode.addStep(s, action.WAIT, s_prime.getStateReward(), s_prime);
-                break;
-            }
         	steps++;
             action a =  pi.getAction(s);
             s = s_prime;
             s_prime = stateSpace.produceStochasticTransition(s, a);
             double r = s_prime.getStateReward();
             episode.addStep(s, a, r, s_prime);
-        } while(true);
+        } while(s_prime.isTerminal());
 
 		return episode;
 	}
