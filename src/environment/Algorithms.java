@@ -3,6 +3,7 @@ package environment;
 import actor.Predator;
 import actor.Prey;
 import action.StateAction;
+import episode.EpisodeStep;
 import policy.MCEpsilonGreedyPolicy;
 import policy.QEpsilonGreedyPolicy;
 import policy.LearnedPolicy;
@@ -550,10 +551,12 @@ public class Algorithms {
                 Double avg_r = this.averageReturns(returns);
                 q.set(s_prime, a, avg_r);
 
-                episode.add(s_prime);
+//                episode.add(s_prime);
+//                episode.addStep(s, a, r, s_prime);
             }
-
-            for (State state : episode) { // (c) for each s in the episode
+//            System.out.println(steps);
+            for (EpisodeStep episodeStep : episode) { // (c) for each s in the episode
+                State state = episodeStep.getS();
                 pi.setUniqueAction(state, q.getArgmaxA(s_prime));
             }
         } return pi;

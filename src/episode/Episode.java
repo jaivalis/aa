@@ -10,7 +10,7 @@ public class Episode implements Iterable<EpisodeStep> {
 	private ArrayList<EpisodeStep> steps = new ArrayList<EpisodeStep>();
 	
 	public void addStep(State s, action a, double r, State s_prime){
-		this.steps.add(new EpisodeStep(s,a,r,s_prime));
+		this.steps.add(new EpisodeStep(s, a, r, s_prime));
 	}
 
 	@Override
