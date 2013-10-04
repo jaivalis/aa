@@ -422,11 +422,11 @@ public class Algorithms {
      * @param gamma
      * @return
      */
-    public Q sarsa(EpsilonGreedyPolicy pi, double initialQ, double alpha, double gamma) {
+    public Q sarsa(EpsilonGreedyPolicy pi, double initialQ, double alpha, double gamma, int episodeCount) {
         Q q = this.initializeQ(initialQ); // initialize Q(s,a) arbitrarily
         pi.setQ(q); // I know it's not the best thing, but for now, it works.
 
-        for (int i = 0; i < Util.EPISODE_COUNT; i++) { // repeat for each episode
+        for (int i = 0; i < episodeCount; i++) { // repeat for each episode
             State s = this.stateSpace.getRandomState();// initialize s randomly
             State s_prime;
 

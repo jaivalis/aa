@@ -13,9 +13,6 @@ import policy.EpsilonGreedyPolicy;
 import statespace.ReducedStateSpace;
 import statespace.StateSpace;
 
-/**
- * First Experiment exercise 2
- */
 public class Experiment2_1 {
 
     /**
