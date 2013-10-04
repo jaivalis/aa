@@ -16,7 +16,8 @@ public class Experiment2_4OffMC {
     public static void main(String[] args) {
         StateSpace ss = new ReducedStateSpace();
         Algorithms algos = new Algorithms(ss);
-
+        
+        double optimisticInitialQ = 15;
         double simulations = 100;  // many simulations ensure higher precision.
         EpsilonGreedyPolicy egp = new EpsilonGreedyPolicy(algos.getStateSpace()); // Predator learn
 
@@ -29,19 +30,19 @@ public class Experiment2_4OffMC {
             e.printStackTrace();
             System.exit(0);
         }
-        out.println("gamma,episodeCount,averageRounds");
-        for (float gamma = 0; gamma <= 0.9; gamma += 0.1) {
-            for (float initialQValue = 30; initialQValue >= -15; initialQValue -= 5) {
-                for(int episodeCount = 0; episodeCount < Util.EPISODE_COUNT; episodeCount++) {
+        out.println("gamma,alpha,averageRounds");
+        for (double gamma = 0.1; gamma <= 0.9; gamma += 0.2) {
+        	for (double alpha = 0.1; alpha <= 0.5; alpha += 0.1) {
+                for(int episodeCount = 50; episodeCount < Util.EPISODE_COUNT; episodeCount += 50) {
                     // 1. train
                     Util.epsilon = savedEpsilon; // we need a stochastic epsilon policy for the learning, for exploration
-                    EpsilonGreedyPolicy mco = algos.monteCarloOffPolicy(egp, initialQValue, episodeCount);
+                    //EpsilonGreedyPolicy mco = algos.monteCarloOffPolicy(egp, optimisticInitialQ, alpha, gamma, episodeCount);
                     Util.epsilon = 0.0; // now it has already learned, so we can use a stochastic policy
-                    algos.getPredator().setPolicy(mco);
+                    //algos.getPredator().setPolicy(mco);
 
                     // 2. simulate & output results
                     double averageRounds = algos.getSimulationAverageRounds(simulations);
-                    String str = gamma + "," + initialQValue + "," + averageRounds;
+                    String str = gamma + "," + alpha + "," + averageRounds;
                     System.out.println(str);
                     out.println(str);
                     out.flush();

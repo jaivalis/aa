@@ -31,20 +31,22 @@ public class Experiment2_2 {
 
         double alpha = 0.8; // as found to be optimal in previous task.
         double gamma = 0.8; // as found to be optimal in previous task.
-        for (float epsilon = 0; epsilon <= 1.0; epsilon += 0.1) {
+        for (double epsilon = 0.1; epsilon <= 0.9; epsilon += 0.1) {
             Util.epsilon = epsilon;
             EpsilonGreedyPolicy egp = new EpsilonGreedyPolicy(algos.getStateSpace()); // Predator learn with variant ε.
-            for (float initialQValue = 30; initialQValue >= -15; initialQValue -= 5) {
-                // 1. train
-                Util.epsilon = savedEpsilon; // we need a stochastic epsilon policy for the learning, for exploration
-                Q newQ = algos.Q_Learning(egp, initialQValue, alpha, gamma, Util.EPISODE_COUNT);
-                Util.epsilon = 0.0; // now it has already learned, so we can use a stochastic policy
-                ((EpsilonGreedyPolicy) algos.getPredator().getPolicy()).setQ(newQ);
+            for (float initialQValue = 15; initialQValue >= -15; initialQValue -= 15) {
+            	for(int episodeCount = 0; episodeCount < Util.EPISODE_COUNT; episodeCount += 50) {
+            		// 1. train
+            		Util.epsilon = savedEpsilon; // we need a stochastic epsilon policy for the learning, for exploration
+            		Q newQ = algos.Q_Learning(egp, initialQValue, alpha, gamma, Util.EPISODE_COUNT);
+            		Util.epsilon = 0.0; // now it has already learned, so we can use a stochastic policy
+            		((EpsilonGreedyPolicy) algos.getPredator().getPolicy()).setQ(newQ);
 
-                // 2. simulate & output results
-                double averageRounds = algos.getSimulationAverageRounds(simulations);
-                System.out.print(averageRounds + " & ");
-            } System.out.println("\\\\");
+            		// 2. simulate & output results
+            		double averageRounds = algos.getSimulationAverageRounds(simulations);
+            		System.out.print(averageRounds + " & ");
+            	}System.out.println("\\\\");
+            }
         }
     }
 }
