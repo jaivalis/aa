@@ -15,7 +15,7 @@ import java.util.Date;
 
 public class Experiment2_4OnMC {
     public static void main(String[] args) {
-//    	Experiment2_4OnMC.debug();
+    	//Experiment2_4OnMC.debug();
     	Experiment2_4OnMC.averages();
     }
     
