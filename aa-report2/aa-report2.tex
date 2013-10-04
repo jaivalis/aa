@@ -211,6 +211,10 @@ As in Q-learning, in Off-Policy Monte Carlo Control the estimate of the value of
 \end{algorithmic}
 \end{algorithm}
 
+Off-Policy Monte Carlo uses generated episodes from different policies. Then a tail of state/action pair is selected from each episode in order to get the part of the learned policy which has differences with the exploratory policy.
+a weight is produced from the probabilities for the exploratory policy of selecting a certain action for a certain state.
+This weight is subsequently used to calculate the Q(s,a), which will be used in the end for the generation of a deterministic greedy policy.
+
 \section{Experiments}
 This section describes the experiments performed along with the results obtained per experiment. In all the experiments the process followed was as follows: the Predator agent used an algorithm with which he learned about the world and then its performance was calculated in rounds it took for its to reach its goal (to catch the prey).
 
