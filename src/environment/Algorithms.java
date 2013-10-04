@@ -48,9 +48,11 @@ public class Algorithms {
 			} return action.WAIT;
 		}
 		
-		public action getRandom() {
-			
+		public static action getRandom() {
+			int rand = (new Random()).nextInt(action.values().length);
+			return action.values()[rand];
 		}
+		
 		private action(String shortName, String arrow){
 			this.shortName = shortName;
 			this.arrow = arrow;
@@ -505,7 +507,7 @@ public class Algorithms {
 
     public EpsilonGreedyPolicy monteCarloOnPolicy(EpsilonGreedyPolicy pi, double initialQ, int episodeCount) {
         Q q = this.initializeQ(initialQ);               // for all s∈S: Q(s,a) = arbitrary
-        pi.initializeActionsArbitrarily(action.SOUTH);  // for all s∈S: π(s) = arbitrary
+        pi.initializeActionsArbitrarily(Algorithms.action.getRandom());  // for all s∈S: π(s) = arbitrary
         pi.setQ(q);
 
         HashMap<StateAction, List<Double>> stateActionReturns = new HashMap<>();
