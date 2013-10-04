@@ -31,6 +31,7 @@ public class EpisodeGenerator {
             episode.addStep(s, a, r, s_prime);
         } while(!s_prime.isTerminal()&&steps<10000);
 
+        episode.refreshDiscounted(gamma);
 		return episode;
 	}
 }
