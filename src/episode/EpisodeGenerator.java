@@ -1,0 +1,32 @@
+package episode;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import policy.Policy;
+import action.StateAction;
+import environment.Algorithms.action;
+import state.State;
+import statespace.StateSpace;
+
+public class EpisodeGenerator {
+	public static Episode generate(StateSpace stateSpace, State initialState, Policy pi, double gamma) {
+    	Episode episode = new Episode();
+
+        State s = initialState;
+        State s_prime = initialState;
+
+        int steps = 0;
+        do {
+        	steps++;
+            action a =  pi.getAction(s);
+            s = s_prime;
+            s_prime = stateSpace.produceStochasticTransition(s, a);
+            double r = s_prime.getStateReward();
+            episode.addStep(s,a,r,s_prime);
+        } while(steps<100);
+
+		return episode;
+	}
+}
