@@ -437,7 +437,7 @@ $Q_0$ = 15 & $Q_0$ = 0\\
 }\\
 
 \end{tabular}
-\caption{Plots show the average performance over time spendt learning the policy with $\epsilon$ from 0.1 to 0.9. The first plot shows the curve for pessimistically initialized Q-Values = 0 and the second optimistic Q-Values = 15}
+\caption{Plots show the average performance over time spendt learning the policy with $\epsilon$ from 0.1 to 0.9. The first plot shows the curve for pessimistically initialized Q-Values = 0 and the second optimistic Q-Values = 15. Learning rate is $\alpha$ = 0.5 and discount factor is $\gamma$ = 0.9, since these values had the best performance in the previous experiment.}
 \label{plotsEx2}
 \end{table}
 
@@ -461,7 +461,7 @@ The source code for the implementation of this experiment can be found under the
 %--1) why? "in order to test..." (questions, and preferably hypotheses with explanation)
 \subsubsection{Hypothesis}
 In this experiment the difference between the $\epsilon$-greedy and the softmax action selection policy is researched. The $\epsilon$-greedy action selection chooses all actions, except the action with the highest estimated reward so far, with the same probability, while the softmax approach weights the other actions and chooses actions with more pay-off with a higher probability.\\
-The setup of this experiment is that softmax action selection policy is compared to an 0.1-$\epsilon$-greedy action selection policy, since this showed the best results in the previous experiment, with the same values for $\gamma$, $\alpha$ and initial Q-Values\\
+The setup of this experiment is that softmax action selection policy is compared to an 0.1-$\epsilon$-greedy action selection policy, since this showed the best results in the previous experiment, with the same values for $\gamma$ = 0.9, $\alpha$ = 0.5 and initial Q-Values of 15. \\
 Given the fact that softmax weights all action, the hypothesis is that softmax outperforms $\epsilon$-greedy as long as its \emph{temperature $\tau$} is properly tuned.
 
 
@@ -510,7 +510,7 @@ The results of this experiment are plotted in Figure ~\ref{Exp3}.
 \end{axis}
 \end{tikzpicture}
 }
-\caption{Performance of agents learning with softmax action selection policy over time with different $\tau$ compared to an agent learning with 0.1-$\epsilon$-greedy action selection policy .Learning rate is $\alpha$ = 0.5 and discount factor is $\gamma$ = 0.9, since these values had the best performance in the previous experiment.}
+\caption{Performance of agents learning with softmax action selection policy over time with different $\tau$ compared to an agent learning with 0.1-$\epsilon$-greedy action selection policy. Learning rate is $\alpha$ = 0.5 and discount factor is $\gamma$ = 0.9, since these values had the best performance in the previous experiment.}
 \label{Exp3}
 \end{figure}
 \end{center}
