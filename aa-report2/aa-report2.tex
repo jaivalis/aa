@@ -536,7 +536,32 @@ Softmax, does outperform $\epsilon$-greedy when used by Q-learning, but the most
 
 
 \subsubsection{Results}
+\begin{center}
+\begin{figure}
+\resizebox{350pt}{!}{
+\begin{tikzpicture}
+\begin{axis}[restrict y to domain=0:50,xlabel={Learned Episodes},ylabel={Average Performance}, legend style={at={(1.2,1)},anchor=north,legend cell align=left}]
 
+
+\addplot table[x index=0,y index=1,col sep=comma] {OnMC.dat};
+\addlegendentry{$\gamma$=0.1}
+
+\addplot table[x index=0,y index=2,col sep=comma] {OnMC.dat};
+\addlegendentry{$\gamma$=0.5}
+
+\addplot table[x index=0,y index=3,col sep=comma] {OnMC.dat};
+\addlegendentry{$\gamma$=0.7}
+
+\addplot table[x index=0,y index=4,col sep=comma] {OnMC.dat};
+\addlegendentry{$\gamma$=0.9}
+
+\end{axis}
+\end{tikzpicture}
+}
+\caption{Performance of agents learning with On-policy Monte Carlo over time with different $\gamma$}
+\label{ExpOnMC}
+\end{figure}
+\end{center}
 %--interpretation
 
 %--findings
