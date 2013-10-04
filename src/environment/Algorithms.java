@@ -48,6 +48,9 @@ public class Algorithms {
 			} return action.WAIT;
 		}
 		
+		public action getRandom() {
+			
+		}
 		private action(String shortName, String arrow){
 			this.shortName = shortName;
 			this.arrow = arrow;

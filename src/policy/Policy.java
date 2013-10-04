@@ -2,6 +2,8 @@ package policy;
 
 import action.LearnedAction;
 import action.PossibleActions;
+import environment.Algorithms;
+import environment.Coordinates;
 import environment.Algorithms.action;
 import state.State;
 
@@ -39,7 +41,25 @@ public abstract class Policy {
 	public double getActionProbability(State s, action a) {
 		return this.stateActionMapping.get(s).getActionProbability(a);
 	}
-	
+
+	/**
+	 * gets action with maximum probability of being chosen, given a state
+	 * @param State s
+	 * @return
+	 */
+	public Algorithms.action getArgMaxActionProbability(State s) {
+		Algorithms.action argmax_a = null;
+		double max = Double.NEGATIVE_INFINITY;
+		for(Algorithms.action a : Algorithms.action.values()) {
+			Double p = this.stateActionMapping.get(s).getActionProbability(a);
+			if(p>max){
+				max = p;
+				argmax_a = a;
+			}
+		}
+		return argmax_a;
+	}
+
 	/**
 	 * For State s, set action probability of Action a to 1.0 and all the rest to 0.
 	 * (Deterministic policy) 
@@ -68,4 +88,20 @@ public abstract class Policy {
             this.stateActionMapping.get(state).makeActionDeterministic(ac);
         }
     }
+	
+    public void printMaxActionsGrid() {
+		State[][] states = new State[11][11];
+		for(State s : this.stateActionMapping.keySet()){
+			Coordinates c = s.getPreyCoordinates();
+			states[c.getX()][c.getY()] = s;
+		}
+		for(int i = 0; i < 11; i++){
+			for(int j = 0; j < 11; j++){
+				action a = this.getArgMaxActionProbability(states[i][j]);
+				System.out.print(a.getArrow() + "\t");
+				// System.out.print(this.board[i][j].getStateValue() + "\t");
+			}
+			System.out.println();
+		}
+	}
 }

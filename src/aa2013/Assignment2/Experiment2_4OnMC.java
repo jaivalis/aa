@@ -8,6 +8,21 @@ import statespace.StateSpace;
 
 public class Experiment2_4OnMC {
     public static void main(String[] args) {
+    	Experiment2_4OnMC.debug();
+    	//Experiment2_4OnMC.averages();
+    }
+    
+    public static void debug() {
+        StateSpace ss = new ReducedStateSpace();
+        Algorithms algos = new Algorithms(ss);
+        EpsilonGreedyPolicy pi = new EpsilonGreedyPolicy(algos.getStateSpace()); // Predator learn
+        int initialQValue = 15;
+        int episodeCount = 1000;
+        algos.monteCarloOnPolicy(pi, initialQValue, episodeCount);
+        pi.printMaxActionsGrid();
+    }
+    
+    public static void averages() {
         StateSpace ss = new ReducedStateSpace();
         Algorithms algos = new Algorithms(ss);
 
@@ -29,7 +44,7 @@ public class Experiment2_4OnMC {
                 for(int episodeCount = 0; episodeCount < Util.EPISODE_COUNT; episodeCount++) {
                     // 1. train
                     Util.epsilon = savedEpsilon; // we need a stochastic epsilon policy for the learning, for exploration
-                    EpsilonGreedyPolicy mco = algos.monteCarloOffPolicy(egp, initialQValue, episodeCount);
+                    EpsilonGreedyPolicy mco = algos.monteCarloOnPolicy(egp, initialQValue, episodeCount);
                     Util.epsilon = 0.0; // now it has already learned, so we can use a stochastic policy
                     algos.getPredator().setPolicy(mco);
 
