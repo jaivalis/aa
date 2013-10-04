@@ -45,4 +45,5 @@ public class EpsilonGreedyPolicy extends PredatorPolicy {
 		// stochastic query to get action for state s
 		return super.getAction(s);
 	}
+
 }

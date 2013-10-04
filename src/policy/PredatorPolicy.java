@@ -16,6 +16,9 @@ public class PredatorPolicy extends Policy {
 		}
 	}
 	
+	public void print() {
+	}
+	
 	/** copy constructor */
 //	public PredatorPolicy(Policy p) { this.stateActionMapping = p.stateActionMapping; }
 }
