@@ -528,15 +528,15 @@ public class Algorithms {
             // (a) generate an episode using exploring starts and π.
             State initialState = this.stateSpace.getRandomState();
             
-            Episode episode = EpisodeGenerator.generate(initialState)
+            Episode episode = EpisodeGenerator.generate(this.stateSpace, initialState, pi, gamma);
 
             State s = initialState;
             State s_prime = initialState;
 
             int steps = 0;
-            do {                   // (b) for each pair s,a in the episode.
+            for(EpisodeStep episodeStep : episode) { // (b) for each pair s,a in the episode.
             	steps++;
-                action a =  pi.getAction(s);            // Derive a π.
+                action a =  pi.getAction(s); // Derive a π.
                 s = s_prime;
                 s_prime = this.stateSpace.produceStochasticTransition(s, a);  // s' = π(s,a) : transition
 
@@ -551,7 +551,7 @@ public class Algorithms {
                 q.set(s_prime, a, avg_r);
 
                 episode.add(s_prime);
-            } while(steps<100);
+            }
 
             for (State state : episode) { // (c) for each s in the episode
                 pi.setUniqueAction(state, q.getArgmaxA(s_prime));
