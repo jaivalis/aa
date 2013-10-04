@@ -522,17 +522,70 @@ The results of this experiment supports the hypothesis that softmax over the cou
 \subsubsection{Findings}
 Softmax, does outperform $\epsilon$-greedy when used by Q-learning, but the most optimal performance would be achieved if the $\tau$ temperature of Softmax could be tuned according to the number of learned episodes.
 
-%--4) take home message (what do you want the reader to remember, e.g. "Therefore, by reducing the state space, we have gained several orders of magnitude in runtime.")
-\subsubsection{}
+
+
 
 \subsection{Experiment 4}
 
 
 
-\subsubsection{Experiment 4.1}
+\subsubsection{On-policy Monte-Carlo}
 The source code for the implementation of this experiment can be found under the package \texttt{aa2013.Assignment2} in the file \texttt{Experiment2$\_$4OnMC.java}.
 %--1) why? "in order to test..." (questions, and preferably hypotheses with explanation)
+
+
+
+\subsubsection{Hypothesis}
+
+
+
+
+\subsubsection{Results}
+
+
+
+\subsubsection{Findings}
+
+
+
+
+
+\subsubsection{Off-policy Monte-Carlo}
+The source code for the implementation of this experiment can be found under the package \texttt{aa2013.Assignment2} in the file \texttt{Experiment2$\_$4OffMC.java}.
+%--1) why? "in order to test..." (questions, and preferably hypotheses with explanation)
+
+
+
+\subsubsection{Hypothesis}
+
+
+
+
+\subsubsection{Results}
+
+
+
+\subsubsection{Findings}
+
+
+
+
 \subsubsection{Sarsa}
+The source code for the implementation of this experiment can be found under the package \texttt{aa2013.Assignment2} in the file \texttt{Experiment2$\_$4Sarsa.java}.
+%--1) why? "in order to test..." (questions, and preferably hypotheses with explanation)
+
+
+\subsubsection{Hypothesis}
+This experiment aims to measure the performance of the predator catching the prey with different learning rates $\alpha$ and different discount factors $\gamma$ over time and compare them to the Q-learning algorithm performance. The expected outcome for this experiment is for results to be similar to Q-learning, with the difference of having less fluctuations in the average performance, due to the inability inability to learn while changing policies. For Sarsa, the effect of the learning rate $\alpha$ and the discount factor $\gamma$ should have a similar effect to that of Q-learning.
+
+
+
+\subsubsection{Results}
+The results of this experiment are plotted in Table ~\ref{plotsSarsa}. The five chosen learning rates $\alpha$ are shown in each of the four graphs with different discount factors $\gamma$.\\
+The interpretation of these results will follow in the next section.
+
+
+
 
 \begin{table}
 \begin{tabular}{cc}
@@ -637,52 +690,24 @@ $\gamma$ = 0.7 & $\gamma$ = 0.9\\
 \end{tikzpicture}
 }
 \end{tabular}
-\caption{Plots show the average performance over time spendt learning the policy with a Sarsa-Learning-Algorithm with learning rates $\alpha$ from 0.1 to 0.5. The first plot shows the curve for discount factor $\gamma$ = 0.1, second $\gamma$ = 0.5, third $\gamma$ = 0.7 and fourth $\gamma$ = 0.9}
+\caption{Plots show the average performance over time spent learning the policy with a Sarsa-Learning-Algorithm with learning rates $\alpha$ from 0.1 to 0.5. The first plot shows the curve for discount factor $\gamma$ = 0.1, second $\gamma$ = 0.5, third $\gamma$ = 0.7 and fourth $\gamma$ = 0.9}
 \label{plotsSarsa}
 \end{table}
 
 
-%--4) take home message (what do you want the reader to remember, e.g. "Therefore, by reducing the state space, we have gained several orders of magnitude in runtime.")
-\subsubsection{Findings}
-
-
-
-
-\subsubsection{Experiment 4.2}
-The source code for the implementation of this experiment can be found under the package \texttt{aa2013.Assignment2} in the file \texttt{Experiment2$\_$4OffMC.java}.
-%--1) why? "in order to test..." (questions, and preferably hypotheses with explanation)
-\subsubsection{Hypothesis}
-
-
-\subsubsection{Results}
-
-
-%--3) what does it show (and is that what you expected, and why)
 \subsubsection{Interpretation}
 
-
-%--4) take home message (what do you want the reader to remember, e.g. "Therefore, by reducing the state space, we have gained several orders of magnitude in runtime.")
+From looking at the table of results, it can be observed that indeed, the performance of Sarsa, is comparable to that of Q-learning when analyzing the effect of changing the learning rate and discount factor. The difference between the two algorithms according to the graphs, is that Sarsa manages to converge towards a better average performance quicker than the Q-learning, which can be explained, as in the hypothesis, from it's inability to learn while changing policies, even though at points throughout the episodes, Q-learning will be outperforming Sarsa.
 \subsubsection{Findings}
 
 
 
-\subsubsection{Experiment 4.1}
-The source code for the implementation of this experiment can be found under the package \texttt{aa2013.Assignment2} in the file \texttt{Experiment2$\_$4Sarsa.java}.
-%--1) why? "in order to test..." (questions, and preferably hypotheses with explanation)
-\subsubsection{Hypothesis}
 
 
-\subsubsection{Results}
 
 
-%--3) what does it show (and is that what you expected, and why)
-\subsubsection{Interpretation}
 
 
-%--4) take home message (what do you want the reader to remember, e.g. "Therefore, by reducing the state space, we have gained several orders of magnitude in runtime.")
-\subsubsection{Findings}
-
-%redundance with take home message?
 \section{Conclusion}
 
 \begin{thebibliography}{9}
