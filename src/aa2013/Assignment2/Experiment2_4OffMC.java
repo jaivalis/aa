@@ -1,7 +1,6 @@
 package aa2013.Assignment2;
 
 import environment.Algorithms;
-import environment.Q;
 import environment.Util;
 import policy.EpsilonGreedyPolicy;
 import statespace.ReducedStateSpace;
@@ -22,15 +21,15 @@ public class Experiment2_4OffMC {
         EpsilonGreedyPolicy egp = new EpsilonGreedyPolicy(algos.getStateSpace()); // Predator learn
 
         double savedEpsilon = Util.epsilon;
-//        long timestamp = (new Date()).getTime();
-//        PrintWriter out = null;
-//        try {
-//            out = new PrintWriter(new BufferedWriter(new FileWriter("experiment2_4OffMC_results_"+timestamp+".csv", true)));
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            System.exit(0);
-//        }
-//        out.println("gamma,alpha,episodeCount,averageRounds");
+        long timestamp = (new Date()).getTime();
+        PrintWriter out = null;
+        try {
+            out = new PrintWriter(new BufferedWriter(new FileWriter("experiment2_4OffMC_results_"+timestamp+".csv", true)));
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(0);
+        }
+        out.println("gamma,episodeCount,averageRounds");
         for (float gamma = 0; gamma <= 0.9; gamma += 0.1) {
             for (float initialQValue = 30; initialQValue >= -15; initialQValue -= 5) {
                 for(int episodeCount = 0; episodeCount < Util.EPISODE_COUNT; episodeCount++) {
@@ -42,10 +41,10 @@ public class Experiment2_4OffMC {
 
                     // 2. simulate & output results
                     double averageRounds = algos.getSimulationAverageRounds(simulations);
-                    String str = gamma + "," + 10 + "," + averageRounds;
+                    String str = gamma + "," + initialQValue + "," + averageRounds;
                     System.out.println(str);
-//                    out.println(str);
-//                    out.flush();
+                    out.println(str);
+                    out.flush();
                 }
             }
         }

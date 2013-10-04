@@ -1,17 +1,17 @@
 package aa2013.Assignment2;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Date;
-
 import environment.Algorithms;
 import environment.Q;
 import environment.Util;
 import policy.EpsilonGreedyPolicy;
 import statespace.ReducedStateSpace;
 import statespace.StateSpace;
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Date;
 
 public class Experiment2_1 {
 
