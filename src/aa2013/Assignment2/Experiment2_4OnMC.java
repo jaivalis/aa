@@ -50,7 +50,7 @@ public class Experiment2_4OnMC {
         }
         out.println("gamma,episodeCount,averageRounds");
         for (double gamma = 0.1; gamma <= 0.9; gamma += 0.2) {
-            for(int episodeCount = 0; episodeCount < Util.EPISODE_COUNT; episodeCount+=50) {
+            for(int episodeCount = 50; episodeCount < Util.EPISODE_COUNT; episodeCount+=50) {
                 // 1. train
                 Util.epsilon = savedEpsilon; // we need a stochastic epsilon policy for the learning, for exploration
                 MCEpsilonGreedyPolicy mco = algos.monteCarloOnPolicy(egp, optimisticQ, episodeCount, gamma);
