@@ -534,7 +534,7 @@ Softmax, does outperform $\epsilon$-greedy when used by Q-learning, but the most
 
 
 \subsubsection{Hypothesis}
-
+For this experiment we will make use of the on-policy Monte Carlo control algorithm. It is assumed that the algorithm converge towards a better average performance slower than Q-learning due to the fact that it must wait until the end of every episode to make an update for a value at time t. There should be improvement in every step except when the best policy ha been found among the $\epsilon$-soft policies. The algorithm will be tested using different values of $\gamma$, where $\gamma$ is the discount factor calculated towards the reward observed.
 
 
 
@@ -566,7 +566,7 @@ Softmax, does outperform $\epsilon$-greedy when used by Q-learning, but the most
 \end{figure}
 \end{center}
 %--interpretation
-
+From the plot it can be seen that for On-policy Monte-Carlo a $\gamma$ discount factor of too high or too low, deteriorates the performance of the algorithm. With a low $\gamma$ value the future reward is neglected too much, and so we can see than where $\gamma$=0.1 there are initially big spikes in the line graph. Where $\gamma$ is too high the algorithm takes into consideration future reward with too much importance, and hence loses out on its best immediate path, which can also explain why there is a spike at 800 episodes for $\gamma$=0.9. In order for an optimal performance by the algorithm based on the learnt model, there needs to be an optimal value as to how much the future reward is discounted, which could be specific to the problem at hand. A better set of $\gamma$-values could have been used in order to see the effect on the algorithm, where the chart would have a plot for each different $\gamma$, but where $\gamma$ starts at a very small number, e.g. 0.0001, and is increased exponentially until e.g. 0.9999. This way the difference in performance between extremes would be observed, and greater insight acquired.
 %--findings
 
 
