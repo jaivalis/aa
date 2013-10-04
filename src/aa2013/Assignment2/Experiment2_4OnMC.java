@@ -49,7 +49,7 @@ public class Experiment2_4OnMC {
             System.exit(0);
         }
         out.println("gamma,episodeCount,averageRounds");
-        for (float gamma = 0; gamma <= 0.9; gamma += 0.1) {
+        for (double gamma = 0; gamma <= 0.9; gamma += 0.1) {
 //            for (float initialQValue = 30; initialQValue >= -15; initialQValue -= 5) {
                 for(int episodeCount = 0; episodeCount < Util.EPISODE_COUNT; episodeCount+=50) {
                     // 1. train
