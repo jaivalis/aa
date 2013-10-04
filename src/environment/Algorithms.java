@@ -458,10 +458,12 @@ public class Algorithms {
         } return al;
     }
 
-    public Q monteCarloOffPolicy(EpsilonGreedyPolicy pi, double initialQ, double gamma, int episodeCount) {
+    public Q monteCarloOffPolicy(double initialQ, double gamma, int episodeCount) {
+        EpsilonGreedyPolicy pi = (EpsilonGreedyPolicy) this.predator.getPolicy();
         Q q = this.initializeQ(initialQ);               // for all s∈S: Q(s,a) = arbitrary
         pi.initializeActionsArbitrarily(action.SOUTH);  // for all s∈S: π(s) = arbitrary
-        pi.setQ(q);
+        //pi.setQ(q);
+        ((EpsilonGreedyPolicy) this.predator.getPolicy()).setQ(q);
 
         HashMap<StateAction, List<Double>> stateReturns = new HashMap<>();
         for (State s : this.stateSpace) {               // for all s∈S: Returns(s,a) = empty list
@@ -471,7 +473,6 @@ public class Algorithms {
         }
 
         for (int i = 0; i < episodeCount; i++) {        // Repeat forever:
-
             // (a) generate an episode using exploring starts and π.
             State initialState = this.stateSpace.getRandomState();
             State s = initialState;
@@ -489,8 +490,7 @@ public class Algorithms {
 
                 q.set(s, a, this.averageReturns(returns));
 
-                // Take action a. observe r, s'
-                s = this.stateSpace.getNextState(s, a);
+                s = this.stateSpace.produceStochasticTransition(s, a);
                 episode.add(s);
             }
 
@@ -500,7 +500,7 @@ public class Algorithms {
         } return q;
     }
 
-    public EpsilonGreedyPolicy monteCarloOnPolicy(EpsilonGreedyPolicy pi, double initialQ, double gamma, int episodeCount) {
+    public EpsilonGreedyPolicy monteCarloOnPolicy(EpsilonGreedyPolicy pi, double initialQ, int episodeCount) {
         Q q = this.initializeQ(initialQ);               // for all s∈S: Q(s,a) = arbitrary
         pi.initializeActionsArbitrarily(action.SOUTH);  // for all s∈S: π(s) = arbitrary
         pi.setQ(q);
@@ -518,7 +518,7 @@ public class Algorithms {
             State initialState = this.stateSpace.getRandomState();
             State s = initialState;
 
-            List<State> episode = new ArrayList<State>();
+            List<State> episode = new ArrayList<>();
             episode.add(s);
             while (!s.isTerminal()) {                   // (b) for each pair s,a in the episode.
                 action a =  pi.getAction(s);            // Derive a π.
@@ -531,8 +531,7 @@ public class Algorithms {
 
                 q.set(s, a, this.averageReturns(returns));
 
-                // Take action a. observe r, s'
-                s = this.stateSpace.getNextState(s, a);
+                s = this.stateSpace.produceStochasticTransition(s, a);  // s' = π(s,a) : transition
                 episode.add(s);
             }
 
