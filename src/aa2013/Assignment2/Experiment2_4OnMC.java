@@ -39,6 +39,7 @@ public class Experiment2_4OnMC {
         MCEpsilonGreedyPolicy egp = new MCEpsilonGreedyPolicy(algos.getStateSpace()); // Predator learn
 
         double savedEpsilon = Util.epsilon;
+        double optimisticQ = 15;
         long timestamp = (new Date()).getTime();
         PrintWriter out = null;
         try {
@@ -49,11 +50,11 @@ public class Experiment2_4OnMC {
         }
         out.println("gamma,episodeCount,averageRounds");
         for (float gamma = 0; gamma <= 0.9; gamma += 0.1) {
-            for (float initialQValue = 30; initialQValue >= -15; initialQValue -= 5) {
-                for(int episodeCount = 0; episodeCount < Util.EPISODE_COUNT; episodeCount++) {
+//            for (float initialQValue = 30; initialQValue >= -15; initialQValue -= 5) {
+                for(int episodeCount = 0; episodeCount < Util.EPISODE_COUNT; episodeCount+=50) {
                     // 1. train
                     Util.epsilon = savedEpsilon; // we need a stochastic epsilon policy for the learning, for exploration
-                    MCEpsilonGreedyPolicy mco = algos.monteCarloOnPolicy(egp, initialQValue, episodeCount, gamma);
+                    MCEpsilonGreedyPolicy mco = algos.monteCarloOnPolicy(egp, optimisticQ, episodeCount, gamma);
                     Util.epsilon = 0.0; // now it has already learned, so we can use a stochastic policy
                     algos.getPredator().setPolicy(mco);
 
@@ -64,7 +65,7 @@ public class Experiment2_4OnMC {
                     out.println(str);
                     out.flush();
                 }
-            }
+//            }
         }
     }
 }

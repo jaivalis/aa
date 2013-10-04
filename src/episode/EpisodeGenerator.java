@@ -1,12 +1,7 @@
 package episode;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import policy.Policy;
-import action.StateAction;
 import environment.Algorithms.action;
+import policy.Policy;
 import state.State;
 import statespace.StateSpace;
 
