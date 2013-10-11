@@ -68,6 +68,15 @@
 
 \section{minimax-Q}
 %intro, summary
+\subsection{Summary}
+The following summary introduces briefly the consequences of using the Markov game framework in place of MDP's in reinforcement learning for two-player zero-sum games. In MDP's the agent's objective is to find a policy that maps its interaction history to a current choice of action so as to maximize the expected sum of discounted reward. This is given by $E\{\sum_{j=0}^{\infty}\gamma^ir_i,t+j$ where $\gamma$ controls how much effect future rewards $r$ will have in time $(t+j)$ on the optimal decisions. A Markov game, is defined by a set of states and actions available in each state. Each agent has an associated reward function which attempts to maximize the expected sum of discounted rewards by taking the appropriate action, being in a certain state.
+Using only two agents with opposing goals in the environment, the same reward function can be used by each agent, where as a consequence (of opposing goals), one agent tries to maximize it, while the other to minimize it.
+As there is no undominated policy in Markov games, due to the fact that the best choice of action depends on the opponent, the problem could be resolved using components from game-theory. Adopting this to the two agent problem, the solution would be evaluate each policy with respect to the scenario where the opponent acts in the worst possible way for the agent. Based on this strategy, the agent will select the policy that maximizes the discounted reward.\\
+To explain this more clearly, a matrix game can be defined for the rock, paper, scissors game.
+
+
+Following this table, the agent should select the action with the highest pay-off while taking into consideration that the opponent will select the action which will minimize the agent's pay-off. If taking as constraints  
+
 
 
 \subsection{Experiment}
