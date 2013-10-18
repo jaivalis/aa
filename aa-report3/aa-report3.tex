@@ -45,18 +45,25 @@
 
 \section{New Environment}
 %intro, summary
-
+In this assignment, the environment changes, due to the circumstances that for one thing the prey is intelligent and learns how to escape from getting caught by the predator and for another thing there are up to four predators on a team on the board. Additionally the prey and the predators take their actions simultaneously.\\
+The rewards of the game change in the following way:
+\begin{itemize}
+	\item Predator catches prey: Team of predators get a +10 reward and prey gets a -10 reward
+	\item Predator runs into other predator: Team of predators get a -10 reward and prey gets a +10 reward
+\end{itemize}
+The second event only counts if two predators end up on the same square after their actions, but they are allowed to pass through each other without ending up on the same square. If a predator runs into another one, the prey will escape and the episode ends.\\
+The last change is the factor that the prey doesn't move randomly anymore, it can take the same actions as the predators, WAIT, EAST, WEST, SOUTH and NORTH, coming along with a tripping probability of 0.2.\\
+The state space of the new environment changes as follows \dots
 
 \subsection{Experiment}
-
-
+The first experiment tests the new implemented environment according to the first simulation with random policies of the first assignment with the difference of the new rewards and the additional predators. The average performance of 100 rounds is evaluated for teams of one, two, three and four predators.
 
 \subsubsection{Hypothesis}
-
+Since both the predators and the prey choose their actions randomly, the predators aren't supposed to find a fast way to catch the prey. Considering that there are more predators on the board, the number of steps of an episode is assumed to be decreased with an increasing number of predators. The decreasing number of steps has its origin not only in the circumstance that more predators are more likely to catch the prey faster, but in the factor that an episode will also end, if two predators end up on the same square, especially considering the starting position of the predators.
 
 \subsection{Results}
 %Interpretation
-
+Include figure of average performance of 1,2,3 and 4 predators
 
 %Findings
 
